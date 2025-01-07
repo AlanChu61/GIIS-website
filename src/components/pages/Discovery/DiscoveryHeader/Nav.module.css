@@ -10,6 +10,54 @@
     height: 70px;
 }
 
+.button {
+    font-size: 15px !important;
+    align-items:center !important;
+    color: rgba(255, 255, 255, 1) !important;
+ }
+
+.button:hover {
+    color: rgba(255, 255, 255, 1) !important;
+    text-decoration: none !important;  
+}
+
+@media (orientation: landscape) and (max-width: 736px) {
+ .button{
+    font-size: 12px !important; 
+ }
+}
+
+@media (orientation: portrait) and (max-width: 736px) {
+ .button{
+    font-size: 9px !important; 
+ }
+}
+    
+
+.button2 {
+    font-size: 15px !important;
+    align-items:center !important;
+    color: rgba(255, 255, 255, 1) !important;
+}
+
+.button2:hover {
+    color: rgba(255, 255, 255, 1) !important; 
+    text-decoration: none !important; 
+}
+
+@media (orientation: landscape) and (max-width: 736px) {
+ .button2 {
+    font-size: 12px !important; 
+ }
+}
+
+@media (orientation: portrait) and (max-width: 736px) {
+ .button2 {
+    font-size: 8px !important; 
+ }
+}
+
+
 li {
   cursor: pointer; /* 鼠标悬停时显示手型 */
 }

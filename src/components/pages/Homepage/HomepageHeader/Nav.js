@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styles from './Nav.module.css'; 
 import { Link, useNavigate } from 'react-router-dom';
 
-function Nav({ language }) {
+function Nav({ language ,toggleLanguage}) {
     const [isNavSticky, setIsNavSticky] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(true); 
     const navigate = useNavigate();
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 1000);
+    const [isLandscape, setIsLandscape] = useState(window.matchMedia('(orientation: landscape)').matches);
+    
+    
     useEffect(() => {
         document.documentElement.lang = language === 'en' ? 'en' : 'zh';
     }, [language]);
@@ -18,17 +20,25 @@ function Nav({ language }) {
             setIsNavSticky(currentScrollPosition > 150);
         };
 
-         const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
+        const handleResize = () => {
+        setIsMobile(window.innerWidth <= 1000);
        };
 
+        const handleOrientationChange = () => {
+         setIsLandscape(window.matchMedia('(orientation: landscape)').matches);
+        };
 
+
+     
         window.addEventListener('scroll', handleScroll);
         window.addEventListener('resize', handleResize);
-        
+        window.addEventListener('resize', handleOrientationChange);
+       
         return () => {
             window.removeEventListener('scroll', handleScroll);
-            window.addEventListener('resize', handleResize);
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('resize', handleOrientationChange);
+ 
         };
     }, []);
 
@@ -37,17 +47,19 @@ function Nav({ language }) {
         setIsCollapsed(!isCollapsed);
     };
 
+
    return (
-    <nav className={`navbar navbar-expand-lg ${isNavSticky ? 'fixed-top' : ''} ${styles.customBackground}`}>
+    <nav className={`navbar navbar-expand-lg ${isNavSticky ? 'fixed-top' : ''}  ${styles.customBackground}`}>
         <div className={`container-fluid ${styles.navContainer}`}>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLeftMenu" aria-controls="navbarLeftMenu" aria-expanded={!isCollapsed} aria-label="Toggle navigation" onClick={toggleNavbar}>
+            <button className= "navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarLeftMenu" aria-controls="navbarLeftMenu" aria-expanded={!isCollapsed} aria-label="Toggle navigation" onClick={toggleNavbar}>
                 <span className="navbar-toggler-icon"></span>
             </button>
 
             {isMobile && (
-            <div className={`collapse navbar-collapse ${!isCollapsed ? 'show' : ''} ${styles.leftSlideMenu}`} id="navbarLeftMenu">
-                <ul className={styles.leftSlideItems}>
-                  <li onClick={() => navigate("/discovery")}>
+           <>
+            <div className={`collapse navbar-collapse ${!isCollapsed ? 'show' : ''} ${isLandscape ? styles.leftSlideMenu2 : styles.leftSlideMenu}`}  id="navbarLeftMenu">
+             <ul className={styles.leftSlideItems} >
+                  <li onClick={() => navigate("/discovery")} >
                    <Link to="/discovery" onClick={(e) => e.preventDefault()}>
                     {language === 'en' ? 'DISCOVERY' : '发现我们'}
                    </Link>
@@ -69,7 +81,16 @@ function Nav({ language }) {
                   </li>
                 </ul>
             </div>
-         )}
+           <div className= "justify-content-center" style={{ display:"flex", justifyContent: "flex-end" }}>
+             {/* <Link to="/contact" className="btn btn-link px-2">Contact Us</Link> */}
+              <a href="https://moodles.genesisideas.school" target="_blank" rel="noopener noreferrer" className={`btn btn-link px-2 ${styles.button}`} >Moodles</a>
+              <button className={`btn btn-link px-2 ${styles.button2}`} onClick={toggleLanguage}>
+                {language === 'en' ? 'Switch to Chinese' : '切换到英文'}
+              </button>
+            </div>
+          </>
+ 
+             )}
 
             <div className={`collapse navbar-collapse ${isCollapsed ? '' : ''}`}>
                 <ul className={`navbar-nav ${styles.customnavbar}`}>

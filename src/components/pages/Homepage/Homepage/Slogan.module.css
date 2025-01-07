@@ -1,0 +1,18 @@
+.custom-card {
+  background-color: rgba(213, 168, 54, 1) !important
+}
+
+@media (max-width: 736px) {
+    .custom-card { 
+        padding: 2rem !important;
+        background-color: rgba(213, 168, 54, 1) !important
+    }
+
+    .custom-card p {
+        font-size: 1rem !important; 
+    }
+
+    .custom-card button {
+        font-size: 0.9rem !important; /* 縮小按鈕字體 */
+    }
+}

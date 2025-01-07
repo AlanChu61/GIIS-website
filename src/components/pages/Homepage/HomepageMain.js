@@ -8,11 +8,11 @@ import Testimonial from './Homepage/Testimonial.js';
 import FacultyGraduates from './Homepage/FacultyGraduates.js';
 import ContactForm from './Homepage/ContactForm';
 
-function HomepageMain({ language }) {
+function HomepageMain({ language,toggleLanguage }) {
    return (
     <>
         <div className="row">
-            <Nav language={language} />
+            <Nav language={language} toggleLanguage={toggleLanguage}/>
         </div>
 
         <div className="card mb-0" id="homepage">

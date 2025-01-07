@@ -4,7 +4,7 @@ import img from '../../../img/Homepage/homepage3.png';
 import DiscoveryIntroduction from'./Discovery/discoveryIntroduction.js';
 import DiscoveryIntroduction2 from'./Discovery/discoveryIntroduction2.js';
 
-function DiscoveryMain({ language }) {
+function DiscoveryMain({ language , toggleLanguage }) {
 
     const containerStyle = {
         position: 'relative',
@@ -53,7 +53,7 @@ function DiscoveryMain({ language }) {
    return (
     <>
         <div className="row">
-            <Nav language={language} />
+            <Nav language={language} toggleLanguage={toggleLanguage}  />
         </div>
       
         <div style={containerStyle}>

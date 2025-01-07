@@ -3,11 +3,24 @@
 }
 
 .button {
-  font-size: 16px;
+    font-size: 16px;
+    align-items:center;
+ }
+
+.button2 {
+    font-size: 16px;
+    align-items:center;
 }
 
-@media (max-width: 1024px) { /* 手機或平板等小螢幕 */
+@media (max-width: 1000px) {
   .button {
-    font-size: 18px; /* 調整字體大小 */
+    display: none !important
+  }
+
+  .button2 {
+    display: none !important
   }
 }
+
+
+
