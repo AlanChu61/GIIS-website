@@ -145,7 +145,15 @@ li {
     }
 }
 
-
+@media (orientation: landscape) and (max-width: 736px) {
+   html[lang="en"] .leftSlideItems li {
+    font-size:14px !important;
+    margin-left: 0 !important; 
+    padding-left: 10px !important;
+    margin-reight: 0 !important; 
+  }  
+}
+    
 
 .leftSlideItems li  {
     position: relative;
@@ -156,7 +164,6 @@ li {
     font-weight: bold;
     color: rgba(0, 0, 0, 1);
     text-decoration: none;
-    
 }
 
 

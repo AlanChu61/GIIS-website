@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'; // Make sure useRef is included here
+import React, { useRef , useState } from 'react'; // Make sure useRef is included here
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -10,8 +10,10 @@ import student3 from '../../../../img/Homepage/StuPhoto/student3.png';
 import student4 from '../../../../img/Homepage/StuPhoto/student4.png';
 import student5 from '../../../../img/Homepage/StuPhoto/student5.png';
 
-const Testimonial = () => {
+function Testimonial ()  {
     const sliderRef = useRef();  // useRef is now correctly imported and used
+    const [selectedTestimonial, setSelectedTestimonial] = useState(null); // 控制顯示心得分享
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 736); // 判斷螢幕寬度
 
     const testimonials = [
         {
@@ -46,7 +48,12 @@ const Testimonial = () => {
         },
     ];
 
-
+    React.useEffect(() => {
+        const handleResize = () => setIsMobile(window.innerWidth < 736);
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    
     const settings = {
         dots: true,
         infinite: true,
@@ -58,9 +65,20 @@ const Testimonial = () => {
         easing: "ease-in-out",
     };
 
+    const handleClick = (testimonial) => {
+        setSelectedTestimonial(testimonial);
+    };
+
+    // 點擊外部區域關閉心得視窗
+    const handleClose = () => {
+        setSelectedTestimonial(null);
+    };
+    
     return (
         <div className={styles.testimonialContainer}>
             <h2>Testimonial</h2>
+
+           {!isMobile ? (
             <Slider ref={sliderRef} {...settings}>
                 {testimonials.map((testimonial, index) => (
                     <div key={index} className={styles.testimonialItem}>
@@ -70,8 +88,41 @@ const Testimonial = () => {
                     </div>
                 ))}
             </Slider>
+             ) : (
+              <>
+                <p style={{ fontSize:'12px'}}>Tap the photo to see their testimonial.</p>
+                <div className={styles.staticList} >
+                    {testimonials.map((testimonial) => (
+                        <div
+                            key={testimonial.id}
+                            className={styles.listItem}
+                            onClick={() => handleClick(testimonial)}
+                        >
+                            <img
+                                src={testimonial.photoUrl}
+                                alt={testimonial.name}
+                                className={styles.photo}
+                            />
+                             <p className={styles.nameStyle}>{testimonial.name}</p>
+                        </div>
+                    ))}
+                </div> 
+              </>
+            )}
+            {selectedTestimonial && (
+                <div className={styles.modal} onClick={handleClose}>
+                    <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
+                        <h3 style={{fontWeight:'bold' }}>{selectedTestimonial.name}</h3>
+                        <p classname={styles.commentStyle}>{selectedTestimonial.comment}</p>
+                        <button className={styles.closeButton} onClick={handleClose}>
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
 export default Testimonial;
+

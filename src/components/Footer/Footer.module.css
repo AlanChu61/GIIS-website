@@ -7,3 +7,15 @@
     width: 100%; 
     font-size: 18px;
 }
+
+@media (orientation: landscape) and (max-width: 736px) {
+ .pageFooter{
+    font-size: 14px !important; 
+ }
+}
+
+@media (orientation: portrait) and (max-width: 736px) {
+ .pageFooter{
+    font-size: 12px !important; 
+ }
+}
