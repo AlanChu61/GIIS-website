@@ -1,7 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import img from '../../../../img/cognia.png';
 
-function discoveryIntroduction({ language }) {
+function DiscoveryIntroduction({ language }) {
+    const [fontSize, setFontSize] = useState(window.innerWidth < 1100 ? "60px" : "70px");
+
+    useEffect(() => {
+    const handleResize = () => {
+      setFontSize(window.innerWidth < 1100 ? "60px" : "70px");
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
     const headlineStyle = {
         marginTop: '115px',
@@ -10,7 +20,7 @@ function discoveryIntroduction({ language }) {
         paddingLeft: '15%',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 'bold',
-        fontSize: '70px',
+        fontSize: fontSize,
         lineHeight: '1',
     };
 
@@ -139,4 +149,4 @@ function discoveryIntroduction({ language }) {
    );
 }
 
-export default discoveryIntroduction;
+export default DiscoveryIntroduction;

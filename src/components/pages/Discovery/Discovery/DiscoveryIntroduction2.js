@@ -1,7 +1,7 @@
 import React from 'react';
 import FacultyGraduates from './FacultyGraduates.js';
 
-function discoveryIntroduction2({ language }) {
+function DiscoveryIntroduction2({ language }) {
 
     const headlineStyle = {
         marginTop: '60px',
@@ -145,4 +145,4 @@ function discoveryIntroduction2({ language }) {
    );
 }
 
-export default discoveryIntroduction2;
+export default DiscoveryIntroduction2;

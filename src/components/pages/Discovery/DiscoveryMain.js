@@ -1,8 +1,8 @@
 import React from 'react';
 import Nav from './DiscoveryHeader/Nav.js';
 import img from '../../../img/Homepage/homepage3.png';
-import DiscoveryIntroduction from'./Discovery/discoveryIntroduction.js';
-import DiscoveryIntroduction2 from'./Discovery/discoveryIntroduction2.js';
+import DiscoveryIntroduction from'./Discovery/DiscoveryIntroduction.js';
+import DiscoveryIntroduction2 from'./Discovery/DiscoveryIntroduction2.js';
 
 function DiscoveryMain({ language , toggleLanguage }) {
 
@@ -25,7 +25,7 @@ function DiscoveryMain({ language , toggleLanguage }) {
         bottom: '-70px', // 固定在圖片底部
         backgroundColor: 'rgba(0, 0, 0, 0.8)', // 半透明黑色背景
         color: 'white',
-        width: '35%',
+        width: language === 'en' ? '50%' : '35%',
         zIndex: '20', 
         fontFamily: 'Inter, sans-serif',
         fontWeight: 'bold',

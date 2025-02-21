@@ -6,7 +6,8 @@ function Nav({ language , toggleLanguage }) {
     const [isNavSticky, setIsNavSticky] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(true); 
     const navigate = useNavigate();
-    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 1000);
+    const [isLandscape, setIsLandscape] = useState(window.matchMedia('(orientation: landscape)').matches);
 
     useEffect(() => {
         document.documentElement.lang = language === 'en' ? 'en' : 'zh';
@@ -19,16 +20,22 @@ function Nav({ language , toggleLanguage }) {
         };
 
         const handleResize = () => {
-        setIsMobile(window.innerWidth <= 768);
+        setIsMobile(window.innerWidth <= 1000);
        };
 
+        const handleOrientationChange = () => {
+         setIsLandscape(window.matchMedia('(orientation: landscape)').matches);
+        };
 
+        
         window.addEventListener('scroll', handleScroll);
         window.addEventListener('resize', handleResize);
+        window.addEventListener('resize', handleOrientationChange);
         
         return () => {
             window.removeEventListener('scroll', handleScroll);
             window.addEventListener('resize', handleResize);
+            window.removeEventListener('resize', handleOrientationChange);
         };
     }, []);
 
@@ -45,7 +52,7 @@ function Nav({ language , toggleLanguage }) {
 
              {isMobile && (
             <>
-             <div className={`collapse navbar-collapse ${!isCollapsed ? 'show' : ''} ${styles.leftSlideMenu}`} id="navbarLeftMenu">
+             <div className={`collapse navbar-collapse ${!isCollapsed ? 'show' : ''} ${isLandscape ? styles.leftSlideMenu2 : styles.leftSlideMenu}`} id="navbarLeftMenu">
               <ul className={styles.leftSlideItems}>
                 <p>{language === 'en' ? 'DISCOVERY' : '发现我们'}</p>
                 <li onClick={() => navigate("/academics")}>
