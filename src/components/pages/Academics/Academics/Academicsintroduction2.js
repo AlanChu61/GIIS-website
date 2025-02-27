@@ -190,9 +190,7 @@ function Academicsintroduction2({ language }) {
         width: '300px',  // Adjust size as needed
         height: '300px', // Adjust size as needed
         backgroundColor: 'rgba(213, 168, 54, 1)',   
-        paddingLeft: '10%',
-        left: '100%', 
-        marginLeft: language === 'zh' ? '5%' : '5%',
+        left: '105%',
         top: language === 'zh' ? '20%' : '50%',
     };
 
@@ -360,7 +358,7 @@ const handleNavigation = () => {
           <img src={img} alt="Math" style={imageStyle} />
           <div style={overlaycontainerStyle}>
             <div style={overlayStyle} onClick={handleNavigation}>
-             <span style={overlayTextStyle}>MATH</span>
+             <p style={overlayTextStyle}>MATH</p>
               <div style={arrowContainerStyle2}>
                <span style={arrowStyle2}>→</span>
               </div>

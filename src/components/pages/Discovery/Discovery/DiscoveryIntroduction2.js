@@ -27,7 +27,7 @@ function DiscoveryIntroduction2({ language }) {
     const headlineStyle3 = {
         marginTop: '60px',
         color: 'rgba(0, 0, 0, 1)',
-        width: '60%',
+        width: '100%',
         paddingLeft: '12%',
         fontFamily: 'Inter, sans-serif',
         fontWeight: 'bold',
@@ -92,7 +92,7 @@ function DiscoveryIntroduction2({ language }) {
         </div>
 
         <div style={headlineStyle2}>
-          <p>Misiion</p>
+          <p>Mission</p>
         </div>
 
         <div style={container2}>
