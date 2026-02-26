@@ -81,18 +81,6 @@ function DiscoveryIntroduction({ language }) {
     };
 
 
-  const containerStyle = {
-        display: 'flex',
-        justifyContent: 'center', // 水平居中
-        width: '100%',
-        marginBottom: '50px',
-    };
-
-    const imageStyle = {
-        width: '13%', // 保持容器的寬度
-        height: '13%', // 固定高度
-    };
-    
     return (
       <>
         <div style={headlineStyle}>
