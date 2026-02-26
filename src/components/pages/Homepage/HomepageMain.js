@@ -3,7 +3,7 @@ import Nav from './HomepageHeader/Nav.js';
 import ImgSlider from './Homepage/ImgSlider.js';
 import Slogan from './Homepage/Slogan';
 import Introduction from './Homepage/Introduction';
-import CogniaAccreditation from './Homepage/CogniaAccreditation.js';
+// import CogniaAccreditation from './Homepage/CogniaAccreditation.js';
 import Testimonial from './Homepage/Testimonial.js';
 import FacultyGraduates from './Homepage/FacultyGraduates.js';
 import ContactForm from './Homepage/ContactForm';
@@ -32,13 +32,13 @@ function HomepageMain({ language,toggleLanguage }) {
             </div>
         </div>
 
-        <div className="card mb-0" id="accreditation">
+        {/* <div className="card mb-0" id="accreditation">
             <div className="container-fluid">
                 <div className="card-body">
                     <CogniaAccreditation language={language} />
                 </div>
             </div>
-        </div>
+        </div> */}
 
         <div className="card mb-0" id="testimonials">
             <div className="container-fluid">

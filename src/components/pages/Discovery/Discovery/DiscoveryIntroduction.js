@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import img from '../../../../img/cognia.png';
+// import img from '../../../../img/cognia.png';
 
 function DiscoveryIntroduction({ language }) {
     const [fontSize, setFontSize] = useState(window.innerWidth < 1100 ? "55px" : "65px");
@@ -118,7 +118,7 @@ function DiscoveryIntroduction({ language }) {
         </div>
 
         <div style={container2}>
-           {language === 'zh' ? (
+           {/* {language === 'zh' ? (
                     <p>
                         我们的学校目前正在申请 Cognia 认证，Cognia 是一个全球知名的非营利组织，致力于通过严格的标准提升教育品质。这项认证工作反映了我们对实现教育卓越的不懈承诺。
                     </p>
@@ -127,10 +127,10 @@ function DiscoveryIntroduction({ language }) {
                         Our school is currently in the process of applying for accreditation from Cognia, a globally recognized nonprofit organization dedicated to enhancing educational quality through rigorous standards. This accreditation effort reflects our unwavering commitment to achieving educational excellence.
 
                     </p>
-                )}
+                )} */}
          </div>
         <div style={container3}>
-           {language === 'zh' ? (
+           {/* {language === 'zh' ? (
                     <p>
                         通过参与 Cognia 全面的评估过程，我们旨在不断改进并确保我们的教育实践符合国际标准，从而提升学生的学习环境和成果。
                     </p>
@@ -139,12 +139,12 @@ function DiscoveryIntroduction({ language }) {
                         By engaging with Cognia's comprehensive evaluation process, we aim to continuously improve and ensure that our educational practices align with international standards, thereby enhancing the learning environment and outcomes for our students.
 
                     </p>
-                )}
+                )} */}
          </div>
 
-        <div style={containerStyle}>
+        {/* <div style={containerStyle}>
           <img src={img} alt="Cognia" style={imageStyle} />
-        </div>
+        </div> */}
       </>
    );
 }
