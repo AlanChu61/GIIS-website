@@ -147,26 +147,26 @@ function GradeTableG10FS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
 
   return (
    <>
-    <table style={{ width: "100%", borderCollapse: "collapse" }}>
+    <table style={{ width: "100%", borderCollapse: "collapse", marginBottom: "2px" }}>
       <thead>
         <tr>
-          <td colSpan="6" style={{ textAlign: "left", fontWeight: "bold", fontSize: "12px" , fontFamily: "Times New Roman, Times, serif"}}>
+          <td colSpan="6" style={{ textAlign: "left", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>
             Grade 10 - Fall Semester
           </td>
         </tr>
         <tr>
-          <th style={{ border: "1px solid black", fontSize: "10px" , fontFamily: "Times New Roman, Times, serif"}}>Course Name</th>
-          <th style={{ border: "1px solid black", fontSize: "10px", fontFamily: "Times New Roman, Times, serif" }}>Type</th>
-          <th style={{ border: "1px solid black", fontSize: "10px", fontFamily: "Times New Roman, Times, serif" }}>Credits</th>
-          <th style={{ border: "1px solid black", fontSize: "10px", fontFamily: "Times New Roman, Times, serif" }}>Grade</th>
-          <th style={{ border: "1px solid black", fontSize: "10px", fontFamily: "Times New Roman, Times, serif" }}>Weighted GPA</th>
-          <th style={{ border: "1px solid black", fontSize: "10px", fontFamily: "Times New Roman, Times, serif" }}>Unweighted GPA</th>
+          <th style={{ border: "1px solid black", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>Course Name</th>
+          <th style={{ border: "1px solid black", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>Type</th>
+          <th style={{ border: "1px solid black", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>Credits</th>
+          <th style={{ border: "1px solid black", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>Grade</th>
+          <th style={{ border: "1px solid black", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>Weighted GPA</th>
+          <th style={{ border: "1px solid black", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>Unweighted GPA</th>
         </tr>
       </thead>
       <tbody>
         {rows.map((row, index) => (
         <tr key={index}>
-            <td style={{ border: "1px solid black", fontSize: "8px", width: "30%", fontFamily: "Times New Roman, Times, serif" }}>
+            <td style={{ border: "1px solid black", fontSize: "6pt", width: "30%", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>
              {row.name === "Semester Totals" ? (
               <span>Semester Totals</span>
               ) : (
@@ -174,20 +174,20 @@ function GradeTableG10FS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
                 type="text"
                 value={row.name}
                 onChange={(e) => handleGradeChange(index, "name", e.target.value) }
-                style={{ width: "100%", border: isStatic ? "1px solid black" : "none", borderRadius: "4px" }}
+                style={{ width: "100%", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", border: isStatic ? "1px solid black" : "none", borderRadius: "4px" }}
                 disabled={row.name === "Semester Totals"}
               />
              )}
             </td>
                   
-            <td style={{ border: "1px solid black", fontSize: "8px", width: "15%", fontFamily: "Times New Roman, Times, serif" }}>
+            <td style={{ border: "1px solid black", fontSize: "6pt", width: "15%", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>
              {row.name === "Semester Totals" ? (
                ""
               ) : (
               <select
                 value={row.type}
                 onChange={(e) => handleGradeChange(index, "type", e.target.value)}
-                style={{ width: "100%", border: isStatic ? "1px solid black" : "none", borderRadius: "4px" }}
+                style={{ width: "100%", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", border: isStatic ? "1px solid black" : "none", borderRadius: "4px" }}
                 disabled={row.name === "Semester Totals"}
               >
                 <option value="">-</option>
@@ -198,7 +198,7 @@ function GradeTableG10FS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
              )}
             </td>
                 
-            <td style={{ border: "1px solid black", fontSize: "8px", width: "10%" , fontFamily: "Times New Roman, Times, serif"}}>
+            <td style={{ border: "1px solid black", fontSize: "6pt", width: "10%", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>
              {row.name === "Semester Totals" ? (
               row.totalCredits // 顯示加總結果
               ) : (
@@ -207,6 +207,8 @@ function GradeTableG10FS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
                  onChange={(e) => handleGradeChange(index, "credits", e.target.value)}
                  style={{
                   width: "100%",
+                  fontSize: "6pt",
+                  fontFamily: "Times New Roman, Times, serif",
                   border: isStatic ? "1px solid black" : "none",
                   borderRadius: "4px",
                   }}
@@ -219,7 +221,7 @@ function GradeTableG10FS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
               )}
             </td>
                 
-            <td style={{ border: "1px solid black", fontSize: "8px", width: "10%", fontFamily: "Times New Roman, Times, serif" }}>
+            <td style={{ border: "1px solid black", fontSize: "6pt", width: "10%", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>
               {row.name === "Semester Totals" ? (
                 ""
               ) : (
@@ -228,6 +230,8 @@ function GradeTableG10FS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
                   onChange={(e) => handleGradeChange(index, "grade", e.target.value)}
                   style={{
                     width: "100%",
+                    fontSize: "6pt",
+                    fontFamily: "Times New Roman, Times, serif",
                     border: isStatic ? "1px solid black" : "none",
                     borderRadius: "4px",
                   }}
@@ -248,8 +252,8 @@ function GradeTableG10FS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
                 </select>
               )}
             </td>
-            <td style={{ border: "1px solid black", fontSize: "8px", width: "10%", fontFamily: "Times New Roman, Times, serif" }}>{row.weightedGPA}</td>
-            <td style={{ border: "1px solid black", fontSize: "8px", width: "10%", fontFamily: "Times New Roman, Times, serif" }}>{row.unweightedGPA}</td>
+            <td style={{ border: "1px solid black", fontSize: "6pt", width: "10%", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>{row.weightedGPA}</td>
+            <td style={{ border: "1px solid black", fontSize: "6pt", width: "10%", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>{row.unweightedGPA}</td>
           </tr>
         ))}
       </tbody>

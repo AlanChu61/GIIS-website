@@ -1,6 +1,6 @@
 import React, {useState}  from 'react';
 
-function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isStatic = false}) {
+function GradeTableG12SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isStatic = false}) {
   const [rows, setRows] = useState([
     { name: "", type: "", credits:"" , grade: "", weightedGPA: "-", unweightedGPA: "-" },
     { name: "", type: "", credits:"" , grade: "", weightedGPA: "-", unweightedGPA: "-" },
@@ -32,7 +32,7 @@ function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
 
     updatedRows.forEach((row) => {
     if (row.name !== "Semester Totals") {
-      const credits = parseFloat(row.credits) || 0; // 檢查 Credits 是否有效，無效時設為 0
+      const credits = parseFloat(row.credits) || 0;
       totalCredits += credits;
 
       if (row.weightedGPA !== "-" && row.unweightedGPA !== "-") {
@@ -55,11 +55,9 @@ function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
   setRows((prevRows) => {
     const newRows = [...prevRows];
 
-    // 更新欄位值
     newRows[index][field] = value;
 
     if (field === "name" && value.trim() === "") {
-      // 當 Course Name 被清空時，重置該列的其他欄位為初始值
       newRows[index] = {
         name: "",
         type: "",
@@ -69,47 +67,38 @@ function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
         unweightedGPA: "-"
       };
     } else if (field === "grade" || field === "credits" || field === "type") {
-      // 如果欄位是成績、課程名稱、學分或類型，重新計算 GPA
       const gpa = gradeToGpa[newRows[index].grade?.toUpperCase()] || { weighted: "-", unweighted: "-" };
-
-      // 判斷 Type 和 Course Name 是否包含 "AP"
       const typeHasAP = newRows[index].type?.includes("AP") || false;
       const nameHasAP = newRows[index].name?.includes("AP") || false;
 
       if (typeHasAP && nameHasAP) {
-        // 當 Type 和 Course Name 都包含 "AP"
         newRows[index].unweightedGPA = gpa.unweighted;
         newRows[index].weightedGPA = gpa.unweighted !== "-" ? gpa.unweighted + 1 : "-";
       } else {
-        // 當 Type 或 Course Name 中有任意一個不包含 "AP"
         newRows[index].unweightedGPA = gpa.unweighted;
         newRows[index].weightedGPA = gpa.unweighted;
       }
     }
 
-    // 計算學期總 GPA
     const totals = calculateTotals(newRows);
     const totalsIndex = newRows.findIndex((row) => row.name === "Semester Totals");
     if (totalsIndex !== -1) {
       if (newRows.some((row) => row.name !== "Semester Totals" && row.name.trim() !== "")) {
-        // 如果有其他有效課程，更新總學分
         newRows[totalsIndex].weightedGPA = totals.weightedGPA;
         newRows[totalsIndex].unweightedGPA = totals.unweightedGPA;
         newRows[totalsIndex].totalCredits = totals.totalCredits.toFixed(1);
       } else {
-        // 如果所有課程名稱都被清空，將學分設為空白
         newRows[totalsIndex].weightedGPA = "-";
         newRows[totalsIndex].unweightedGPA = "-";
         newRows[totalsIndex].totalCredits = "";
       }
     }
 
-    // 將兩個 GPA 傳遞給父元件
     if (onTotalsUpdate) {
       onTotalsUpdate(semesterName, {
         weightedGPA: totals.weightedGPA,
         unweightedGPA: totals.unweightedGPA,
-        totalCredits: totals.totalCredits, // 傳遞學分
+        totalCredits: totals.totalCredits,
       });
     }
 
@@ -120,12 +109,9 @@ function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
   const addRow = () => {
   setRows((prevRows) => {
     const newRow = { name: "", type: "", credits: "", grade: "", weightedGPA: "-", unweightedGPA: "-" };
-
-    // 確保新增行在 "Semester Totals" 之前
     const totalsIndex = prevRows.findIndex((row) => row.name === "Semester Totals");
     const beforeTotals = prevRows.slice(0, totalsIndex);
     const afterTotals = prevRows.slice(totalsIndex);
-
     return [...beforeTotals, newRow, ...afterTotals];
   });
 };
@@ -151,7 +137,7 @@ function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
       <thead>
         <tr>
           <td colSpan="6" style={{ textAlign: "left", fontWeight: "bold", fontSize: "6pt", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>
-            Grade 10 - Spring Semester
+            Grade 12 - Spring Semester(In Progress)
           </td>
         </tr>
         <tr>
@@ -200,7 +186,7 @@ function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
                 
             <td style={{ border: "1px solid black", fontSize: "6pt", width: "10%", fontFamily: "Times New Roman, Times, serif", padding: "0 2px", lineHeight: "1" }}>
              {row.name === "Semester Totals" ? (
-              row.totalCredits // 顯示加總結果
+              row.totalCredits
               ) : (
                 <select
                  value={row.credits}
@@ -265,4 +251,4 @@ function GradeTableG10SS({ semesterName, onTotalsUpdate, onSemesterUpdate, isSta
   );
 }
 
-export default GradeTableG10SS;
+export default GradeTableG12SS;

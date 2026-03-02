@@ -7,6 +7,7 @@ import GradeTableG10SS from './GradeTableG10SS.js';
 import GradeTableG11FS from './GradeTableG11FS.js';
 import GradeTableG11SS from './GradeTableG11SS.js';
 import GradeTableG12FS from './GradeTableG12FS.js';
+import GradeTableG12SS from './GradeTableG12SS.js';
 
 
 function TranscriptContent({ language }) {
@@ -49,119 +50,133 @@ const calculateCumulativeGPA = (type = "weightedGPA") => {
   const totalGPA = gpas.reduce((acc, gpa) => acc + gpa, 0);
   return (totalGPA / gpas.length).toFixed(2);
 };
-  
+
   const container = {
-     border: 'none',
-     padding: '10px',
-     textAlign: 'center',
-     width: '100%',
-     backgroundColor: 'white',
-     outline: 'none',
-     boxShadow: 'none', 
-  }
+    border: 'none',
+    padding: '4px',
+    textAlign: 'left',
+    width: '100%',
+    backgroundColor: 'white',
+    outline: 'none',
+    boxShadow: 'none',
+  };
 
   const title = {
-     marginTop: '5%',
-     fontFamily: 'Times New Roman, Times, serif',
-     fontSize: '25px',
-  }
+    marginTop: '0',
+    marginBottom: '2px',
+    fontFamily: 'Times New Roman, Times, serif',
+    fontSize: '16pt',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  };
 
- const columns ={
-     width: '100%',
-     display: 'flex',
-     justifyContent: 'space-between',
-     backgroundColor: 'rgba(255, 255, 255, 1)', 
-     margin: '0 auto',
-   }
+  const mainTitle = {
+    marginBottom: '2px',
+    fontFamily: 'Times New Roman, Times, serif',
+    fontSize: '10pt',
+    fontWeight: 'normal',
+    textAlign: 'center',
+  };
 
-  const column1 ={
-     flex: '1',
-     textAlign: 'left',
-     padding: '10px',
-     boxSizing: 'border-box',
-     fontSize: '12px',
-     fontFamily: 'Times New Roman, Times, serif',
-     lineHeight: '1.2',
-   }
+  const columns = {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    margin: '0 auto',
+  };
 
-   const column2 ={
-     flex: '1',
-     textAlign: 'center',
-     padding: '10px',
-     boxSizing: 'border-box',
-     fontSize: '12px',
-     fontFamily: 'Times New Roman, Times, serif',
-     lineHeight: '1.2',
-   }
+  const column1 = {
+    flex: '1',
+    textAlign: 'left',
+    padding: '4px',
+    boxSizing: 'border-box',
+    fontSize: '10pt',
+    fontFamily: 'Times New Roman, Times, serif',
+    lineHeight: '1.1',
+  };
 
-    const column3 ={
-     flex: '1',
-     textAlign: 'right',
-     padding: '10px',
-     boxSizing: 'border-box',
-     fontSize: '12px',
-     fontFamily: 'Times New Roman, Times, serif',
-     lineHeight: '1.2',
-   }
-  
-   const thTd ={
-     padding: '2px',
-     border: '1px solid black',
-     textAlign: 'left',
-     fontSize: '10px',
-     width: '25%',
-     wordWrap: 'break-word',
-     fontFamily: 'Times New Roman, Times, serif',
-   }
+  const column2 = {
+    flex: '1',
+    textAlign: 'center',
+    padding: '4px',
+    boxSizing: 'border-box',
+    fontSize: '10pt',
+    fontFamily: 'Times New Roman, Times, serif',
+    lineHeight: '1.1',
+  };
 
-   const table ={
-     width: '100%',
-     borderCollapse: 'collapse',
-     fontFamily: 'Times New Roman, Times, serif',
-     margin: '0 auto',
-     tableLayout: 'fixed', 
-     fontSize: '10px',
-    }
+  const column3 = {
+    flex: '1',
+    textAlign: 'right',
+    padding: '4px',
+    boxSizing: 'border-box',
+    fontSize: '10pt',
+    fontFamily: 'Times New Roman, Times, serif',
+    lineHeight: '1.1',
+  };
 
-   const table2 ={
-     width: '100%',
-     borderCollapse: 'collapse',
-     fontFamily: 'Times New Roman, Times, serif',
-     margin: '0 auto',
-     tableLayout: 'fixed', 
-     fontSize: '8px',
+  const thTd = {
+    padding: '1px 3px',
+    border: '1px solid black',
+    textAlign: 'left',
+    fontSize: '8pt',
+    width: '25%',
+    wordWrap: 'break-word',
+    fontFamily: 'Times New Roman, Times, serif',
+    lineHeight: '1.1',
+  };
 
-    }
+  const thTdNarrow = {
+    padding: '1px 3px',
+    border: '1px solid black',
+    textAlign: 'left',
+    fontSize: '8pt',
+    width: '12%',
+    wordWrap: 'break-word',
+    fontFamily: 'Times New Roman, Times, serif',
+    lineHeight: '1.1',
+  };
 
-   const table3 ={
-     flex: '1',
-     width: '95%',
-     borderCollapse: 'collapse',
-     fontFamily: 'Times New Roman, Times, serif',
-     margin: '0 auto',
-     fontSize: '8px',
-   }
+  const thTdWide = {
+    padding: '1px 3px',
+    border: '1px solid black',
+    textAlign: 'left',
+    fontSize: '8pt',
+    width: '44%',
+    wordWrap: 'break-word',
+    fontFamily: 'Times New Roman, Times, serif',
+    lineHeight: '1.1',
+  };
 
+  const table = {
+    width: '100%',
+    borderCollapse: 'collapse',
+    fontFamily: 'Times New Roman, Times, serif',
+    margin: '4px 0',
+    tableLayout: 'fixed',
+    fontSize: '8pt',
+  };
 
-    const labelInputWrapper ={
-     display: 'flex',
-     alignItems: 'center', 
-   }
+  const labelInputWrapper = {
+    display: 'flex',
+    alignItems: 'center',
+  };
 
-    const input ={
-     width: '50%',
-     fontSize: '10px',
-     boxSizing: 'border-box',
-     border: 'none', 
-     borderBottom: '2px solid black',
-     background: 'none',
-     outline: 'none',
-     overflowWrap: 'break-word',
-     whiteSpace: 'normal',
-     wordWrap: 'break-word',
-     fontFamily: 'Times New Roman, Times, serif',
-     lineHeight: '1.2',
-   }
+  const input = {
+    width: '50%',
+    fontSize: '8pt',
+    boxSizing: 'border-box',
+    border: 'none',
+    borderBottom: '2px solid black',
+    background: 'none',
+    outline: 'none',
+    overflowWrap: 'break-word',
+    whiteSpace: 'normal',
+    wordWrap: 'break-word',
+    fontFamily: 'Times New Roman, Times, serif',
+    lineHeight: '1',
+  };
 
 
 const formRef = useRef();
@@ -205,44 +220,50 @@ const exportToPDF = () => {
       input.parentNode.replaceChild(span, input); // 替換節點
     });
 
-    // 添加浮水印層（圖片）
-    const watermark = new Image();
-    watermark.src = logoSlogan; 
-    watermark.style.position = "absolute";
-    watermark.style.top = "43%";
-    watermark.style.left = "10%";
-    watermark.style.width = "80%"; // 覆蓋整個內容寬度
-    watermark.style.height = "10%"; // 覆蓋整個內容高度
-    watermark.style.zIndex = "-0.5"; // 確保浮水印在內容下層
-    watermark.style.opacity = "0.2"; // 浮水印透明度
-    watermark.style.pointerEvents = "none"; // 防止浮水印影響互動
+    // 浮水印已包含在 #content 內，clone 時會一併複製
+    // 包成 A4 寬度 (190mm)，避免 html2pdf 縮壓導致版面擁擠
+    clonedElement.classList.add("transcript-pdf-export");
+    const pdfStyles = document.createElement("style");
+    pdfStyles.textContent = `
+      .transcript-pdf-export #grade-tables-container { margin-top: 2px !important; gap: 4px !important; }
+      .transcript-pdf-export table { margin: 1px 0 !important; }
+    `;
+    clonedElement.appendChild(pdfStyles);
 
-    // 將浮水印圖片添加到克隆的節點
-    clonedElement.style.position = "relative"; // 確保父容器支持絕對定位
-    clonedElement.appendChild(watermark);
+    const pdfWrapper = document.createElement("div");
+    pdfWrapper.style.width = "190mm";
+    pdfWrapper.style.minWidth = "190mm";
+    pdfWrapper.style.maxWidth = "190mm";
+    pdfWrapper.style.margin = "0";
+    pdfWrapper.style.padding = "0";
+    pdfWrapper.style.backgroundColor = "#fff";
+    pdfWrapper.style.boxSizing = "border-box";
+    pdfWrapper.appendChild(clonedElement);
 
-    // 將副本添加到隱藏區域
     const hiddenContainer = document.createElement("div");
     hiddenContainer.style.position = "absolute";
     hiddenContainer.style.top = "-9999px";
     hiddenContainer.style.left = "-9999px";
-    hiddenContainer.appendChild(clonedElement);
+    hiddenContainer.style.width = "190mm";
+    hiddenContainer.appendChild(pdfWrapper);
     document.body.appendChild(hiddenContainer);
 
-    // 設置 PDF 生成選項
+    // PDF 選項：單頁、A4、適當邊距
     const options = {
-      margin: 0,
+      margin: [8, 8, 8, 8],
       filename: "Transcript.pdf",
       html2canvas: {
-        scale: 5, // 高解析度
-        ignoreElements: (el) => el.tagName === "BUTTON", // 忽略按鈕
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        ignoreElements: (el) => el.tagName === "BUTTON",
       },
       jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
     };
 
     window.html2pdf()
       .set(options)
-      .from(clonedElement)
+      .from(pdfWrapper)
       .save()
       .finally(() => {
         document.body.removeChild(hiddenContainer); // 移除隱藏的副本
@@ -277,9 +298,40 @@ const exportToPDF = () => {
          Export to PDF
          </button> 
          
-         <div id="content" ref={formRef}>
+         <div id="content" ref={formRef} style={{ textAlign: 'left', maxWidth: '100%', position: 'relative' }}>
+          {/* 浮水印：學校 logo，置中、低透明度，不影響點擊 */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              pointerEvents: 'none',
+              zIndex: 0,
+            }}
+            aria-hidden="true"
+          >
+            <img
+              src={logoSlogan}
+              alt=""
+              style={{
+                maxWidth: '70%',
+                maxHeight: '70%',
+                objectFit: 'contain',
+                opacity: 0.14,
+              }}
+            />
+          </div>
+          <div style={{ position: 'relative', zIndex: 1 }}>
+          <div style={mainTitle}>
+           <p style={{ marginBottom: '0' }}>Academic Transcript</p>
+          </div>
           <div style={title}>
-           <p style={{marginBottom:"0"}}>Genesis of Ideas International School</p>
+           <p style={{ marginBottom: '0' }}>Genesis of Ideas International School</p>
           </div>
           <div style={columns}>
            <div style={column1}>
@@ -334,7 +386,7 @@ const exportToPDF = () => {
               </td>
                   
               <td style={thTd}>
-                State: <input type="text" style={input} placeholder="Enter State" />
+                Province: <input type="text" style={input} placeholder="Province" />
               </td>
                   
               <td style={thTd}>
@@ -361,155 +413,122 @@ const exportToPDF = () => {
           </tr>
         </tbody>
        </table>
-       <table style={table2}>
-         <tbody>
-           <tr>
-             <td style={thTd}>
-                <table style={table3}>
-                 <div>
+       <div id="grade-tables-container" style={{ marginTop: '4px', width: '100%', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <GradeTableG9FS semesterName="Grade 9 - Fall Semester" onTotalsUpdate={handleTotalsUpdate} />
-                 </div>
-                </table>
-
-                <table style={table3}>
-                 <div>
-                   <GradeTableG9SS semesterName="Grade 9 - Spring Semester" onTotalsUpdate={handleTotalsUpdate} />
-                 </div>
-                </table>
-                  
-                <table style={table3}>
-                 <div>
-                   <GradeTableG10FS semesterName="Grade 10 - Fall Semester" onTotalsUpdate={handleTotalsUpdate} />
-                 </div>
-                </table>
-
-                <table style={table3}>
-                 <div>
-                   <GradeTableG10SS semesterName="Grade 10 - Spring Semester" onTotalsUpdate={handleTotalsUpdate}/>
-                 </div>
-                </table>
-              </td>
-
-              <td style={{ ...thTd, verticalAlign: "top" }}>
-                <table style={table3}>
-                  <div>
-                   <GradeTableG11FS semesterName="Grade 11 - Fall Semester" onTotalsUpdate={handleTotalsUpdate} />
-                 </div>
-                </table>
-
-                  
-                <table style={table3}>
-                  <div>
-                   <GradeTableG11SS semesterName="Grade 11 - Spring Semester" onTotalsUpdate={handleTotalsUpdate} />
-                 </div>
-                </table>
-
-                  
-                <table style={table3}>
-                  <div>
-                   <GradeTableG12FS semesterName="Grade 12 - SprFall Semester" onTotalsUpdate={handleTotalsUpdate} />
-                 </div>
-                </table>
-              </td>
-             </tr>
-            </tbody>
-        </table>
+                  <GradeTableG9SS semesterName="Grade 9 - Spring Semester" onTotalsUpdate={handleTotalsUpdate} />
+                  <GradeTableG10FS semesterName="Grade 10 - Fall Semester" onTotalsUpdate={handleTotalsUpdate} />
+                  <GradeTableG10SS semesterName="Grade 10 - Spring Semester" onTotalsUpdate={handleTotalsUpdate}/>
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <GradeTableG11FS semesterName="Grade 11 - Fall Semester" onTotalsUpdate={handleTotalsUpdate} />
+                  <GradeTableG11SS semesterName="Grade 11 - Spring Semester" onTotalsUpdate={handleTotalsUpdate} />
+                  <GradeTableG12FS semesterName="Grade 12 - Fall Semester" onTotalsUpdate={handleTotalsUpdate} />
+                  <GradeTableG12SS semesterName="Grade 12 - Spring Semester(In Progress)" onTotalsUpdate={handleTotalsUpdate} />
+                </div>
+       </div>
              
 
         <table style={table}>
            <tbody>
             <tr>
-              <td style={thTd}>
+              <td style={thTdNarrow}>
                 Weighted
               </td>
              
-              <td style={thTd}>
+              <td style={thTdWide}>
                 <strong>Cumulative GPA:</strong>  {calculateCumulativeGPA()}    
               </td>
 
-              <td style={thTd}>
+              <td style={thTdWide}>
                 <strong>Cumulative Credits:</strong>  {cumulativeCredits.toFixed(1)}
               </td>
             </tr>
             <tr>
-              <td style={thTd}>
+              <td style={thTdNarrow}>
                Unweighted
               </td>
                   
-              <td style={thTd}>
+              <td style={thTdWide}>
                 <strong>Cumulative GPA:</strong>  {calculateCumulativeGPA("unweightedGPA")}
               </td>
                   
-              <td style={thTd}>
+              <td style={thTdWide}>
                 <strong>Cumulative Credits:</strong>  {cumulativeCredits.toFixed(1)}
               </td>
              </tr>
            </tbody>
           </table>
-          <div style={{ marginTop: "3%", textAlign: "center" }}>
-           <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
+          <div style={{ marginTop: "1%", textAlign: "right" }}>
+           <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "4px" }}>
             <tbody>
              <tr>
-              <td colSpan={3} style={{ textAlign: "right", padding: "10px 0",fontFamily: "Times New Roman, Times, serif", fontSize: "16px"  }}>
+              <td colSpan={3} style={{ textAlign: "right", padding: "4px 0", fontFamily: "Times New Roman, Times, serif", fontSize: "10pt" }}>
                <span style={{ whiteSpace: "nowrap" }}>Official(s) Certifying Transcript:</span>
                <span
                 style={{
-                display: "inline-block",
-                height: "1px",
-                width: "50%", // 調整橫槓寬度，減小到 30%
-                backgroundColor: "black",
-                marginLeft: "20px", // 增加文字與橫槓間距
-                verticalAlign: "-8px",  // 讓橫槓底部和文字底部貼齊
+                  display: "inline-block",
+                  height: "1px",
+                  width: "50%",
+                  backgroundColor: "black",
+                  marginLeft: "12px",
+                  verticalAlign: "-6px",
                 }}
-                ></span>
+               ></span>
                </td>
               </tr>
-              <tr>              
-               <td colSpan={3} style={{ textAlign: "right",padding: "20px 0", position: "relative" }}>
+              <tr>
+               <td colSpan={3} style={{ textAlign: "right", padding: "0", fontFamily: "Times New Roman, Times, serif", fontSize: "10pt" }}>
+                Signature
+               </td>
+              </tr>
+              <tr>
+               <td colSpan={3} style={{ textAlign: "right", padding: "8px 0", position: "relative" }}>
                 <div
                  style={{
-                  display: "grid",
-                  gridTemplateColumns: "13% 13% 13%", // 定義三個列
-                  columnGap: "35px", // 每列之間固定 20px 的間距
-                  alignItems: "center", // 垂直居中
-                  justifyContent: "end",
-                  fontSize: "14px",
-                 }}
-                 >
-                  <span style={{ whiteSpace: "nowrap",fontFamily: "Times New Roman, Times, serif", textAlign: "center" }}>Shiyu Zhang, Ph.D.</span>
-                  <span style={{ whiteSpace: "nowrap",fontFamily: "Times New Roman, Times, serif", textAlign: "center" }}>President</span>
-                  <span style={{ whiteSpace: "nowrap",fontFamily: "Times New Roman, Times, serif", textAlign: "center" }}>{usDate}</span>
-                </div>
-                   
-                <div
-                 style={{
-                  position: "absolute",
-                  borderBottom: "2px solid black",
-                  width: "50%",
-                  right: 0,
-                  marginTop: "0.5%", 
-                  }}
-                 ></div>
-
-                 <div
-                  style={{
                    display: "grid",
-                   gridTemplateColumns: "13% 13% 13%", // 定義三個列
-                   columnGap: "35px", // 每列之間固定 20px 的間距
-                   alignItems: "center", // 垂直居中
+                   gridTemplateColumns: "13% 13% 13%",
+                   columnGap: "24px",
+                   alignItems: "center",
                    justifyContent: "end",
-                   marginTop: "1%",
-                   fontSize: "14px",
-                  }}
-                  >
-                   <span style={{ whiteSpace: "nowrap", fontFamily: "Times New Roman, Times, serif",textAlign: "center" }}>Printed Name</span>
-                   <span style={{ whiteSpace: "nowrap",fontFamily: "Times New Roman, Times, serif",textAlign: "center" }}>Title</span>
-                   <span style={{ whiteSpace: "nowrap",fontFamily: "Times New Roman, Times, serif" , textAlign: "center" }}>Date</span>
-                 </div>
+                   fontSize: "10pt",
+                   fontFamily: "Times New Roman, Times, serif",
+                 }}
+                >
+                  <span style={{ whiteSpace: "nowrap", textAlign: "center" }}>Shiyu Zhang, Ph.D.</span>
+                  <span style={{ whiteSpace: "nowrap", textAlign: "center" }}>President</span>
+                  <span style={{ whiteSpace: "nowrap", textAlign: "center" }}>{usDate}</span>
+                </div>
+                <div
+                 style={{
+                   position: "absolute",
+                   borderBottom: "2px solid black",
+                   width: "50%",
+                   right: 0,
+                   marginTop: "0.25%",
+                 }}
+                ></div>
+                <div
+                 style={{
+                   display: "grid",
+                   gridTemplateColumns: "13% 13% 13%",
+                   columnGap: "24px",
+                   alignItems: "center",
+                   justifyContent: "end",
+                   marginTop: "0.5%",
+                   fontSize: "10pt",
+                   fontFamily: "Times New Roman, Times, serif",
+                 }}
+                >
+                  <span style={{ whiteSpace: "nowrap", textAlign: "center" }}>Printed Name</span>
+                  <span style={{ whiteSpace: "nowrap", textAlign: "center" }}>Title</span>
+                  <span style={{ whiteSpace: "nowrap", textAlign: "center" }}>Date</span>
+                </div>
                </td>
               </tr>
              </tbody>
-           </table>         
+           </table>
+          </div>
           </div>
          </div>
         </div>
