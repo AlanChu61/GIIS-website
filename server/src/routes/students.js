@@ -12,6 +12,7 @@ const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable()
 
 const studentProfileSchema = z.object({
   name: z.string().min(1).max(200),
+  studentCode: z.string().max(20).optional().nullable(),
   birthDate: dateSchema,
   gender: z.enum(['Male', 'Female']).optional().nullable(),
   parentGuardian: z.string().max(200).optional().nullable(),
@@ -63,6 +64,16 @@ async function audit(action, studentId, req) {
   }
 }
 
+function computeCurrentGrade(graduationDate, referenceDate = new Date()) {
+  if (!graduationDate) return null;
+  const graduationYear = new Date(graduationDate).getFullYear();
+  const month = referenceDate.getMonth() + 1;
+  const schoolYearEnd = month >= 9 ? referenceDate.getFullYear() + 1 : referenceDate.getFullYear();
+  const grade = 12 - (graduationYear - schoolYearEnd);
+  if (grade < 9 || grade > 12) return null;
+  return grade;
+}
+
 function serializeStudent(student) {
   if (!student) return student;
   const s = { ...student };
@@ -71,6 +82,7 @@ function serializeStudent(student) {
   s.withdrawalDate = dateOnly(student.withdrawalDate);
   s.graduationDate = dateOnly(student.graduationDate);
   s.transcriptDate = dateOnly(student.transcriptDate);
+  s.currentGrade = computeCurrentGrade(student.graduationDate);
   return s;
 }
 
@@ -93,12 +105,14 @@ router.get('/', authenticate, requireAdmin, async (req, res) => {
       take: limit,
       select: {
         id: true,
+        studentCode: true,
         name: true,
         birthDate: true,
         gender: true,
         city: true,
         province: true,
         parentGuardian: true,
+        graduationDate: true,
         updatedAt: true,
         account: { select: { email: true } },
         _count: { select: { semesters: true } },
@@ -108,12 +122,15 @@ router.get('/', authenticate, requireAdmin, async (req, res) => {
 
   const students = list.map((s) => ({
     id: s.id,
+    studentCode: s.studentCode ?? null,
     name: s.name,
     birthDate: dateOnly(s.birthDate),
     gender: s.gender,
     city: s.city,
     province: s.province,
     parentGuardian: s.parentGuardian,
+    graduationDate: dateOnly(s.graduationDate),
+    currentGrade: computeCurrentGrade(s.graduationDate),
     loginEmail: s.account?.email ?? null,
     semesterCount: s._count.semesters,
     updatedAt: s.updatedAt,
@@ -177,6 +194,7 @@ router.get('/:id', authenticate, requireStudentOrAdminForStudentParam, async (re
 router.patch('/:id', authenticate, requireStudentOrAdminForStudentParam, async (req, res) => {
   const allowed = [
     'name',
+    'studentCode',
     'birthDate',
     'gender',
     'parentGuardian',

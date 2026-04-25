@@ -6,4 +6,4 @@
 require('../lib/resolveDatabaseUrl');
 const { execSync } = require('child_process');
 const args = process.argv.slice(2).join(' ');
-execSync(`npx prisma ${args}`, { stdio: 'inherit', env: process.env });
+execSync(`node_modules/.bin/prisma ${args}`, { stdio: 'inherit', env: process.env });

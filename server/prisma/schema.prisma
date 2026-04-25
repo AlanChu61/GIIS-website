@@ -18,6 +18,7 @@ model AdminUser {
 
 model Student {
   id               String   @id @default(cuid())
+  studentCode      String?  @unique
   name             String   @default("")
   birthDate        DateTime?
   gender           String?

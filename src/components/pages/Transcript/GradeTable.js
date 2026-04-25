@@ -78,7 +78,7 @@ const addButtonStyle = {
   alignItems: 'center',
 };
 
-function GradeTable({ semesterName, onTotalsUpdate, isStatic = false, initialRows = null, onRowsChange = null }) {
+function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = false, initialRows = null, onRowsChange = null }) {
   const [rows, setRows] = useState(DEFAULT_ROWS.map((r) => ({ ...r })));
 
   useEffect(() => {
@@ -161,6 +161,7 @@ function GradeTable({ semesterName, onTotalsUpdate, isStatic = false, initialRow
               style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '6pt', fontFamily: 'Times New Roman, Times, serif', padding: '0 2px', lineHeight: '1' }}
             >
               {semesterName}
+              {semesterStatus === 'in_progress' && ' (In Progress)'}
             </td>
           </tr>
           <tr>

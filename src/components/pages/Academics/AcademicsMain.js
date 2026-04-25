@@ -4,6 +4,7 @@ import Nav from './AcademicsHeader/Nav.js';
 import img from '../../../img/Homepage/homepage8.png';
 import AcademicsIntroduction from'./Academics/Academicsintroduction.js';
 import AcademicsIntroduction2 from'./Academics/Academicsintroduction2.js';
+import CourseCatalog from'./Academics/CourseCatalog.js';
 
 function AcademicsMain({ language }) {
 
@@ -88,6 +89,10 @@ function AcademicsMain({ language }) {
             <AcademicsIntroduction2 language={language} />
            </div>
          </div>
+       </div>
+
+       <div className="mt-0" id="course-catalog" style={{ backgroundColor: '#f8f9fa' }}>
+         <CourseCatalog language={language} />
        </div>
     </>
  );

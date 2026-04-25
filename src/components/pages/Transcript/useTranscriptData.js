@@ -44,6 +44,8 @@ export function useTranscriptData({ studentId, authToken, canEdit, canSave }) {
         if (cancelled) return;
         setProfile({
           name: s.name || '',
+          studentCode: s.studentCode || '',
+          currentGrade: s.currentGrade ?? null,
           birthDate: s.birthDate || '',
           gender: s.gender || 'Female',
           parentGuardian: s.parentGuardian || '',

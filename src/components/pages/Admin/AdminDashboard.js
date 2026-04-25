@@ -17,6 +17,8 @@ export default function AdminDashboard({ language }) {
     newStudent: isEn ? 'New student' : '新增學生',
     loading: isEn ? 'Loading…' : '載入中…',
     thName: isEn ? 'Name' : '姓名',
+    thCode: isEn ? 'ID' : '學號',
+    thGrade: isEn ? 'Grade' : '年級',
     thLoginEmail: isEn ? 'Login email' : '登入信箱',
     thBirth: isEn ? 'Birth' : '生日',
     thLocation: isEn ? 'Location' : '地點',
@@ -121,13 +123,13 @@ export default function AdminDashboard({ language }) {
             <thead className="table-light">
               <tr>
                 <th scope="col">{copy.thName}</th>
+                <th scope="col">{copy.thCode}</th>
+                <th scope="col">{copy.thGrade}</th>
                 <th scope="col">{copy.thLoginEmail}</th>
                 <th scope="col">{copy.thBirth}</th>
                 <th scope="col">{copy.thLocation}</th>
                 <th scope="col">{copy.thGuardian}</th>
-                <th scope="col" className="text-center">
-                  {copy.thSemesters}
-                </th>
+                <th scope="col" className="text-center">{copy.thSemesters}</th>
                 <th scope="col">{copy.thUpdated}</th>
                 <th scope="col" />
               </tr>
@@ -137,9 +139,16 @@ export default function AdminDashboard({ language }) {
                 <tr key={s.id}>
                   <td>
                     <strong>{s.name || '(unnamed)'}</strong>
-                    <div className="small text-muted" style={{ fontFamily: 'var(--giis-font-mono, monospace)' }}>
-                      {s.id.slice(0, 10)}…
-                    </div>
+                  </td>
+                  <td className="text-nowrap">
+                    <span className="badge bg-secondary" style={{ fontFamily: 'monospace' }}>
+                      {s.studentCode || '—'}
+                    </span>
+                  </td>
+                  <td className="text-nowrap">
+                    {s.currentGrade ? (
+                      <span className="badge bg-primary">Grade {s.currentGrade}</span>
+                    ) : '—'}
                   </td>
                   <td>{s.loginEmail || '—'}</td>
                   <td>{s.birthDate || '—'}</td>
@@ -160,7 +169,7 @@ export default function AdminDashboard({ language }) {
               ))}
               {students.length === 0 && (
                 <tr>
-                  <td colSpan={8} className="text-muted text-center py-4">
+                  <td colSpan={10} className="text-muted text-center py-4">
                     {isEn
                       ? <>No students yet — create one or run <code>node prisma/seed.js</code> in <code>server/</code>.</>
                       : <>目前沒有學生資料 — 你可以先建立一筆，或在 <code>server/</code> 執行 <code>node prisma/seed.js</code>。</>}

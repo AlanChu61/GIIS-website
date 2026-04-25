@@ -8,7 +8,7 @@ export const TRANSCRIPT_SEMESTER_KEYS = [
   'Grade 11 - Fall Semester',
   'Grade 11 - Spring Semester',
   'Grade 12 - Fall Semester',
-  'Grade 12 - Spring Semester(In Progress)',
+  'Grade 12 - Spring Semester',
 ];
 
 function calculateTotalsLikeTable(updatedRows) {

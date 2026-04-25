@@ -5,6 +5,7 @@ import TranscriptActions from './TranscriptActions.js';
 import { useTranscriptData } from './useTranscriptData.js';
 import { exportTranscriptToPDF } from './transcriptPdf.js';
 import { TRANSCRIPT_SEMESTER_KEYS } from './transcriptMappers.js';
+import { getAllSemesterStatuses, SEMESTER_STATUS } from './semesterStatus.js';
 import TranscriptSkeleton from '../../TranscriptSkeleton.js';
 
 function TranscriptContent({
@@ -60,6 +61,23 @@ function TranscriptContent({
     year: 'numeric', month: '2-digit', day: '2-digit',
     timeZone: 'America/Chicago',
   }).format(today);
+
+  // For status computation: use transcriptDate for official view, today for live editing.
+  const referenceDate =
+    profile?.transcriptDate ? new Date(profile.transcriptDate) : today;
+  const graduationYear =
+    profile?.graduationDate ? new Date(profile.graduationDate).getFullYear() : null;
+  const semesterStatuses = getAllSemesterStatuses(
+    TRANSCRIPT_SEMESTER_KEYS,
+    graduationYear,
+    referenceDate,
+  );
+  // In edit mode show all semesters; in view/PDF mode hide upcoming ones.
+  const visibleKeys = canEdit
+    ? TRANSCRIPT_SEMESTER_KEYS
+    : TRANSCRIPT_SEMESTER_KEYS.filter(
+        (k) => semesterStatuses[k] !== SEMESTER_STATUS.UPCOMING,
+      );
 
   if (hasRemoteAccess && !profile) {
     if (remoteLoadError) {
@@ -133,6 +151,12 @@ function TranscriptContent({
                   <div style={styles.labelInputWrapper}>
                     Name:<input type="text" style={styles.input} placeholder="Enter Name" readOnly={isStatic} {...(profile ? pf('name') : {})} />
                   </div>
+                  {profile?.studentCode && !isStaticMode && (
+                    <div style={{ fontSize: '8pt', fontFamily: 'Times New Roman, Times, serif', marginTop: '2px', color: '#444' }}>
+                      Student ID: <strong>{profile.studentCode}</strong>
+                      {profile.currentGrade && <span style={{ marginLeft: '8px' }}>Grade: <strong>{profile.currentGrade}</strong></span>}
+                    </div>
+                  )}
                 </td>
                 <td style={styles.thTd}>
                   Birth Date: <input type="date" style={styles.input} readOnly={isStatic} {...(profile ? pf('birthDate') : {})} />
@@ -172,16 +196,30 @@ function TranscriptContent({
           {/* Grade tables */}
           <div id="grade-tables-container" style={{ marginTop: '4px', width: '100%', display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              {TRANSCRIPT_SEMESTER_KEYS.slice(0, 4).map((key) => (
+              {visibleKeys.slice(0, 4).map((key) => (
                 <div key={key} className="pdf-semester">
-                  <GradeTable semesterName={key} isStatic={isStatic} onTotalsUpdate={handleTotalsUpdate} initialRows={semesterInitialRows[key]} onRowsChange={handleSemesterRowsChange} />
+                  <GradeTable
+                    semesterName={key}
+                    semesterStatus={semesterStatuses[key]}
+                    isStatic={isStatic}
+                    onTotalsUpdate={handleTotalsUpdate}
+                    initialRows={semesterInitialRows[key]}
+                    onRowsChange={handleSemesterRowsChange}
+                  />
                 </div>
               ))}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              {TRANSCRIPT_SEMESTER_KEYS.slice(4).map((key) => (
+              {visibleKeys.slice(4).map((key) => (
                 <div key={key} className="pdf-semester">
-                  <GradeTable semesterName={key} isStatic={isStatic} onTotalsUpdate={handleTotalsUpdate} initialRows={semesterInitialRows[key]} onRowsChange={handleSemesterRowsChange} />
+                  <GradeTable
+                    semesterName={key}
+                    semesterStatus={semesterStatuses[key]}
+                    isStatic={isStatic}
+                    onTotalsUpdate={handleTotalsUpdate}
+                    initialRows={semesterInitialRows[key]}
+                    onRowsChange={handleSemesterRowsChange}
+                  />
                 </div>
               ))}
             </div>

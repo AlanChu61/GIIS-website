@@ -1,7 +1,6 @@
 import logoSlogan from '../../../img/logo_slogan.png';
 import { TRANSCRIPT_SEMESTER_KEYS } from './transcriptMappers.js';
 
-const TITLE_BG = '#b8cce4';
 const HEAD_BG  = '#dce6f1';
 const ALT_ROW  = '#f5f8fc';
 
