@@ -33,7 +33,9 @@ function ImgSlider() {
                         src={image.src}
                         alt={image.alt}
                         className="d-block h-100"
-                        style={{ width: '100%', objectFit: 'cover' }}  // Ensure the image covers the slider area
+                        style={{ width: '100%', objectFit: 'cover' }}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
                     />
                 </div>
             ))}

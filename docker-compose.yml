@@ -1,0 +1,24 @@
+# Local PostgreSQL for the transcript API (server/).
+# Usage: docker compose up -d
+# Then set DATABASE_URL in server/.env — see server/.env.example
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: giis
+      POSTGRES_PASSWORD: giis_dev
+      POSTGRES_DB: giis_transcript
+    ports:
+      - '5432:5432'
+    volumes:
+      - giis_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U giis -d giis_transcript']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  giis_pg_data:

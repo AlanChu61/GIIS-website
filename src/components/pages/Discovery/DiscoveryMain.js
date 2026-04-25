@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Nav from './DiscoveryHeader/Nav.js';
 import img from '../../../img/Homepage/homepage3.png';
 import DiscoveryIntroduction from'./Discovery/DiscoveryIntroduction.js';
@@ -52,6 +53,15 @@ function DiscoveryMain({ language , toggleLanguage }) {
    
    return (
     <>
+        <Helmet>
+          <title>{language === 'en' ? 'Discovery' : '发现我们'} | Genesis of Ideas International School</title>
+          <meta
+            name="description"
+            content={language === 'en'
+              ? 'Explore Genesis of Ideas International School — community, learning culture, and what makes us unique.'
+              : '了解創思國際學校的校園與學習文化。'}
+          />
+        </Helmet>
         <div className="row">
             <Nav language={language} toggleLanguage={toggleLanguage}  />
         </div>

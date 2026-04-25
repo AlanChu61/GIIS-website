@@ -1,12 +1,32 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styles from './Footer.module.css';
 
-function Footer() {
-    
+function Footer({ language }) {
+    const en = language === 'en';
     return (
         <footer className={styles.pageFooter}>
-            Copyright&copy; {new Date().getFullYear()} Genesis of Ideas International School. All rights reserved.
+            <div className={styles.footerInner}>
+              <div className={styles.footerCopy}>
+                {en ? (
+                  <>Copyright © {new Date().getFullYear()} Genesis of Ideas International School. All rights reserved.</>
+                ) : (
+                  <>版权所有 © {new Date().getFullYear()} Genesis of Ideas International School（创思国际学校）。保留所有权利。</>
+                )}
+              </div>
+              <nav className={styles.footerLinks} aria-label={en ? 'Legal' : '法律資訊'}>
+                <Link className={styles.footerLink} to="/privacy">
+                  {en ? 'Privacy' : '隱私'}
+                </Link>
+                <span className={styles.sep} aria-hidden="true">
+                  ·
+                </span>
+                <Link className={styles.footerLink} to="/terms">
+                  {en ? 'Terms' : '條款'}
+                </Link>
+              </nav>
+            </div>
         </footer>
-    )
+    );
 }
 export default Footer;

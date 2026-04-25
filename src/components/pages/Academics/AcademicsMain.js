@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import Nav from './AcademicsHeader/Nav.js';
 import img from '../../../img/Homepage/homepage8.png';
 import AcademicsIntroduction from'./Academics/Academicsintroduction.js';
@@ -52,6 +53,15 @@ function AcademicsMain({ language }) {
    
    return (
     <>
+        <Helmet>
+          <title>{language === 'en' ? 'Academics' : '学术'} | Genesis of Ideas International School</title>
+          <meta
+            name="description"
+            content={language === 'en'
+              ? 'Academic programs and course information at Genesis of Ideas International School.'
+              : '創思國際學校學術課程與教學介紹。'}
+          />
+        </Helmet>
         <div className="row">
             <Nav language={language} />
         </div>

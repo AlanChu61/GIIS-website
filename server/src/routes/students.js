@@ -1,0 +1,347 @@
+const express = require('express');
+const { z } = require('zod');
+const { PrismaClient } = require('@prisma/client');
+const {
+  authenticate,
+  requireAdmin,
+  requireStudentOrAdminForStudentParam,
+} = require('../middleware/auth');
+const { computeRowGpa } = require('../lib/gpa');
+
+const dateSchema = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().nullable();
+
+const studentProfileSchema = z.object({
+  name: z.string().min(1).max(200),
+  birthDate: dateSchema,
+  gender: z.enum(['Male', 'Female']).optional().nullable(),
+  parentGuardian: z.string().max(200).optional().nullable(),
+  address: z.string().max(500).optional().nullable(),
+  city: z.string().max(100).optional().nullable(),
+  province: z.string().max(100).optional().nullable(),
+  zipCode: z.string().max(20).optional().nullable(),
+  entryDate: dateSchema,
+  withdrawalDate: dateSchema,
+  graduationDate: dateSchema,
+  transcriptDate: dateSchema,
+});
+
+const prisma = new PrismaClient();
+const router = express.Router();
+
+function dateOnly(d) {
+  if (!d) return null;
+  try {
+    const dt = d instanceof Date ? d : new Date(d);
+    if (Number.isNaN(dt.getTime())) return null;
+    return dt.toISOString().slice(0, 10);
+  } catch {
+    return null;
+  }
+}
+
+function parseDateOnly(v) {
+  if (v == null) return undefined;
+  const s = String(v).trim();
+  if (!s) return null;
+  const d = new Date(`${s}T00:00:00.000Z`);
+  if (Number.isNaN(d.getTime())) return undefined;
+  return d;
+}
+
+async function audit(action, studentId, req) {
+  try {
+    await prisma.auditLog.create({
+      data: {
+        action,
+        studentId: studentId || null,
+        actorRole: req.auth?.role || 'unknown',
+        actorEmail: req.auth?.email || 'unknown',
+      },
+    });
+  } catch {
+    // audit failure must never break the main request
+  }
+}
+
+function serializeStudent(student) {
+  if (!student) return student;
+  const s = { ...student };
+  s.birthDate = dateOnly(student.birthDate);
+  s.entryDate = dateOnly(student.entryDate);
+  s.withdrawalDate = dateOnly(student.withdrawalDate);
+  s.graduationDate = dateOnly(student.graduationDate);
+  s.transcriptDate = dateOnly(student.transcriptDate);
+  return s;
+}
+
+/** List students — admin only. Supports ?page=1&limit=20&search=name */
+router.get('/', authenticate, requireAdmin, async (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 20));
+  const search = (req.query.search || '').trim();
+
+  const where = search
+    ? { name: { contains: search, mode: 'insensitive' } }
+    : {};
+
+  const [total, list] = await Promise.all([
+    prisma.student.count({ where }),
+    prisma.student.findMany({
+      where,
+      orderBy: { updatedAt: 'desc' },
+      skip: (page - 1) * limit,
+      take: limit,
+      select: {
+        id: true,
+        name: true,
+        birthDate: true,
+        gender: true,
+        city: true,
+        province: true,
+        parentGuardian: true,
+        updatedAt: true,
+        account: { select: { email: true } },
+        _count: { select: { semesters: true } },
+      },
+    }),
+  ]);
+
+  const students = list.map((s) => ({
+    id: s.id,
+    name: s.name,
+    birthDate: dateOnly(s.birthDate),
+    gender: s.gender,
+    city: s.city,
+    province: s.province,
+    parentGuardian: s.parentGuardian,
+    loginEmail: s.account?.email ?? null,
+    semesterCount: s._count.semesters,
+    updatedAt: s.updatedAt,
+  }));
+
+  res.json({
+    students,
+    pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+  });
+});
+
+/** Create student profile — admin only */
+router.post('/', authenticate, requireAdmin, async (req, res) => {
+  const body = req.body || {};
+  // Allow creating with just a name; other fields optional
+  const partial = studentProfileSchema.partial().extend({ name: z.string().min(1).max(200).default('New student') });
+  const parse = partial.safeParse(body);
+  if (!parse.success) {
+    return res.status(400).json({ error: parse.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ') });
+  }
+  const d = parse.data;
+  const student = await prisma.student.create({
+    data: {
+      name: d.name,
+      birthDate: parseDateOnly(d.birthDate) ?? null,
+      gender: d.gender ?? null,
+      parentGuardian: d.parentGuardian ?? null,
+      address: d.address ?? null,
+      city: d.city ?? null,
+      province: d.province ?? null,
+      zipCode: d.zipCode ?? null,
+      entryDate: parseDateOnly(d.entryDate) ?? null,
+      withdrawalDate: parseDateOnly(d.withdrawalDate) ?? null,
+      graduationDate: parseDateOnly(d.graduationDate) ?? null,
+      transcriptDate: parseDateOnly(d.transcriptDate) ?? null,
+    },
+  });
+  await audit('student_create', student.id, req);
+  res.status(201).json({ student: serializeStudent(student) });
+});
+
+/** Full student + nested transcript — admin or that student */
+router.get('/:id', authenticate, requireStudentOrAdminForStudentParam, async (req, res) => {
+  const student = await prisma.student.findUnique({
+    where: { id: req.params.id },
+    include: {
+      semesters: {
+        orderBy: { sortOrder: 'asc' },
+        include: {
+          courseRows: { orderBy: { sortOrder: 'asc' } },
+        },
+      },
+    },
+  });
+  if (!student) {
+    return res.status(404).json({ error: 'Student not found' });
+  }
+  res.json({ student: serializeStudent(student) });
+});
+
+router.patch('/:id', authenticate, requireStudentOrAdminForStudentParam, async (req, res) => {
+  const allowed = [
+    'name',
+    'birthDate',
+    'gender',
+    'parentGuardian',
+    'address',
+    'city',
+    'province',
+    'zipCode',
+    'entryDate',
+    'withdrawalDate',
+    'graduationDate',
+    'transcriptDate',
+  ];
+  const data = {};
+  for (const key of allowed) {
+    if (key in (req.body || {})) {
+      if (
+        key === 'birthDate' ||
+        key === 'entryDate' ||
+        key === 'withdrawalDate' ||
+        key === 'graduationDate' ||
+        key === 'transcriptDate'
+      ) {
+        const parsed = parseDateOnly(req.body[key]);
+        if (parsed === undefined) {
+          return res.status(400).json({ error: `${key} must be YYYY-MM-DD` });
+        }
+        data[key] = parsed;
+      } else {
+        data[key] = req.body[key];
+      }
+    }
+  }
+  try {
+    const student = await prisma.student.update({
+      where: { id: req.params.id },
+      data,
+    });
+    await audit('profile_update', req.params.id, req);
+    res.json({ student: serializeStudent(student) });
+  } catch {
+    res.status(404).json({ error: 'Student not found' });
+  }
+});
+
+router.delete('/:id', authenticate, requireAdmin, async (req, res) => {
+  try {
+    await audit('student_delete', req.params.id, req);
+    await prisma.student.delete({ where: { id: req.params.id } });
+    res.status(204).send();
+  } catch {
+    res.status(404).json({ error: 'Student not found' });
+  }
+});
+
+/**
+ * Replace entire transcript: semesters + course rows.
+ * Body: { semesters: [ { key, sortOrder?, courseRows: [ { courseName, courseType, credits, letterGrade } ] } ] }
+ */
+router.put('/:id/transcript', authenticate, requireStudentOrAdminForStudentParam, async (req, res) => {
+  const studentId = req.params.id;
+  const semestersInput = req.body?.semesters;
+  if (!Array.isArray(semestersInput)) {
+    return res.status(400).json({ error: 'semesters array required' });
+  }
+
+  const student = await prisma.student.findUnique({ where: { id: studentId } });
+  if (!student) {
+    return res.status(404).json({ error: 'Student not found' });
+  }
+
+  try {
+    await prisma.$transaction(async (tx) => {
+      await tx.semester.deleteMany({ where: { studentId } });
+
+      for (let si = 0; si < semestersInput.length; si += 1) {
+        const sem = semestersInput[si];
+        const key = sem.key;
+        if (!key || typeof key !== 'string') {
+          throw new Error(`semesters[${si}].key required`);
+        }
+        const sortOrder = Number.isFinite(sem.sortOrder) ? sem.sortOrder : si;
+
+        const created = await tx.semester.create({
+          data: {
+            studentId,
+            key: key.trim(),
+            sortOrder,
+          },
+        });
+
+        const rows = Array.isArray(sem.courseRows) ? sem.courseRows : [];
+        for (let ri = 0; ri < rows.length; ri += 1) {
+          const r = rows[ri];
+          const gpas = computeRowGpa({
+            courseName: r.courseName || '',
+            courseType: r.courseType || '',
+            letterGrade: r.letterGrade || '',
+          });
+          const credits = parseFloat(String(r.credits ?? ''));
+          const creditsValue = Number.isFinite(credits) && credits > 0 ? credits : null;
+          await tx.courseRow.create({
+            data: {
+              semesterId: created.id,
+              sortOrder: ri,
+              courseName: r.courseName ?? '',
+              courseType: r.courseType ?? '',
+              credits: creditsValue,
+              letterGrade: r.letterGrade ?? '',
+              weightedGpa: gpas.weightedGpa,
+              unweightedGpa: gpas.unweightedGpa,
+            },
+          });
+        }
+      }
+    });
+  } catch (e) {
+    return res.status(400).json({ error: e.message || 'Invalid transcript payload' });
+  }
+
+  const updated = await prisma.student.findUnique({
+    where: { id: studentId },
+    include: {
+      semesters: {
+        orderBy: { sortOrder: 'asc' },
+        include: {
+          courseRows: { orderBy: { sortOrder: 'asc' } },
+        },
+      },
+    },
+  });
+
+  await audit('transcript_update', studentId, req);
+  res.json({ student: serializeStudent(updated) });
+});
+
+/** Audit log — admin only */
+router.get('/audit', authenticate, requireAdmin, async (req, res) => {
+  const page = Math.max(1, parseInt(req.query.page, 10) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit, 10) || 50));
+  const studentId = req.query.studentId || undefined;
+
+  const where = studentId ? { studentId } : {};
+  const [total, logs] = await Promise.all([
+    prisma.auditLog.count({ where }),
+    prisma.auditLog.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * limit,
+      take: limit,
+      select: {
+        id: true,
+        action: true,
+        studentId: true,
+        actorRole: true,
+        actorEmail: true,
+        createdAt: true,
+        student: { select: { name: true } },
+      },
+    }),
+  ]);
+
+  res.json({
+    logs,
+    pagination: { page, limit, total, totalPages: Math.ceil(total / limit) },
+  });
+});
+
+module.exports = router;

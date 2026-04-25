@@ -8,6 +8,42 @@
     font-size: 18px;
 }
 
+.footerInner {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 16px;
+}
+
+.footerCopy {
+  min-width: 0;
+}
+
+.footerLinks {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.footerLink {
+  color: #ffffff;
+  text-decoration: none;
+  opacity: 0.9;
+}
+
+.footerLink:hover {
+  text-decoration: underline;
+  opacity: 1;
+}
+
+.sep {
+  opacity: 0.7;
+}
+
 @media (orientation: landscape) and (max-width: 736px) {
  .pageFooter{
     font-size: 14px !important; 

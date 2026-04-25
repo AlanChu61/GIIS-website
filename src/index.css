@@ -1,13 +1,48 @@
-body { 
+/* Global typography — adjust --giis-font-* to re-theme the marketing site.
+   Transcript PDF layout keeps Times New Roman inside TranscriptContent. */
+
+:root {
+  --giis-font-sans: 'Noto Sans TC', 'Noto Sans', system-ui, -apple-system, 'Segoe UI',
+    'Helvetica Neue', Arial, sans-serif;
+  --giis-font-mono: 'SF Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo,
+    Monaco, Consolas, 'Courier New', monospace;
+  --giis-text: #1a1d24;
+  --giis-text-muted: #5c6578;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: var(--giis-font-sans);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--giis-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Headings: same family, slightly tighter for nav / page titles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  font-family: var(--giis-font-sans);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: var(--giis-font-mono);
+  font-size: 0.9em;
 }

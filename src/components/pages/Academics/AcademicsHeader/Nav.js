@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import styles from './Nav.module.css'; 
+import styles from './Nav.module.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { getNavStrings } from '../../../../i18n/siteStrings';
 
 function Nav({ language }) {
+    const t = getNavStrings(language);
     const [isNavSticky, setIsNavSticky] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(true); 
     const navigate = useNavigate();
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-    useEffect(() => {
-        document.documentElement.lang = language === 'en' ? 'en' : 'zh';
-    }, [language]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -27,6 +25,7 @@ function Nav({ language }) {
         
         return () => {
             window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleResize);
         };
     }, []);
 
@@ -46,18 +45,18 @@ function Nav({ language }) {
               <ul className={styles.leftSlideItems}>
                 <li onClick={() => navigate("/discovery")}>
                    <Link to="/discovery" onClick={(e) => e.preventDefault()}>
-                    {language === 'en' ? 'DISCOVERY' : '发现我们'}
+                    {t.discovery}
                    </Link>
                 </li>
-                <p>{language === 'en' ? 'ACADEMICS' : '学术'}</p>
+                <p>{t.academics}</p>
                 <li onClick={() => navigate("/admission")}>
                     <Link to="/admission" onClick={(e) => e.preventDefault()}>
-                        {language === 'en' ? 'ADMISSION' : '入学'}
+                        {t.admission}
                     </Link>
                 </li>
                 <li onClick={() => navigate("/support")}>
                     <Link to="/support" onClick={(e) => e.preventDefault()}>
-                        {language === 'en' ? 'STUDENT SUPPORT' : '学生支持'}
+                        {t.support}
                     </Link>
                 </li>
                </ul>
@@ -67,27 +66,28 @@ function Nav({ language }) {
               <div className={`collapse navbar-collapse ${isCollapsed ? '' : ''}`}>
                <ul className={`navbar-nav ${styles.customnavbar}`}>
                 <li className={styles.navitem}>
-                  <Link className={styles.navLink} to="/discovery">{language === 'en' ? 'DISCOVERY' : '发现我们'}</Link>
+                  <Link className={styles.navLink} to="/discovery">{t.discovery}</Link>
                   <ul className={styles.dropdownMenu}>
-                    <li>Meet Our School</li>
-                    <li>Our Mission</li>
-                    <li>About Our Faculty</li>
+                    {t.dropdownDiscovery.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
                   </ul>
                 </li>
-                <p className={`${styles.navitem2} ${styles.navText}`}>{language === 'en' ? 'ACADEMICS' : '学术'}</p>
+                <p className={`${styles.navitem2} ${styles.navText}`}>{t.academics}</p>
                 <li className={styles.navitem}>
-                   <Link className={styles.navLink} to="/admission">{language === 'en' ? 'ADMISSION' : '入学'}</Link>
+                   <Link className={styles.navLink} to="/admission">{t.admission}</Link>
                    <ul className={styles.dropdownMenu}>
-                     <li>Apply Now</li>
-                     <li>Tuition & Fee</li>
-                     <li>FAQ</li>
+                     {t.dropdownAdmission.map((item) => (
+                       <li key={item}>{item}</li>
+                     ))}
                    </ul>
                 </li>
                 <li className={styles.navitem}>
-                   <Link className={styles.navLink} to="/support">{language === 'en' ? 'STUDENT SUPPORT' : '学生支持'}</Link>
+                   <Link className={styles.navLink} to="/support">{t.support}</Link>
                    <ul className={styles.dropdownMenu2}>
-                     <li>Academic Advising</li>
-                     <li>Life Counseling</li>
+                     {t.dropdownSupport.map((item) => (
+                       <li key={item}>{item}</li>
+                     ))}
                    </ul>
                 </li>
                </ul>

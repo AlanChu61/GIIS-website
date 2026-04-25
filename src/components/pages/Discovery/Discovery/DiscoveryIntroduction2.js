@@ -121,7 +121,7 @@ function DiscoveryIntroduction2({ language }) {
         </div>
 
         <div style={headlineStyle3}>
-          <p>Faculty&Graduates</p>
+          <p>{language === 'zh' ? '教师与毕业生' : 'Faculty & Graduates'}</p>
         </div>
                     
         <div className="container-fluid">

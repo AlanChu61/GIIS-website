@@ -3,7 +3,7 @@ import React from 'react';
 function Introduction({ language }) {
     return (
         <div className="container">
-            <h2>学校介绍 / School Introduction</h2>
+            <h2>{language === 'zh' ? '学校介绍' : 'School Introduction'}</h2>
             <div>
                 {language === 'zh' ? (
                     <p>

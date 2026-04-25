@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --check src/routes/students.js)",
+      "Bash(node --check src/routes/auth.js)",
+      "Bash(node --check src/index.js)"
+    ]
+  }
+}

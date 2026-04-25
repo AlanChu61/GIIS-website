@@ -1,8 +1,10 @@
 
 import React,{ useEffect, useState } from 'react';
+import { getHomeSlogan } from '../../../../i18n/siteStrings';
 
-function Slogan() {
+function Slogan({ language = 'en' }) {
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 736);
+    const t = getHomeSlogan(language);
 
     useEffect(() => {
         const handleResize = () => setIsMobile(window.innerWidth <= 736);
@@ -13,75 +15,75 @@ function Slogan() {
 
     const cardStyle = isMobile
         ? {
-              width: '100%', // 小於736px時的寬度
-              height: '100px', // 高度可以自適應內容
+              width: '100%',
+              height: '100px',
               backgroundColor: 'rgba(213, 168, 54, 1)',
               justifyContent: 'flex-start',
-              alignItems: 'center', 
+              alignItems: 'center',
           }
         : {
-              width: '100%', // 大於736px時的寬度
+              width: '100%',
               height: 'auto',
               padding: '4rem',
               backgroundColor: 'rgba(213, 168, 54, 1)',
-              margin: '0 auto', // 居中
+              margin: '0 auto',
           };
 
     const paragraphStyle = isMobile
-        ? { fontSize: '17px', 
+        ? { fontSize: '17px',
             fontFamily: 'Lato, sans-serif',
             display: 'flex',
             textAlign: 'left',
-            lineHeight: '1.3', // 調整行高
+            lineHeight: '1.3',
         }
         : { fontSize: '1.5rem', fontFamily: '"Lato", sans-serif' };
-        
+
 
     const buttonStyle = isMobile
         ? { display: 'flex',
             justifyContent: 'center',
-            fontSize: '0.9rem', 
+            fontSize: '0.9rem',
           }
         : {
-            fontSize: '1rem', 
-            marginTop: '1.5rem' 
+            fontSize: '1rem',
+            marginTop: '1.5rem'
           };
 
     return (
         <>
             {isMobile ? (
                 <>
-                    {/* 小於 736px 時的結構 */}
                     <div
                         className="text-white text-center p-3 my-3 rounded"
                         style={cardStyle}
                     >
                         <p className="lead" style={paragraphStyle}>
-                            Empowering the next generation of innovators and thinkers
+                            {t.line}
                         </p>
                     </div>
                     <button
+                        type="button"
                         className="btn btn-light mt-3"
                         style={buttonStyle}
                     >
-                        Learn More
+                        {t.cta}
                     </button>
                 </>
             ) : (
                 <>
-                    {/* 大於 736px 時的結構 */}
                     <div
                         className="text-white text-center p-3 my-3 rounded"
                         style={cardStyle}
                     >
                         <p className="lead" style={paragraphStyle}>
-                            Empowering the next generation of innovators and thinkers
+                            {t.line}
                         </p>
                         <button
+                            type="button"
                             className="btn btn-light"
                             style={buttonStyle}
                         >
-                            Learn More
+                            {t.cta}
                         </button>
                     </div>
                 </>

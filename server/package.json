@@ -1,0 +1,37 @@
+{
+  "name": "giis-transcript-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "API for transcript storage and admin editing",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "db:up": "docker compose -f ../docker-compose.yml up -d",
+    "db:down": "docker compose -f ../docker-compose.yml down",
+    "db:push": "node scripts/prisma-env.cjs db push",
+    "db:migrate:dev": "node scripts/prisma-env.cjs migrate dev",
+    "db:migrate:deploy": "node scripts/prisma-env.cjs migrate deploy",
+    "db:seed": "node prisma/seed.js",
+    "postinstall": "node scripts/prisma-env.cjs generate",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-rate-limit": "^8.3.2",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.22.0",
+    "zod": "^4.3.6"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}

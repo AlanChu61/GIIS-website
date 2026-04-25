@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// PostgreSQL locally (Docker) and on AWS/Lightsail. Add ?sslmode=require in DATABASE_URL when the host requires TLS — see server/.env.example.
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Student {
+  id               String   @id @default(cuid())
+  name             String   @default("")
+  birthDate        DateTime?
+  gender           String?
+  parentGuardian   String?
+  address          String?
+  city             String?
+  province         String?
+  zipCode          String?
+  entryDate        DateTime?
+  withdrawalDate   DateTime?
+  graduationDate   DateTime?
+  transcriptDate   DateTime?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  account    StudentAccount?
+  semesters  Semester[]
+  auditLogs  AuditLog[]
+}
+
+/// Self-service student login (one account per student record).
+model StudentAccount {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  isActive     Boolean  @default(true)
+  studentId    String   @unique
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Semester {
+  id        String @id @default(cuid())
+  studentId String
+  student   Student @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  /// Matches frontend semesterName, e.g. "Grade 9 - Fall Semester"
+  key       String
+  sortOrder Int    @default(0)
+
+  courseRows CourseRow[]
+
+  @@unique([studentId, key])
+}
+
+model CourseRow {
+  id            String   @id @default(cuid())
+  semesterId    String
+  semester      Semester @relation(fields: [semesterId], references: [id], onDelete: Cascade)
+  sortOrder     Int      @default(0)
+  courseName    String   @default("")
+  courseType    String   @default("")
+  credits       Decimal?
+  letterGrade   String   @default("")
+  weightedGpa   Decimal?
+  unweightedGpa Decimal?
+}
+
+/// Immutable record of admin/student actions on student data.
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String   /// "student_create" | "student_delete" | "profile_update" | "transcript_update"
+  studentId  String?
+  student    Student? @relation(fields: [studentId], references: [id], onDelete: SetNull)
+  actorRole  String   /// "admin" | "student"
+  actorEmail String
+  createdAt  DateTime @default(now())
+
+  @@index([studentId])
+  @@index([createdAt])
+}

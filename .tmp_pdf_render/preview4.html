@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"/><title>Transcript Preview – Tao Zhang</title></head>
+<body style="margin:0;padding:20px;background:#e8e8e8;">
+<div style="width:210mm;margin:0 auto;background:#fff;">
+<div class="transcript-pdf-export">
+<style>
+  .transcript-pdf-export {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #000;
+    width: 190mm;
+    margin: 0 auto;
+    padding: 8mm 8mm 5mm 8mm;
+    box-sizing: border-box;
+    background: #fff;
+  }
+  .transcript-pdf-export * { box-sizing: border-box; }
+  .hdr-subtitle { text-align: center; font-size: 8pt; color: #444; margin: 0 0 0.5mm; }
+  .hdr-schoolname { text-align: center; font-size: 17pt; font-weight: bold; margin: 0 0 2mm; }
+  .hdr-meta {
+    display: flex; justify-content: space-between;
+    font-size: 7.5pt; color: #333;
+    padding-bottom: 2mm; border-bottom: 1px solid #000; margin-bottom: 3mm; line-height: 1.5;
+  }
+  .hdr-meta-right { text-align: right; }
+  .si-table { width: 100%; border-collapse: collapse; margin-bottom: 3mm; }
+  .si-table td { border: 0.5px solid #999; padding: 1.5mm 2mm; vertical-align: top; width: 25%; }
+  .si-label { font-size: 7pt; color: #000; margin-bottom: 0.5mm; }
+  .si-value { font-size: 8pt; }
+  .grades-section { position: relative; margin-bottom: 3mm; }
+  .grades-inner { position: relative; z-index: 1; }
+  .grades-cols { display: flex; gap: 3mm; align-items: flex-start; }
+  .grades-col { flex: 1; min-width: 0; }
+  .semester-block { margin-bottom: 2mm; }
+  .sem-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .sem-title-row th {
+    background: #b8cce4; font-size: 7.5pt; font-weight: bold;
+    padding: 2px 4px; text-align: left; border: 0.5px solid #999;
+  }
+  .sem-col-row th {
+    background: #dce6f1; font-size: 6pt; font-weight: bold;
+    padding: 1.5px 2px; text-align: center; border: 0.5px solid #999;
+    white-space: normal; line-height: 1.2;
+  }
+  .sem-col-row .cname { text-align: left; }
+  .sem-table td {
+    font-size: 7pt; border: 0.5px solid #ccc;
+    padding: 1.5px 2px; vertical-align: middle;
+  }
+  .cname  { width: 42%; }
+  .ctype  { width: 12%; text-align: center; }
+  .ccred  { width: 7%;  text-align: center; }
+  .cgrade { width: 7%;  text-align: center; }
+  .cgpa   { width: 16%; text-align: center; }
+  .totals-row td { background: #dce6f1; font-weight: bold; font-size: 7pt; border-top: 1px solid #999; }
+  .watermark {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 20pt; font-weight: bold;
+    color: rgba(0,0,0,0.05); white-space: nowrap;
+    pointer-events: none; z-index: 0;
+    text-transform: uppercase; letter-spacing: 3px;
+  }
+  .cum-table { width: 100%; border-collapse: collapse; margin-bottom: 3mm; }
+  .cum-table td { border: 0.5px solid #999; padding: 2px 6px; font-size: 8pt; background: #dce6f1; }
+  .cum-label { font-weight: bold; text-align: center; width: 12%; }
+  .sig-certify-row { display: flex; align-items: flex-end; gap: 4px; margin-top: 4mm; margin-bottom: 1mm; font-size: 8pt; }
+  .sig-certify-text { white-space: nowrap; }
+  .sig-underline { flex: 1; border-bottom: 1px solid #333; }
+  .sig-sub-label { text-align: right; font-size: 7pt; color: #333; margin-bottom: 3mm; }
+  .sig-name-row { display: flex; justify-content: flex-end; gap: 10mm; font-size: 8pt; font-weight: 600; }
+  .sig-role-row { display: flex; justify-content: flex-end; gap: 10mm; font-size: 7pt; color: #555; margin-top: 1px; }
+  .footer { border-top: 0.5px solid #ccc; padding-top: 1mm; display: flex; justify-content: space-between; font-size: 6.5pt; color: #888; }
+</style>
+
+<div class="hdr-subtitle">Academic Transcript</div>
+<div class="hdr-schoolname">Genesis of Ideas International School</div>
+<div class="hdr-meta">
+  <div>7901 4th St N STE 300,<br/>St. Petersburg, FL 33702</div>
+  <div style="text-align:center;">Phone: +1 (813) 501-5756<br/>https://genesisideas.school/</div>
+  <div class="hdr-meta-right">School Code: 650<br/>President: Shiyu Zhang, Ph.D.</div>
+</div>
+
+<table class="si-table">
+  <tbody>
+    <tr>
+      <td><div class="si-label">Name</div><div class="si-value">Tao Zhang</div></td>
+      <td><div class="si-label">Birth Date</div><div class="si-value">02/18/2007</div></td>
+      <td><div class="si-label">Gender</div><div class="si-value">Male</div></td>
+      <td><div class="si-label">Parent/Guardian</div><div class="si-value">Xiaoying Zhang</div></td>
+    </tr>
+    <tr>
+      <td><div class="si-label">Address</div><div class="si-value">Room 601, No. 72, Lane 99, Jinhe Road</div></td>
+      <td><div class="si-label">City</div><div class="si-value">Shanghai</div></td>
+      <td><div class="si-label">Province</div><div class="si-value">Shanghai</div></td>
+      <td><div class="si-label">Zip Code</div><div class="si-value">200120</div></td>
+    </tr>
+    <tr>
+      <td><div class="si-label">Entry Date</div><div class="si-value">08/15/2022</div></td>
+      <td><div class="si-label">Withdrawal Date</div><div class="si-value">N/A</div></td>
+      <td><div class="si-label">Graduation Date</div><div class="si-value">06/30/2026</div></td>
+      <td><div class="si-label">Transcript Date</div><div class="si-value">04/23/2026</div></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="grades-section">
+  <div class="watermark">Genesis of Ideas International School</div>
+  <div class="grades-inner">
+    <div class="grades-cols">
+      <div class="grades-col"><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 9 - Fall Semester</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English I</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Algebra I</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Biology</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">B+</td><td class="cgpa">3.3</td><td class="cgpa">3.3</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">World History</td><td class="ctype">Core</td><td class="ccred">0.5</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Introduction to Psychology</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4</td><td class="cgrade"></td><td class="cgpa">3.64</td><td class="cgpa">3.64</td></tr></tbody>
+</table>
+</div><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 9 - Spring Semester</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English I - Writing</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Geometry</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Environmental Science</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Geography</td><td class="ctype">Core</td><td class="ccred">0.5</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Human Development</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Health &amp; Wellness</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4.5</td><td class="cgrade"></td><td class="cgpa">3.77</td><td class="cgpa">3.77</td></tr></tbody>
+</table>
+</div><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 10 - Fall Semester</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English II</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Algebra II</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Chemistry</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">U.S. History</td><td class="ctype">Core</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr><td class="cname">Psychology Foundations</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4</td><td class="cgrade"></td><td class="cgpa">3.85</td><td class="cgpa">3.85</td></tr></tbody>
+</table>
+</div><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 10 - Spring Semester</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English II - Literature</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Pre-Calculus</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Physics Fundamentals</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">World Politics</td><td class="ctype">Core</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr><td class="cname">Social Psychology</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4</td><td class="cgrade"></td><td class="cgpa">3.85</td><td class="cgpa">3.85</td></tr></tbody>
+</table>
+</div></div>
+      <div class="grades-col"><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 11 - Fall Semester</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English III</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Statistics</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">AP Psychology</td><td class="ctype">Core (AP)</td><td class="ccred">1</td><td class="cgrade">A</td><td class="cgpa">5</td><td class="cgpa">4</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Biology Advanced</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4</td><td class="cgrade"></td><td class="cgpa">4.03</td><td class="cgpa">3.78</td></tr></tbody>
+</table>
+</div><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 11 - Spring Semester</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English III - Literature</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">3.7</td><td class="cgpa">3.7</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">AP Statistics</td><td class="ctype">Core (AP)</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">4.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Government</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">B+</td><td class="cgpa">3.3</td><td class="cgpa">3.3</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Cognitive Psychology</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr><td class="cname">Experimental Psychology</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4</td><td class="cgrade"></td><td class="cgpa">3.93</td><td class="cgpa">3.68</td></tr></tbody>
+</table>
+</div><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 12 - Fall Semester</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English IV - Analytical Writing</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">AP Biology</td><td class="ctype">Core (AP)</td><td class="ccred">1</td><td class="cgrade">A-</td><td class="cgpa">4.7</td><td class="cgpa">3.7</td></tr>
+<tr><td class="cname">Psychology Seminar / Capstone</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Behavioral Science</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr><td class="cname">College Research &amp; Writing</td><td class="ctype">Elective</td><td class="ccred">0.5</td><td class="cgrade">A</td><td class="cgpa">4</td><td class="cgpa">4</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4</td><td class="cgrade"></td><td class="cgpa">4.18</td><td class="cgpa">3.93</td></tr></tbody>
+</table>
+</div><div class="semester-block">
+<table class="sem-table">
+  <thead>
+    <tr class="sem-title-row"><th colspan="6">Grade 12 - Spring Semester (In Progress)</th></tr>
+    <tr class="sem-col-row"><th class="cname">Course Name</th><th class="ctype">Type</th><th class="ccred">Credits</th><th class="cgrade">Grade</th><th class="cgpa">Weighted GPA</th><th class="cgpa">Unweighted GPA</th></tr>
+  </thead>
+  <tbody><tr><td class="cname">English IV - Advanced Composition</td><td class="ctype">Core</td><td class="ccred">1</td><td class="cgrade">-</td><td class="cgpa">-</td><td class="cgpa">-</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">AP Human Geography</td><td class="ctype">Core (AP)</td><td class="ccred">1</td><td class="cgrade">-</td><td class="cgpa">-</td><td class="cgpa">-</td></tr>
+<tr><td class="cname">Abnormal Psychology</td><td class="ctype">Elective</td><td class="ccred">1</td><td class="cgrade">-</td><td class="cgpa">-</td><td class="cgpa">-</td></tr>
+<tr style="background:#f5f8fc;"><td class="cname">Counseling &amp; Mental Health Studies</td><td class="ctype">Elective</td><td class="ccred">1</td><td class="cgrade">-</td><td class="cgpa">-</td><td class="cgpa">-</td></tr>
+<tr class="totals-row"><td class="cname">Semester Totals</td><td class="ctype"></td><td class="ccred">4</td><td class="cgrade"></td><td class="cgpa">-</td><td class="cgpa">-</td></tr></tbody>
+</table>
+</div></div>
+    </div>
+  </div>
+</div>
+
+<table class="cum-table">
+  <tbody>
+    <tr>
+      <td class="cum-label" style="width:12%">Weighted</td>
+      <td style="width:44%">Cumulative GPA: 3.89</td>
+      <td style="width:44%">Cumulative Credits: 28.5</td>
+    </tr>
+    <tr>
+      <td class="cum-label">Unweighted</td>
+      <td>Cumulative GPA: 3.78</td>
+      <td>Cumulative Credits: 28.5</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="sig-certify-row">
+  <span class="sig-certify-text">Official(s) Certifying Transcript:</span>
+  <div class="sig-underline"></div>
+</div>
+<div class="sig-sub-label">Signature</div>
+<div class="sig-name-row">
+  <span>Shiyu Zhang, Ph.D.</span>
+  <span>President</span>
+  <span>04/24/2026</span>
+</div>
+<div class="sig-role-row">
+  <span>Printed Name</span>
+  <span>Title</span>
+  <span>Date</span>
+</div>
+
+<div class="footer" style="margin-top:2mm;">
+  <span>Genesis of Ideas International School &mdash; Confidential Student Record</span>
+  <span>Page 1 of 1</span>
+</div>
+
+</div>
+</div>
+</div>
+</body>
+</html>
