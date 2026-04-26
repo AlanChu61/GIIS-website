@@ -79,8 +79,8 @@ function App() {
          <Route path="/" element={<Homepage language={language} toggleLanguage={toggleLanguage} />} />
          <Route path="/discovery" element={<Discovery language={language} toggleLanguage={toggleLanguage}  />} />
          <Route path="/academics" element={<Academics language={language}/>} />
-         <Route path="/admission" element={<Admission language={language} />} />
-         <Route path="/support" element={<Support language={language} />} />
+         <Route path="/admission" element={<Admission language={language} toggleLanguage={toggleLanguage} />} />
+         <Route path="/support" element={<Support language={language} toggleLanguage={toggleLanguage} />} />
          <Route path="/transcript" element={<Transcript language={language}/>}/>
          <Route path="/login" element={<LoginPortal language={language} />} />
          <Route path="/register" element={<Navigate to="/login?tab=register" replace />} />
