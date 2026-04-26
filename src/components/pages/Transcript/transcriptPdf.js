@@ -252,11 +252,11 @@ export async function exportTranscriptToPDF({ profile, semesterRowsRef, semester
     padding: 1px 1.5px;
     vertical-align: middle;
   }
-  .cname  { width: 48%; }
-  .ctype  { width: 9%;  text-align: center; }
-  .ccred  { width: 5%;  text-align: center; }
-  .cgrade { width: 5%;  text-align: center; }
-  .cgpa   { width: 16.5%; text-align: center; }
+  .cname  { width: 40%; }
+  .ctype  { width: 14%; text-align: center; }
+  .ccred  { width: 6%;  text-align: center; }
+  .cgrade { width: 6%;  text-align: center; }
+  .cgpa   { width: 17%; text-align: center; }
   .totals-row td { background: ${HEAD_BG}; font-weight: bold; font-size: 6pt; border-top: 1px solid #999; }
 
   /* watermark */

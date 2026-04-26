@@ -151,13 +151,35 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
     });
   };
 
+  const deleteRow = (index) => {
+    setRows((prevRows) => {
+      const newRows = prevRows.filter((_, i) => i !== index);
+      const totals = calculateTotals(newRows);
+      const totalsIdx = newRows.findIndex((r) => r.name === 'Semester Totals');
+      if (totalsIdx !== -1) {
+        const hasContent = newRows.some((r) => r.name !== 'Semester Totals' && r.name.trim() !== '');
+        newRows[totalsIdx].weightedGPA = hasContent ? totals.weightedGPA : '-';
+        newRows[totalsIdx].unweightedGPA = hasContent ? totals.unweightedGPA : '-';
+        newRows[totalsIdx].totalCredits = hasContent ? totals.totalCredits.toFixed(1) : '';
+      }
+      if (onTotalsUpdate) {
+        onTotalsUpdate(semesterName, {
+          weightedGPA: totals.weightedGPA,
+          unweightedGPA: totals.unweightedGPA,
+          totalCredits: totals.totalCredits,
+        });
+      }
+      return newRows;
+    });
+  };
+
   return (
     <>
       <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '2px' }}>
         <thead>
           <tr>
             <td
-              colSpan="6"
+              colSpan={isStatic ? 6 : 7}
               style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '6pt', fontFamily: 'Times New Roman, Times, serif', padding: '0 2px', lineHeight: '1' }}
             >
               {semesterName}
@@ -168,6 +190,7 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
             {['Course Name', 'Type', 'Credits', 'Grade', 'Weighted GPA', 'Unweighted GPA'].map((h) => (
               <th key={h} style={{ ...cellStyle, fontWeight: 'bold' }}>{h}</th>
             ))}
+            {!isStatic && <th style={{ ...cellStyle, fontWeight: 'bold', width: '16px' }} />}
           </tr>
         </thead>
         <tbody>
@@ -233,11 +256,22 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
 
               <td style={{ ...cellStyle, width: '10%' }}>{row.weightedGPA}</td>
               <td style={{ ...cellStyle, width: '10%' }}>{row.unweightedGPA}</td>
+              {!isStatic && (
+                <td style={{ ...cellStyle, width: '16px', padding: '0', textAlign: 'center' }}>
+                  {row.name !== 'Semester Totals' && (
+                    <button
+                      onClick={() => deleteRow(index)}
+                      style={{ border: 'none', background: 'none', color: '#c00', cursor: 'pointer', fontSize: '10px', padding: '0 2px', lineHeight: 1 }}
+                      title="Remove row"
+                    >×</button>
+                  )}
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
-      <button style={addButtonStyle} onClick={addRow}>+</button>
+      {!isStatic && <button style={addButtonStyle} onClick={addRow}>+</button>}
     </>
   );
 }

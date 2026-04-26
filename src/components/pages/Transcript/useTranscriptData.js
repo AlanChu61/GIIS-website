@@ -56,7 +56,7 @@ export function useTranscriptData({ studentId, authToken, canEdit, canSave }) {
           entryDate: s.entryDate || '',
           withdrawalDate: s.withdrawalDate || '',
           graduationDate: s.graduationDate || '',
-          transcriptDate: s.transcriptDate || '',
+          transcriptDate: s.transcriptDate || new Date().toISOString().split('T')[0],
         });
         const initials = {};
         (s.semesters || []).forEach((sem) => {
