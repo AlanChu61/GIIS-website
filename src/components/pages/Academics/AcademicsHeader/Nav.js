@@ -69,7 +69,7 @@ function Nav({ language }) {
                   <Link className={styles.navLink} to="/discovery">{t.discovery}</Link>
                   <ul className={styles.dropdownMenu}>
                     {t.dropdownDiscovery.map((item) => (
-                      <li key={item}>{item}</li>
+                      <li key={item.label}><Link to={item.to} style={{ color: 'inherit', textDecoration: 'none' }}>{item.label}</Link></li>
                     ))}
                   </ul>
                 </li>
@@ -78,7 +78,7 @@ function Nav({ language }) {
                    <Link className={styles.navLink} to="/admission">{t.admission}</Link>
                    <ul className={styles.dropdownMenu}>
                      {t.dropdownAdmission.map((item) => (
-                       <li key={item}>{item}</li>
+                       <li key={item.label}><Link to={item.to} style={{ color: 'inherit', textDecoration: 'none' }}>{item.label}</Link></li>
                      ))}
                    </ul>
                 </li>
@@ -86,7 +86,7 @@ function Nav({ language }) {
                    <Link className={styles.navLink} to="/support">{t.support}</Link>
                    <ul className={styles.dropdownMenu2}>
                      {t.dropdownSupport.map((item) => (
-                       <li key={item}>{item}</li>
+                       <li key={item.label}><Link to={item.to} style={{ color: 'inherit', textDecoration: 'none' }}>{item.label}</Link></li>
                      ))}
                    </ul>
                 </li>

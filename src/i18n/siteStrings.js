@@ -11,17 +11,47 @@ export function getNavStrings(language) {
     /** Single entry: student portal (admin uses same page with admin credentials) */
     signIn: en ? 'Login' : '登入',
     dropdownDiscovery: en
-      ? ['Meet Our School', 'Our Mission', 'About Our Faculty']
-      : ['认识学校', '办学使命', '师资介绍'],
+      ? [
+          { label: 'Meet Our School', to: '/discovery' },
+          { label: 'Our Mission',     to: '/discovery' },
+          { label: 'About Our Faculty', to: '/discovery' },
+        ]
+      : [
+          { label: '认识学校', to: '/discovery' },
+          { label: '办学使命', to: '/discovery' },
+          { label: '师资介绍', to: '/discovery' },
+        ],
     dropdownAcademics: en
-      ? ['Learning Style', 'Subjects', 'Curriculum Options']
-      : ['学习方式', '学科科目', '课程选择'],
+      ? [
+          { label: 'Learning Style',      to: '/academics' },
+          { label: 'Subjects',            to: '/academics' },
+          { label: 'Curriculum Options',  to: '/academics' },
+        ]
+      : [
+          { label: '学习方式', to: '/academics' },
+          { label: '学科科目', to: '/academics' },
+          { label: '课程选择', to: '/academics' },
+        ],
     dropdownAdmission: en
-      ? ['Apply Now', 'Tuition & Fees', 'FAQ']
-      : ['立即申请', '学费与费用', '常见问题'],
+      ? [
+          { label: 'Apply Now',      to: '/admission' },
+          { label: 'Tuition & Fees', to: '/admission' },
+          { label: 'FAQ',            to: '/admission' },
+        ]
+      : [
+          { label: '立即申请',   to: '/admission' },
+          { label: '学费与费用', to: '/admission' },
+          { label: '常见问题',   to: '/admission' },
+        ],
     dropdownSupport: en
-      ? ['Academic Advising', 'Life Counseling']
-      : ['学业辅导', '生活辅导'],
+      ? [
+          { label: 'Academic Advising', to: '/support' },
+          { label: 'Life Counseling',   to: '/support' },
+        ]
+      : [
+          { label: '学业辅导', to: '/support' },
+          { label: '生活辅导', to: '/support' },
+        ],
   };
 }
 
