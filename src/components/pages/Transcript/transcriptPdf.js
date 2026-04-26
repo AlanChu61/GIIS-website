@@ -1,5 +1,6 @@
 import logoSlogan from '../../../img/logo_slogan.png';
 import { TRANSCRIPT_SEMESTER_KEYS } from './transcriptMappers.js';
+import { getAllSemesterStatuses, SEMESTER_STATUS } from './semesterStatus.js';
 
 const HEAD_BG  = '#dce6f1';
 const ALT_ROW  = '#f5f8fc';
@@ -101,15 +102,12 @@ function computeAllGPA(rowsBySemester) {
   };
 }
 
-function buildSemesterTableHtml(semesterName, rows) {
-  const dataRows = (rows || []).filter((r) => r && r.name && r.name !== 'Semester Totals');
-  const padded = [...dataRows];
-  while (padded.length < 4) {
-    padded.push({ name: '', type: '', credits: '', grade: '', weightedGPA: '', unweightedGPA: '' });
-  }
+function buildSemesterTableHtml(semesterName, rows, semesterStatus) {
+  const dataRows = (rows || []).filter((r) => r && r.name && r.name !== 'Semester Totals' && r.name.trim() !== '');
   const totals = computeSemesterTotals(rows || []);
+  const isInProgress = semesterStatus === SEMESTER_STATUS.IN_PROGRESS;
 
-  const body = padded.map((r, i) => {
+  const body = dataRows.map((r, i) => {
     const bg = i % 2 !== 0 ? `style="background:${ALT_ROW};"` : '';
     return `<tr ${bg}>
       <td class="cname">${escapeHtml(r.name || '')}</td>
@@ -133,7 +131,7 @@ function buildSemesterTableHtml(semesterName, rows) {
   return `<div class="semester-block">
     <table class="sem-table">
       <thead>
-        <tr class="sem-title-row"><th colspan="6">${escapeHtml(semesterName)}</th></tr>
+        <tr class="sem-title-row"><th colspan="6">${escapeHtml(semesterName)}${isInProgress ? ' (In Progress)' : ''}</th></tr>
         <tr class="sem-col-row">
           <th class="cname">Course Name</th>
           <th class="ctype">Type</th>
@@ -166,14 +164,24 @@ export async function exportTranscriptToPDF({ profile, semesterRowsRef, semester
 
     const cumulative = computeAllGPA(rowsBySemester);
 
-    const leftHtml = TRANSCRIPT_SEMESTER_KEYS.slice(0, 4)
-      .map((k) => buildSemesterTableHtml(k, rowsBySemester[k]))
-      .join('');
-    const rightHtml = TRANSCRIPT_SEMESTER_KEYS.slice(4)
-      .map((k) => buildSemesterTableHtml(k, rowsBySemester[k]))
-      .join('');
-
     const p = profile || {};
+    const transcriptDate = p.transcriptDate ? new Date(p.transcriptDate) : new Date();
+    const graduationYear = p.graduationDate ? new Date(p.graduationDate).getFullYear() : null;
+    const semStatuses = getAllSemesterStatuses(TRANSCRIPT_SEMESTER_KEYS, graduationYear, transcriptDate);
+
+    const visibleKeys = TRANSCRIPT_SEMESTER_KEYS.filter(
+      (k) => semStatuses[k] !== SEMESTER_STATUS.UPCOMING,
+    );
+
+    const leftKeys = visibleKeys.length > 4 ? visibleKeys.slice(0, Math.ceil(visibleKeys.length / 2)) : visibleKeys.slice(0, 4);
+    const rightKeys = visibleKeys.length > 4 ? visibleKeys.slice(Math.ceil(visibleKeys.length / 2)) : visibleKeys.slice(4);
+
+    const leftHtml = leftKeys
+      .map((k) => buildSemesterTableHtml(k, rowsBySemester[k], semStatuses[k]))
+      .join('');
+    const rightHtml = rightKeys
+      .map((k) => buildSemesterTableHtml(k, rowsBySemester[k], semStatuses[k]))
+      .join('');
     const exportToday = todayForPdf();
     const transcriptDateDisplay =
       normalizeDateForPdf(p.transcriptDate) !== '—'
@@ -186,7 +194,7 @@ export async function exportTranscriptToPDF({ profile, semesterRowsRef, semester
 <style>
   @page { size: A4 portrait; margin: 0; }
   .transcript-pdf-export {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Times New Roman', Times, serif;
     color: #000;
     width: 190mm;
     margin: 0 auto;
