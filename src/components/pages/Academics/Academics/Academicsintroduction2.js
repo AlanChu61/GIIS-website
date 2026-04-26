@@ -1,372 +1,142 @@
-import React, { useRef, useState,useEffect} from 'react';
-import img from '../../../../img/Academics/Math.jpg';
+import React from 'react';
 
-function Academicsintroduction2({ language }) {
+const AP_COURSES = [
+  { code: 'AP Statistics',      icon: '∑', desc: { en: 'Data analysis & inference', zh: '數據分析與統計推論' } },
+  { code: 'AP Biology',         icon: '🧬', desc: { en: 'College-level life sciences', zh: '大學程度生命科學' } },
+  { code: 'AP Psychology',      icon: '🧠', desc: { en: 'Behavior & mental processes', zh: '行為與心理歷程' } },
+  { code: 'AP Human Geography', icon: '🌏', desc: { en: 'Patterns of human society', zh: '人文地理與全球視野' } },
+];
 
-    const courses = [
-        { title: 'IGCSE', 
-         content: {
-           en: 'Challenge yourself with the globally recognized Pearson Edexcel International GCSEs.',
-           zh: '接受全球认可的培生爱德思国际普通中等教育证书 (International GCSEs) 挑战吧！'
-          },
-         content2: {
-            en: 'These courses provide a comprehensive curriculum, designed to develop students analytical skills, creativity, and problem-solving abilities across various subjects, preparing them for future academic success.',
-            zh: '这些课程提供全面的课程设计，旨在培养学生的分析能力、创造力和解决问题的能力，为未来的学术成功做好准备。'
-         }
-        },
-        {
-        title: 'A-Level',
-        content: {
-            en: 'Our A-Level courses build on the foundation of IGCSE, providing a rigorous academic experience that sharpens critical thinking, enhances subject mastery, and prepares students for the demands of university-level education.',
-            zh: '我们的 A-Level 课程以 IGCSE 为基础，提供严谨的学术体验，提升批判性思维、深化学科掌握，并为大学教育的挑战做好准备。'
-         },
-        content2: {
-            en: 'With a broad range of subjects to choose from, students can tailor their studies to suit their academic and career aspirations.',
-            zh: '通过多样的学科选择，学生可以根据自己的学术和职业目标量身定制学习计划。'
-         }
-        },
-        {
-        title: 'AP',
-        content: {
-            en: 'Empower yourself with the globally recognized Advanced Placement Program.',
-            zh: '通过全球认可的高级课程 (AP) 计划提升自我。'
-         },
-        content2: {
-            en: 'Our AP courses offer college-level studies in high school, preparing students for AP exams and building skills for university and beyond.',
-            zh: '我们的 AP 课程在高中阶段提供大学水平的学习，帮助学生准备 AP 考试并为大学及以后的发展奠定基础。'
-         }
-        }
-   ];
+const PROGRAMS = [
+  {
+    id: 'diploma',
+    icon: '🎓',
+    title: { en: 'US Diploma Program', zh: '美國高中文憑課程' },
+    tag: { en: '24 Credits · Florida Accredited', zh: '24 學分 · Florida 認證' },
+    body: {
+      en: 'GIIS follows the Florida 24-credit graduation framework — the same standard used by accredited US private high schools. Our diploma is designed to be recognized by US colleges during international student admissions review.',
+      zh: 'GIIS 遵循 Florida 24 學分畢業框架，與美國認證私立高中標準一致。我們的文憑在美國大學審核國際學生申請時具備完整的學術效力。',
+    },
+    points: {
+      en: ['English Language Arts — 4 credits', 'Mathematics — 4 credits', 'Science — 3 credits', 'Social Studies — 3 credits', 'PE & Health — 1 credit', 'Electives — 8.5 credits'],
+      zh: ['英語語言藝術 — 4 學分', '數學 — 4 學分', '自然科學 — 3 學分', '社會科學 — 3 學分', '體育與健康 — 1 學分', '選修課程 — 8.5 學分'],
+    },
+  },
+  {
+    id: 'electives',
+    icon: '🗂️',
+    title: { en: 'Elective Concentration Tracks', zh: '選修方向規劃' },
+    tag: { en: 'Tailored to College Major Goals', zh: '依申請方向量身規劃' },
+    body: {
+      en: 'Beyond core requirements, GIIS offers three elective concentration tracks. Students build a cohesive course history that demonstrates depth and direction — exactly what US admissions officers look for.',
+      zh: '在必修科目之外，GIIS 提供三大選修方向。學生可建立一致且有深度的選課紀錄，展現出明確的學術方向——這正是美國大學申請審核最重視的要素。',
+    },
+    points: {
+      en: ['Business & Finance — entrepreneurship, marketing, corporate finance', 'Psychology & Behavioral Science — from intro to AP & capstone', 'Communication & Research — writing, public speaking, media literacy'],
+      zh: ['商業與財務 — 創業、行銷、企業財務', '心理學與行為科學 — 從入門到 AP 與研究專題', '溝通與研究方法 — 學術寫作、演說、媒體素養'],
+    },
+  },
+];
 
-    const extendedCourses = [...courses, ...courses, ...courses]; // 將課程清單擴展為三倍以實現無限滾動效果
-    const scrollRef = useRef(null);
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
-    const childWidth = scrollRef.current
-    ? scrollRef.current.scrollWidth / extendedCourses.length
-    : 0;
-    
-    useEffect(() => {
-     const scrollWidth = scrollRef.current.scrollWidth;
-     const childWidth = scrollWidth / extendedCourses.length;
-     scrollRef.current.scrollLeft = childWidth * courses.length;
-        
-     const scrollElement = scrollRef.current; // 保存 scrollRef.current 的当前值
+export default function Academicsintroduction2({ language }) {
+  const isEn = language !== 'zh';
 
-     const handleScroll = () => {
-        if (scrollElement.scrollLeft <= 0) {
-            scrollElement.scrollLeft = childWidth * courses.length;
-        } else if (scrollElement.scrollLeft >= childWidth * (courses.length * 2)) {
-            scrollElement.scrollLeft = childWidth * courses.length;
-        }
-     };
+  return (
+    <>
+      {/* ── Section 1: OUR PROGRAMS ─────────────────────────────── */}
+      <div style={{ padding: '80px 0 60px', fontFamily: 'Inter, sans-serif' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 10%' }}>
+          <h2 style={{ fontSize: '70px', fontWeight: 800, lineHeight: 1, marginBottom: '16px' }}>
+            {isEn ? 'OUR' : '課程'}
+          </h2>
+          <h2 style={{ fontSize: '70px', fontWeight: 800, lineHeight: 1, marginBottom: '40px' }}>
+            {isEn ? 'PROGRAMS' : '架構'}
+          </h2>
+          <p style={{ fontSize: '20px', color: '#555', maxWidth: '640px', lineHeight: 1.7, marginBottom: '56px' }}>
+            {isEn
+              ? 'GIIS offers a US-accredited high school diploma program built on the Florida 24-credit framework, with elective tracks designed specifically for Chinese students targeting US university admissions.'
+              : 'GIIS 提供以 Florida 24 學分框架為基礎的美國認證高中文憑課程，並為目標申請美國大學的中國學生設計了專屬的選修方向。'}
+          </p>
 
-     scrollElement.addEventListener('scroll', handleScroll);
-     return () => {
-        scrollElement.removeEventListener('scroll', handleScroll); // 确保清理时使用同一个元素
-     };
-    }, [extendedCourses.length, courses.length, childWidth]);
-
-    const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.pageX - scrollRef.current.offsetLeft);
-        setScrollLeft(scrollRef.current.scrollLeft);
-        e.preventDefault();
-    };
-
-    const handleMouseUp = () => {
-        if (isDragging) {
-            setIsDragging(false);
-        }
-    };
-
-    const handleMouseMove = (e) => {
-        if (!isDragging) return;
-
-        const x = e.pageX - scrollRef.current.offsetLeft;
-        const walk = (x - startX) * 1.5;
-        scrollRef.current.scrollLeft = scrollLeft - walk;
-    };
-
-    const frameStyle = {
-        position: 'absolute',
-        left: '140%',
-        bottom: '-12px',
-        display: 'flex',
-        overflow: 'hidden', // 隱藏滾動條
-        clipPath: 'inset(0)',
-        width: '60vh',
-        cursor: isDragging ? 'grabbing' : 'grab',
-    };
-
-  const courseBoxStyle = {
-    minWidth: '50vh', // 水平填充寬度
-    height: '570px', // 固定高度
-    backgroundColor: 'black',
-    color: 'white',
-    display: 'flex',
-    flexDirection: 'column', // 垂直排列內容
-    justifyContent: 'space-between', // 標題與箭頭居上下兩側
-    alignItems: 'center',
-    padding: '40px', // 增加內邊距
-    textAlign: 'center', // 文字居中
-    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.5)',
-};
-
-  const titleStyle = {
-    position: 'relative',
-    fontSize: '3rem',
-    fontWeight: 'bold',
-    marginBottom: '10px',
-};
-
-  const contentStyle = {
-    justifyContent: 'center',
-    textAlign: 'left',
-    fontSize: '1.2rem',
-    lineHeight: '1.2',
-    marginTop: '25%',
-};
-
-  const content2Style = {
-    position: 'relative',
-    justifyContent: 'center',
-    textAlign: 'left',
-    fontSize: '1.2rem',
-    lineHeight: '1.2',
-    marginTop: '10%',
-};
-
-   const spaceStyle= {
-    backgroundColor: 'white',
-    minWidth: '15vh',
-    height: '570px',
-};
- 
-   const headlineStyle = {
-        marginTop: '100px',
-        color: 'rgba(0, 0, 0, 1)',
-        width: '100%',
-        paddingLeft: '10%',
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 'bold',
-        fontSize: '70px',
-        lineHeight: '1',
-    };
-
-   const lineStyle = {
-       position: 'absolute',
-       margin: '10px auto',
-       marginLeft: '20%',
-       width: '100px',
-       height: '3px',
-       backgroundColor: 'white',
-    };
-
-    const courseintroductionStyle = {
-        position: 'relative',
-        color: 'rgba(0, 0, 0, 1)',
-        width: '48%',
-        paddingLeft: '10%',
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 'normal',
-        fontSize: '30px',
-        lineHeight: '1.5',
-        marginTop: '35px',
-    };
-
-    const lineStyle2 = {
-        position: 'absolute',
-        width: '35%', // Adjust width according to your needs
-        height: '4px',
-        paddingLeft: '10%',
-        backgroundColor: 'rgba(0, 0, 0, 1)', 
-        marginTop: '35px',
-    };
-
-    const yellowSquareStyle = {
-        position: 'absolute',
-        width: '300px',  // Adjust size as needed
-        height: '300px', // Adjust size as needed
-        backgroundColor: 'rgba(213, 168, 54, 1)',   
-        left: '105%',
-        top: language === 'zh' ? '20%' : '50%',
-    };
-
-    const headline2Style = {
-        marginTop: '150px',
-        color: 'rgba(0, 0, 0, 1)',
-        width: '100%',
-        paddingLeft: '10%',
-        fontFamily: 'Inter, sans-serif',
-        fontWeight: 'bold',
-        fontSize: '70px',
-        lineHeight: '1',
-    };
-
-    const containerStyle = {
-        position: 'relative',
-        display: 'flex',
-        justifyContent: 'center', // 水平居中
-        marginTop: '5%', // 與導航欄保持距離
-        width: '90%',
-        height: '100%',
-        paddingLeft: '10%',
-        marginBottom: '5%',
-    };
-
-    const imageStyle = {
-        width: '100%', // 保持容器的寬度
-        height: '400px', // 固定高度
-        objectFit: 'cover',
-        filter: 'blur(6px)',
-        zIndex: '100',
-    };
-
-     const overlaycontainerStyle = {
-        position: 'absolute',
-        display: 'flex',
-        justifyContent: 'flex-end', 
-        bottom: '-10%',
-        width: '100%',
-        paddingLeft: '15%',
-        zIndex: '200',
-    };
-
-    const overlayStyle = {
-        width: '100%', // 保持容器的寬度
-        height: '100px', // 固定高度
-        backgroundColor: 'rgba(210, 180, 140, 0.7)', // 半透明棕色
-        color: 'white',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        cursor: 'pointer',
-    };
-
-    const overlayTextStyle = {
-        position: 'absolute',
-        fontSize: '150px',
-        fontWeight: 'bold',
-        fontFamily: 'Inter, sans-serif',
-        bottom:'0',
-        paddingLeft: '30%',
-    };
-
-  const arrowContainerStyle = {
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '70px', // 设置圆框的大小
-    height: '70px',
-    border: '3px solid white', 
-    borderRadius: '50%',  
-    marginLeft: '25%',
-    marginTop: '1%',
-    marginBottom: '5%',
-};
-
-const arrowContainerStyle2 = {
-    position: 'absolute',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100px', // 设置圆框的大小
-    height: '100px',
-    border: '5px solid white', 
-    borderRadius: '50%',      
-    marginLeft: '70%',
-    marginTop: '-10%',
-};
-
-const arrowStyle = {
-    fontSize: '2rem',
-    fontWeight: 'bold',
-    alignItems: 'center',
-    cursor: 'pointer',
-};
-
-    
-const arrowStyle2 = {
-    fontSize: '60px',
-    color: 'white',            // 设置箭头颜色为黑色
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-};
-
-const handleNavigation = () => {
-        window.open('https://moodles.genesisideas.school/', '_blank'); // 新分頁開啟網址
-    };
-
-    return (
-      <>
-        <div style={headlineStyle}>
-          <p>COURSE</p>
-          <p>CATALOG</p>
-        </div>
-        
-        <div style={courseintroductionStyle}>
-           {language === 'zh' ? (
-                    <p>
-                       我们的学校提供多元化的国际课程，包括英国IGCSE、A-Level和美国AP课程，满足学生的学术需求。这些课程为提升学生进入世界顶尖大学的机会奠定了坚实基础。通过深化知识和培养批判性思维能力，我们的学生为在全球学术舞台上取得优异成绩做好了充分准备。
-                    </p>
-                ) : (
-                    <p>
-                       Our school offers a diverse range of international programs, including the British IGCSE, A-level, and American AP courses, meeting students' academic needs. These programs provide a strong foundation for boosting university admissions chances to top institutions worldwide. By deepening their knowledge and developing critical thinking skills, our students are well-prepared to excel on the global academic stage.
-                    </p>
-                )}  
-          <div style={lineStyle2}></div> 
-          <div style={yellowSquareStyle}></div>
-
-          <div
-            ref={scrollRef}
-            style={frameStyle}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseUp}
-          >
-            {extendedCourses.map((courses, index) => (
-              <>
-                <div key={index} style={courseBoxStyle}>
-                 <div>
-                    <h2 style={titleStyle}>{courses.title}</h2>
-                    <div style={lineStyle}></div>
-                    <p style={contentStyle}>{courses.content[language]}</p>
-                    <p style={content2Style}>{courses.content2[language]}</p>
-                    <div style={arrowContainerStyle}>
-                     <span style={arrowStyle}>→</span>
-                    </div>
-                 </div>
-                </div>
-                <div style={spaceStyle}></div>
-              </>
-             ))}
-          </div>
-         </div>
-            
-         <div style={headline2Style}>
-           <p>SUBJECTS</p>
-         </div>
-              
-         <div style={containerStyle}>
-          <img src={img} alt="Math" style={imageStyle} />
-          <div style={overlaycontainerStyle}>
-            <div style={overlayStyle} onClick={handleNavigation}>
-             <p style={overlayTextStyle}>MATH</p>
-              <div style={arrowContainerStyle2}>
-               <span style={arrowStyle2}>→</span>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
+            {PROGRAMS.map((prog) => (
+              <div key={prog.id} style={{
+                border: '1px solid #e0e0e0',
+                borderRadius: '12px',
+                padding: '32px',
+                background: '#fff',
+                boxShadow: '0 2px 12px rgba(0,0,0,0.07)',
+              }}>
+                <div style={{ fontSize: '36px', marginBottom: '16px' }}>{prog.icon}</div>
+                <span style={{
+                  display: 'inline-block',
+                  fontSize: '11px',
+                  fontWeight: 700,
+                  letterSpacing: '1px',
+                  padding: '4px 10px',
+                  borderRadius: '20px',
+                  background: '#2b3d6d',
+                  color: '#fff',
+                  marginBottom: '12px',
+                }}>
+                  {prog.tag[isEn ? 'en' : 'zh']}
+                </span>
+                <h3 style={{ fontSize: '22px', fontWeight: 700, marginBottom: '12px', color: '#111' }}>
+                  {prog.title[isEn ? 'en' : 'zh']}
+                </h3>
+                <p style={{ fontSize: '15px', color: '#666', lineHeight: 1.7, marginBottom: '20px' }}>
+                  {prog.body[isEn ? 'en' : 'zh']}
+                </p>
+                <ul style={{ paddingLeft: '16px', margin: 0 }}>
+                  {prog.points[isEn ? 'en' : 'zh'].map((pt) => (
+                    <li key={pt} style={{ fontSize: '14px', color: '#444', marginBottom: '6px', lineHeight: 1.5 }}>
+                      {pt}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            </div>  
+            ))}
           </div>
-         </div>
-      </>
-   );
-}
+        </div>
+      </div>
 
-export default Academicsintroduction2;
+      {/* ── Section 2: AP COURSES ────────────────────────────────── */}
+      <div style={{ background: '#2b3d6d', padding: '80px 0', fontFamily: 'Inter, sans-serif' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 10%' }}>
+          <h2 style={{ fontSize: '60px', fontWeight: 800, color: '#fff', lineHeight: 1, marginBottom: '12px' }}>
+            {isEn ? 'AP COURSES' : 'AP 進階課程'}
+          </h2>
+          <p style={{ fontSize: '18px', color: 'rgba(255,255,255,0.7)', maxWidth: '580px', lineHeight: 1.7, marginBottom: '48px' }}>
+            {isEn
+              ? 'AP (Advanced Placement) courses are college-level classes offered in high school. Strong AP performance — especially exam scores of 4 or 5 — is one of the most effective signals of academic readiness for competitive US universities.'
+              : 'AP（Advanced Placement）是高中階段提供的大學程度課程。優異的 AP 成績（尤其是 4 或 5 分）是向美國頂尖大學展示學術能力最有效的指標之一。'}
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px' }}>
+            {AP_COURSES.map((ap) => (
+              <div key={ap.code} style={{
+                background: 'rgba(255,255,255,0.08)',
+                border: '1px solid rgba(255,255,255,0.15)',
+                borderRadius: '10px',
+                padding: '28px 24px',
+                borderTop: '4px solid rgba(213,168,54,1)',
+              }}>
+                <div style={{ fontSize: '32px', marginBottom: '12px' }}>{ap.icon}</div>
+                <h4 style={{ fontSize: '18px', fontWeight: 700, color: '#fff', marginBottom: '8px' }}>{ap.code}</h4>
+                <p style={{ fontSize: '14px', color: 'rgba(255,255,255,0.6)', margin: 0, lineHeight: 1.5 }}>
+                  {ap.desc[isEn ? 'en' : 'zh']}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', marginTop: '32px' }}>
+            {isEn
+              ? 'AP exams are administered by the College Board each May. GIIS prepares students throughout the year with coursework aligned to the official AP curriculum framework.'
+              : 'AP 考試由 College Board 每年五月舉辦。GIIS 全年以對應官方 AP 課綱的課程為學生備考。'}
+          </p>
+        </div>
+      </div>
+    </>
+  );
+}

@@ -83,12 +83,8 @@ function AcademicsMain({ language }) {
          </div>
        </div>
 
-       <div className="card mt-0" id="introduction2">
-         <div className="container">
-           <div className="card-body">
-            <AcademicsIntroduction2 language={language} />
-           </div>
-         </div>
+       <div className="mt-0" id="programs">
+         <AcademicsIntroduction2 language={language} />
        </div>
 
        <div className="mt-0" id="course-catalog" style={{ backgroundColor: '#f8f9fa' }}>
