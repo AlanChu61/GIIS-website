@@ -1,0 +1,60 @@
+.gt-sem-title {
+  text-align: left;
+  font-weight: bold;
+  font-size: 10pt;
+  font-family: 'Times New Roman', Times, serif;
+  padding: 2px 4px;
+  line-height: 1.3;
+}
+.gt-th {
+  font-size: 10pt;
+  font-family: 'Times New Roman', Times, serif;
+  font-weight: bold;
+  border: 1px solid black;
+  padding: 2px 4px;
+  line-height: 1.3;
+}
+.gt-cell {
+  font-size: 10pt;
+  font-family: 'Times New Roman', Times, serif;
+  border: 1px solid black;
+  padding: 2px 4px;
+  line-height: 1.3;
+}
+.gt-input {
+  width: 100%;
+  font-size: 10pt;
+  font-family: 'Times New Roman', Times, serif;
+}
+.gt-add-btn {
+  border: none;
+  background-color: rgba(43, 61, 109, 0.8);
+  color: white;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 4px;
+}
+.gt-del-btn {
+  border: none;
+  background: none;
+  color: #c00;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+@media print {
+  .gt-sem-title { font-size: 6pt !important; padding: 0 2px !important; line-height: 1 !important; }
+  .gt-th        { font-size: 5.5pt !important; padding: 1px 1.5px !important; line-height: 1.2 !important; }
+  .gt-cell      { font-size: 6pt !important; padding: 1px 1.5px !important; line-height: 1 !important; }
+  .gt-input     { font-size: 6pt !important; }
+  .gt-add-btn,
+  .gt-del-btn   { display: none !important; }
+}

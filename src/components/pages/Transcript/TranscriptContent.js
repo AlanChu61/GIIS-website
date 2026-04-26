@@ -7,6 +7,7 @@ import { exportTranscriptToPDF } from './transcriptPdf.js';
 import { TRANSCRIPT_SEMESTER_KEYS } from './transcriptMappers.js';
 import { getAllSemesterStatuses, SEMESTER_STATUS } from './semesterStatus.js';
 import TranscriptSkeleton from '../../TranscriptSkeleton.js';
+import './transcript-print.css';
 
 function TranscriptContent({
   language,
@@ -273,7 +274,7 @@ function TranscriptContent({
             </table>
           </div>
 
-          <div className="pdf-page-number">-- 1 of 1 --</div>
+          <div className="pdf-page-number" style={{ textAlign: 'center', fontFamily: 'Times New Roman, Times, serif', fontSize: '8pt', marginTop: '4px' }}>-- 1 of 1 --</div>
         </div>
       </div>
     </div>

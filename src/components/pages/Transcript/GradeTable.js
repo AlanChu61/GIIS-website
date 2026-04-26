@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './GradeTable.css';
 
 const GRADE_TO_GPA = {
   'A+': { weighted: 4.0, unweighted: 4.0 },
@@ -36,8 +37,12 @@ function calculateTotals(rows) {
     const credits = parseFloat(row.credits) || 0;
     totalCredits += credits;
     if (row.weightedGPA !== '-' && row.unweightedGPA !== '-') {
-      totalWeighted += row.weightedGPA * credits;
-      totalUnweighted += row.unweightedGPA * credits;
+      const w = typeof row.weightedGPA === 'number' ? row.weightedGPA : parseFloat(row.weightedGPA);
+      const u = typeof row.unweightedGPA === 'number' ? row.unweightedGPA : parseFloat(row.unweightedGPA);
+      if (Number.isFinite(w) && Number.isFinite(u)) {
+        totalWeighted += w * credits;
+        totalUnweighted += u * credits;
+      }
     }
   });
 
@@ -48,35 +53,17 @@ function calculateTotals(rows) {
   };
 }
 
-const cellStyle = {
-  border: '1px solid black',
-  fontSize: '6pt',
-  fontFamily: 'Times New Roman, Times, serif',
-  padding: '0 2px',
-  lineHeight: '1',
-};
-
-const inputStyle = (isStatic) => ({
-  width: '100%',
-  fontSize: '6pt',
-  fontFamily: 'Times New Roman, Times, serif',
-  border: isStatic ? '1px solid black' : 'none',
-  borderRadius: '4px',
-});
-
-const addButtonStyle = {
-  border: 'none',
-  backgroundColor: 'rgba(43, 61, 109, 0.8)',
-  color: 'white',
-  borderRadius: '50%',
-  width: '20px',
-  height: '20px',
-  fontSize: '20px',
-  cursor: 'pointer',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-};
+function applyTotalsRow(rows, totals) {
+  const newRows = rows.map((r) => ({ ...r }));
+  const totalsIdx = newRows.findIndex((r) => r.name === 'Semester Totals');
+  if (totalsIdx !== -1) {
+    const hasContent = newRows.some((r) => r.name !== 'Semester Totals' && r.name.trim() !== '');
+    newRows[totalsIdx].weightedGPA = hasContent ? totals.weightedGPA : '-';
+    newRows[totalsIdx].unweightedGPA = hasContent ? totals.unweightedGPA : '-';
+    newRows[totalsIdx].totalCredits = hasContent ? totals.totalCredits.toFixed(1) : '';
+  }
+  return newRows;
+}
 
 function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = false, initialRows = null, onRowsChange = null }) {
   const [rows, setRows] = useState(DEFAULT_ROWS.map((r) => ({ ...r })));
@@ -87,20 +74,35 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
     }
   }, [initialRows]);
 
+  // Fire both onRowsChange and onTotalsUpdate whenever rows change (including initial load)
   useEffect(() => {
-    if (onRowsChange) {
-      onRowsChange(semesterName, rows);
+    if (onRowsChange) onRowsChange(semesterName, rows);
+    if (onTotalsUpdate) {
+      const totals = calculateTotals(rows);
+      const hasContent = rows.some((r) => r.name !== 'Semester Totals' && r.name.trim() !== '');
+      onTotalsUpdate(semesterName, {
+        weightedGPA: hasContent && totals.weightedGPA !== '-' ? parseFloat(totals.weightedGPA) : 0,
+        unweightedGPA: hasContent && totals.unweightedGPA !== '-' ? parseFloat(totals.unweightedGPA) : 0,
+        totalCredits: hasContent ? totals.totalCredits : 0,
+      });
     }
-  }, [rows, semesterName, onRowsChange]);
+  }, [rows, semesterName, onRowsChange, onTotalsUpdate]);
 
   const handleChange = (index, field, value) => {
     setRows((prevRows) => {
-      const newRows = prevRows.map((r) => ({ ...r }));
+      let newRows = prevRows.map((r) => ({ ...r }));
 
       if (field === 'name' && value.trim() === '') {
         newRows[index] = { ...EMPTY_ROW };
       } else {
         newRows[index][field] = value;
+
+        // Auto-fill credits to 1.0 for Core courses when credits not yet set
+        if (field === 'type' && !newRows[index].credits) {
+          if (value === 'Core' || value === 'Core (AP)') {
+            newRows[index].credits = '1.0';
+          }
+        }
 
         if (field === 'grade' || field === 'credits' || field === 'type') {
           const gpa = GRADE_TO_GPA[newRows[index].grade?.toUpperCase()] || { weighted: '-', unweighted: '-' };
@@ -116,28 +118,7 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
       }
 
       const totals = calculateTotals(newRows);
-      const totalsIdx = newRows.findIndex((r) => r.name === 'Semester Totals');
-      if (totalsIdx !== -1) {
-        const hasContent = newRows.some((r) => r.name !== 'Semester Totals' && r.name.trim() !== '');
-        if (hasContent) {
-          newRows[totalsIdx].weightedGPA = totals.weightedGPA;
-          newRows[totalsIdx].unweightedGPA = totals.unweightedGPA;
-          newRows[totalsIdx].totalCredits = totals.totalCredits.toFixed(1);
-        } else {
-          newRows[totalsIdx].weightedGPA = '-';
-          newRows[totalsIdx].unweightedGPA = '-';
-          newRows[totalsIdx].totalCredits = '';
-        }
-      }
-
-      if (onTotalsUpdate) {
-        onTotalsUpdate(semesterName, {
-          weightedGPA: totals.weightedGPA,
-          unweightedGPA: totals.unweightedGPA,
-          totalCredits: totals.totalCredits,
-        });
-      }
-
+      newRows = applyTotalsRow(newRows, totals);
       return newRows;
     });
   };
@@ -155,32 +136,27 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
     setRows((prevRows) => {
       const newRows = prevRows.filter((_, i) => i !== index);
       const totals = calculateTotals(newRows);
-      const totalsIdx = newRows.findIndex((r) => r.name === 'Semester Totals');
-      if (totalsIdx !== -1) {
-        const hasContent = newRows.some((r) => r.name !== 'Semester Totals' && r.name.trim() !== '');
-        newRows[totalsIdx].weightedGPA = hasContent ? totals.weightedGPA : '-';
-        newRows[totalsIdx].unweightedGPA = hasContent ? totals.unweightedGPA : '-';
-        newRows[totalsIdx].totalCredits = hasContent ? totals.totalCredits.toFixed(1) : '';
-      }
-      if (onTotalsUpdate) {
-        onTotalsUpdate(semesterName, {
-          weightedGPA: totals.weightedGPA,
-          unweightedGPA: totals.unweightedGPA,
-          totalCredits: totals.totalCredits,
-        });
-      }
-      return newRows;
+      return applyTotalsRow(newRows, totals);
     });
   };
 
+  const inputStyle = (extraStyle = {}) => ({
+    width: '100%',
+    border: isStatic ? '1px solid black' : 'none',
+    borderRadius: isStatic ? '4px' : '0',
+    background: 'none',
+    outline: 'none',
+    ...extraStyle,
+  });
+
   return (
     <>
-      <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '2px' }}>
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '4px' }}>
         <thead>
           <tr>
             <td
               colSpan={isStatic ? 6 : 7}
-              style={{ textAlign: 'left', fontWeight: 'bold', fontSize: '6pt', fontFamily: 'Times New Roman, Times, serif', padding: '0 2px', lineHeight: '1' }}
+              className="gt-sem-title"
             >
               {semesterName}
               {semesterStatus === 'in_progress' && ' (In Progress)'}
@@ -188,15 +164,15 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
           </tr>
           <tr>
             {['Course Name', 'Type', 'Credits', 'Grade', 'Weighted GPA', 'Unweighted GPA'].map((h) => (
-              <th key={h} style={{ ...cellStyle, fontWeight: 'bold' }}>{h}</th>
+              <th key={h} className="gt-th">{h}</th>
             ))}
-            {!isStatic && <th style={{ ...cellStyle, fontWeight: 'bold', width: '16px' }} />}
+            {!isStatic && <th className="gt-th" style={{ width: '28px' }} />}
           </tr>
         </thead>
         <tbody>
           {rows.map((row, index) => (
             <tr key={index}>
-              <td style={{ ...cellStyle, width: '30%' }}>
+              <td className="gt-cell" style={{ width: '30%' }}>
                 {row.name === 'Semester Totals' ? (
                   <span>Semester Totals</span>
                 ) : (
@@ -204,18 +180,19 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
                     type="text"
                     value={row.name}
                     onChange={(e) => handleChange(index, 'name', e.target.value)}
-                    style={inputStyle(isStatic)}
-                    disabled={false}
+                    className="gt-input"
+                    style={inputStyle()}
                   />
                 )}
               </td>
 
-              <td style={{ ...cellStyle, width: '15%' }}>
+              <td className="gt-cell" style={{ width: '15%' }}>
                 {row.name === 'Semester Totals' ? '' : (
                   <select
                     value={row.type}
                     onChange={(e) => handleChange(index, 'type', e.target.value)}
-                    style={inputStyle(isStatic)}
+                    className="gt-input"
+                    style={inputStyle()}
                   >
                     <option value="">-</option>
                     <option value="Core">Core</option>
@@ -225,12 +202,13 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
                 )}
               </td>
 
-              <td style={{ ...cellStyle, width: '10%' }}>
+              <td className="gt-cell" style={{ width: '10%' }}>
                 {row.name === 'Semester Totals' ? row.totalCredits : (
                   <select
                     value={row.credits}
                     onChange={(e) => handleChange(index, 'credits', e.target.value)}
-                    style={inputStyle(isStatic)}
+                    className="gt-input"
+                    style={inputStyle()}
                   >
                     <option value="">-</option>
                     <option value="0.5">0.5</option>
@@ -239,12 +217,13 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
                 )}
               </td>
 
-              <td style={{ ...cellStyle, width: '10%' }}>
+              <td className="gt-cell" style={{ width: '10%' }}>
                 {row.name === 'Semester Totals' ? '' : (
                   <select
                     value={row.grade}
                     onChange={(e) => handleChange(index, 'grade', e.target.value)}
-                    style={inputStyle(isStatic)}
+                    className="gt-input"
+                    style={inputStyle()}
                   >
                     <option value="">-</option>
                     {['A+','A','A-','B+','B','B-','C+','C','C-','D+','D','F'].map((g) => (
@@ -254,14 +233,15 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
                 )}
               </td>
 
-              <td style={{ ...cellStyle, width: '10%' }}>{row.weightedGPA}</td>
-              <td style={{ ...cellStyle, width: '10%' }}>{row.unweightedGPA}</td>
+              <td className="gt-cell" style={{ width: '10%' }}>{row.weightedGPA}</td>
+              <td className="gt-cell" style={{ width: '10%' }}>{row.unweightedGPA}</td>
+
               {!isStatic && (
-                <td style={{ ...cellStyle, width: '16px', padding: '0', textAlign: 'center' }}>
+                <td className="gt-cell" style={{ width: '28px', padding: '0', textAlign: 'center' }}>
                   {row.name !== 'Semester Totals' && (
                     <button
                       onClick={() => deleteRow(index)}
-                      style={{ border: 'none', background: 'none', color: '#c00', cursor: 'pointer', fontSize: '10px', padding: '0 2px', lineHeight: 1 }}
+                      className="gt-del-btn"
                       title="Remove row"
                     >×</button>
                   )}
@@ -271,7 +251,9 @@ function GradeTable({ semesterName, semesterStatus, onTotalsUpdate, isStatic = f
           ))}
         </tbody>
       </table>
-      {!isStatic && <button style={addButtonStyle} onClick={addRow}>+</button>}
+      {!isStatic && (
+        <button className="gt-add-btn" onClick={addRow} title="Add row">+</button>
+      )}
     </>
   );
 }

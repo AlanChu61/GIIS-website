@@ -1,0 +1,18 @@
+@media print {
+  /* Hide everything; then reveal only the transcript content */
+  body * {
+    visibility: hidden;
+  }
+  #transcript-content,
+  #transcript-content * {
+    visibility: visible;
+  }
+  #transcript-content {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 4mm;
+    box-sizing: border-box;
+  }
+}

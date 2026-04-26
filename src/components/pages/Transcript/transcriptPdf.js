@@ -227,8 +227,9 @@ export async function exportTranscriptToPDF({ profile, semesterRowsRef, semester
   /* ── GRADE TABLES ── */
   .grades-section { position: relative; margin-bottom: 1mm; }
   .grades-inner { position: relative; z-index: 1; }
-  .grades-cols { display: flex; gap: 3mm; align-items: flex-start; }
-  .grades-col { flex: 1; min-width: 0; }
+  .grades-cols-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .grades-col { width: 49%; vertical-align: top; }
+  .grades-col-gap { width: 2%; }
   .semester-block { margin-bottom: 1.5mm; }
   .sem-table {
     width: 100%;
@@ -343,10 +344,13 @@ export async function exportTranscriptToPDF({ profile, semesterRowsRef, semester
 <div class="grades-section">
   <div class="watermark"><img src="${logoSlogan}" alt="" /></div>
   <div class="grades-inner">
-    <div class="grades-cols">
-      <div class="grades-col">${leftHtml}</div>
-      <div class="grades-col">${rightHtml}</div>
-    </div>
+    <table class="grades-cols-table">
+      <tr>
+        <td class="grades-col">${leftHtml}</td>
+        <td class="grades-col-gap"></td>
+        <td class="grades-col">${rightHtml}</td>
+      </tr>
+    </table>
   </div>
 </div>
 

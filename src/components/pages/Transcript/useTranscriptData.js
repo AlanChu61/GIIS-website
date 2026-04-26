@@ -95,11 +95,18 @@ export function useTranscriptData({ studentId, authToken, canEdit, canSave }) {
   }, []);
 
   const calculateCumulativeGPA = useCallback((type = 'weightedGPA') => {
-    const gpas = Object.values(semesterGPAs)
-      .map((gpa) => gpa[type])
-      .filter((gpa) => gpa > 0);
-    if (gpas.length === 0) return '-';
-    return (gpas.reduce((acc, gpa) => acc + gpa, 0) / gpas.length).toFixed(2);
+    let totalGpaCredits = 0;
+    let totalCredits = 0;
+    for (const sem of Object.values(semesterGPAs)) {
+      const gpa = sem[type];
+      const cr = sem.totalCredits;
+      if (gpa > 0 && cr > 0) {
+        totalGpaCredits += gpa * cr;
+        totalCredits += cr;
+      }
+    }
+    if (totalCredits === 0) return '-';
+    return (totalGpaCredits / totalCredits).toFixed(2);
   }, [semesterGPAs]);
 
   const saveRemoteTranscript = useCallback(async () => {
