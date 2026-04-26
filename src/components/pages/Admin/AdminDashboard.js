@@ -24,6 +24,7 @@ export default function AdminDashboard({ language }) {
   const lang = isEn ? 'en' : 'zh';
 
   const [students, setStudents] = useState([]);
+  const [statusFilter, setStatusFilter] = useState('all');
   const [err, setErr] = useState('');
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -131,88 +132,119 @@ export default function AdminDashboard({ language }) {
 
       {err && <div className="alert alert-warning py-2">{err}</div>}
 
-      <button type="button" className="btn btn-primary mb-3" onClick={openModal}>
-        {isEn ? '+ New student' : '＋ 新增學生'}
-      </button>
+      <div className="d-flex align-items-center gap-2 mb-3 flex-wrap">
+        <button type="button" className="btn btn-primary" onClick={openModal}>
+          {isEn ? '+ New student' : '＋ 新增學生'}
+        </button>
+
+        {/* Status filter tabs */}
+        <div className="btn-group ms-2" role="group">
+          {[
+            { key: 'all',      label: { en: 'All',      zh: '全部' } },
+            { key: 'enrolled', label: { en: 'Enrolled', zh: '在籍' } },
+            { key: 'graduated',label: { en: 'Graduated',zh: '畢業' } },
+            { key: 'withdrawn',label: { en: 'Withdrawn',zh: '退學' } },
+          ].map(({ key, label }) => {
+            const count = key === 'all'
+              ? students.length
+              : students.filter((s) => getStudentStatus(s) === key).length;
+            return (
+              <button
+                key={key}
+                type="button"
+                className={`btn btn-sm ${statusFilter === key ? 'btn-dark' : 'btn-outline-secondary'}`}
+                onClick={() => setStatusFilter(key)}
+              >
+                {label[lang]} <span className="badge bg-secondary ms-1">{count}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       {loading ? (
         <p className="text-muted">{isEn ? 'Loading…' : '載入中…'}</p>
-      ) : (
-        <div className="table-responsive shadow-sm rounded border bg-white">
-          <table className="table table-sm table-hover align-middle mb-0">
-            <thead className="table-light">
-              <tr>
-                <th>{isEn ? 'Name' : '姓名'}</th>
-                <th>{isEn ? 'Status' : '狀態'}</th>
-                <th>{isEn ? 'ID' : '學號'}</th>
-                <th>{isEn ? 'Grade' : '年級'}</th>
-                <th>{isEn ? 'Login email' : '登入信箱'}</th>
-                <th>{isEn ? 'Birth' : '生日'}</th>
-                <th>{isEn ? 'Location' : '地點'}</th>
-                <th>{isEn ? 'Guardian' : '監護人'}</th>
-                <th className="text-center">{isEn ? 'Semesters' : '學期數'}</th>
-                <th>{isEn ? 'Updated' : '更新時間'}</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((s) => {
-                const status = getStudentStatus(s);
-                const badge = STATUS_BADGE[status];
-                return (
-                  <tr key={s.id}>
-                    <td><strong>{s.name || '(unnamed)'}</strong></td>
-                    <td>
-                      <span className="badge" style={{ backgroundColor: badge.bg }}>
-                        {badge.label[lang]}
-                      </span>
-                    </td>
-                    <td className="text-nowrap">
-                      <span className="badge bg-secondary" style={{ fontFamily: 'monospace' }}>
-                        {s.studentCode || '—'}
-                      </span>
-                    </td>
-                    <td className="text-nowrap">
-                      {s.currentGrade ? <span className="badge bg-primary">Grade {s.currentGrade}</span> : '—'}
-                    </td>
-                    <td>{s.loginEmail || '—'}</td>
-                    <td>{s.birthDate || '—'}</td>
-                    <td>{[s.city, s.province].filter(Boolean).join(', ') || '—'}</td>
-                    <td className="small">{s.parentGuardian || '—'}</td>
-                    <td className="text-center">{s.semesterCount ?? 0}</td>
-                    <td className="small text-nowrap">
-                      {s.updatedAt ? new Date(s.updatedAt).toLocaleString() : '—'}
-                    </td>
-                    <td className="text-end text-nowrap">
-                      <Link className="btn btn-sm btn-outline-primary me-1" to={`/admin/transcript/${s.id}`}>
-                        {isEn ? 'View & edit' : '檢視／編輯'}
-                      </Link>
-                      {status === 'withdrawn' && (
-                        <button
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={() => handleDelete(s.id)}
-                          disabled={deletingId === s.id}
-                        >
-                          {deletingId === s.id ? '…' : (isEn ? 'Delete' : '刪除')}
-                        </button>
-                      )}
+      ) : (() => {
+        const visible = statusFilter === 'all'
+          ? students
+          : students.filter((s) => getStudentStatus(s) === statusFilter);
+        return (
+          <div className="table-responsive shadow-sm rounded border bg-white">
+            <table className="table table-sm table-hover align-middle mb-0">
+              <thead className="table-light">
+                <tr>
+                  <th>{isEn ? 'Name' : '姓名'}</th>
+                  <th>{isEn ? 'Status' : '狀態'}</th>
+                  <th>{isEn ? 'ID' : '學號'}</th>
+                  <th>{isEn ? 'Grade' : '年級'}</th>
+                  <th>{isEn ? 'Login email' : '登入信箱'}</th>
+                  <th>{isEn ? 'Birth' : '生日'}</th>
+                  <th>{isEn ? 'Location' : '地點'}</th>
+                  <th>{isEn ? 'Guardian' : '監護人'}</th>
+                  <th className="text-center">{isEn ? 'Semesters' : '學期數'}</th>
+                  <th>{isEn ? 'Updated' : '更新時間'}</th>
+                  <th />
+                </tr>
+              </thead>
+              <tbody>
+                {visible.map((s) => {
+                  const status = getStudentStatus(s);
+                  const badge = STATUS_BADGE[status];
+                  return (
+                    <tr key={s.id}>
+                      <td><strong>{s.name || '(unnamed)'}</strong></td>
+                      <td>
+                        <span className="badge" style={{ backgroundColor: badge.bg }}>
+                          {badge.label[lang]}
+                        </span>
+                      </td>
+                      <td className="text-nowrap">
+                        <span className="badge bg-secondary" style={{ fontFamily: 'monospace' }}>
+                          {s.studentCode || '—'}
+                        </span>
+                      </td>
+                      <td className="text-nowrap">
+                        {s.currentGrade ? <span className="badge bg-primary">Grade {s.currentGrade}</span> : '—'}
+                      </td>
+                      <td>{s.loginEmail || '—'}</td>
+                      <td>{s.birthDate || '—'}</td>
+                      <td>{[s.city, s.province].filter(Boolean).join(', ') || '—'}</td>
+                      <td className="small">{s.parentGuardian || '—'}</td>
+                      <td className="text-center">{s.semesterCount ?? 0}</td>
+                      <td className="small text-nowrap">
+                        {s.updatedAt ? new Date(s.updatedAt).toLocaleString() : '—'}
+                      </td>
+                      <td className="text-end text-nowrap">
+                        <Link className="btn btn-sm btn-outline-primary me-1" to={`/admin/transcript/${s.id}`}>
+                          {isEn ? 'View & edit' : '檢視／編輯'}
+                        </Link>
+                        {status === 'withdrawn' && (
+                          <button
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() => handleDelete(s.id)}
+                            disabled={deletingId === s.id}
+                          >
+                            {deletingId === s.id ? '…' : (isEn ? 'Delete' : '刪除')}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })}
+                {visible.length === 0 && (
+                  <tr>
+                    <td colSpan={11} className="text-muted text-center py-4">
+                      {statusFilter === 'all'
+                        ? (isEn ? 'No students yet — create one above.' : '目前沒有學生資料，請使用上方按鈕新增。')
+                        : (isEn ? 'No students in this category.' : '此分類沒有學生。')}
                     </td>
                   </tr>
-                );
-              })}
-              {students.length === 0 && (
-                <tr>
-                  <td colSpan={11} className="text-muted text-center py-4">
-                    {isEn
-                      ? 'No students yet — create one above.'
-                      : '目前沒有學生資料，請使用上方按鈕新增。'}
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
-      )}
+                )}
+              </tbody>
+            </table>
+          </div>
+        );
+      })()}
 
       {/* New student modal */}
       {showModal && (
