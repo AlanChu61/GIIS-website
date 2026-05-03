@@ -75,7 +75,7 @@ export default function CoursePage({ language }) {
           <span style={{ fontSize: '11px', fontWeight: 700, color: '#2b3d6d', textTransform: 'uppercase', letterSpacing: '1px' }}>
             {course.department} · {course.type}
           </span>
-          <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#1a1a2e', margin: '8px 0 8px' }}>
+          <h1 style={{ fontSize: 'clamp(22px, 7vw, 36px)', fontWeight: 800, color: '#1a1a2e', margin: '8px 0 8px' }}>
             {isEn ? course.name : (course.nameZh || course.name)}
           </h1>
           <p style={{ fontSize: '15px', color: '#555', lineHeight: 1.7, maxWidth: '640px', margin: '0 0 20px' }}>
@@ -122,7 +122,7 @@ export default function CoursePage({ language }) {
             const quizAttempt = (enrollment?.quizAttempts || []).find(a => a.moduleOrder === mod.order);
             return (
               <div key={mod.id} style={{
-                display: 'flex', alignItems: 'center', gap: '14px',
+                display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
                 background: '#fff', border: `1px solid ${quizDone ? '#c8e6c9' : '#e0e6f0'}`,
                 borderRadius: '10px', padding: '14px 18px',
                 opacity: locked ? 0.45 : 1,
@@ -169,7 +169,7 @@ export default function CoursePage({ language }) {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {/* Midterm */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: '14px',
+            display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
             background: '#fff', border: `1px solid ${midtermAttempt ? '#c8e6c9' : '#e0e6f0'}`,
             borderRadius: '10px', padding: '14px 18px',
             opacity: midtermLocked ? 0.45 : 1,
@@ -211,7 +211,7 @@ export default function CoursePage({ language }) {
 
           {/* Final */}
           <div style={{
-            display: 'flex', alignItems: 'center', gap: '14px',
+            display: 'flex', alignItems: 'center', gap: '14px', flexWrap: 'wrap',
             background: '#fff', border: `1px solid ${finalAttempt ? '#c8e6c9' : '#e0e6f0'}`,
             borderRadius: '10px', padding: '14px 18px',
             opacity: finalLocked ? 0.45 : 1,

@@ -15,7 +15,7 @@ export default function ExamPage({ language }) {
   const navigate = useNavigate();
   const session = getStudentSession();
 
-  const [phase, setPhase] = useState('loading'); // loading | ready | inprogress | submitted
+  const [phase, setPhase] = useState('loading'); // loading | ready | inprogress | submitted | review | earned
   const [attemptId, setAttemptId] = useState(null);
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -28,17 +28,44 @@ export default function ExamPage({ language }) {
     if (!session) { navigate('/login', { replace: true }); return; }
     fetch(`${API}/api/enrollments/${slug}`, { credentials: 'include' })
       .then((r) => (r.ok ? r.json() : null))
-      .then((d) => {
+      .then(async (d) => {
         if (!d) { navigate(`/learn/${slug}`, { replace: true }); return; }
         setCourseName(isEn ? d.course?.name : (d.course?.nameZh || d.course?.name));
         if (d.enrollment?.creditEarned) {
           setPhase('earned');
-        } else {
-          setPhase('ready');
+          return;
         }
+        // Check if there's already a submitted attempt for this exam type
+        const submittedAttempt = (d.enrollment?.examAttempts || []).find(
+          (a) => a.examType === examType && a.submittedAt != null,
+        );
+        if (submittedAttempt) {
+          // Load past results from review endpoint
+          const rv = await fetch(`${API}/api/enrollments/${slug}/exam/review?type=${examType}`, { credentials: 'include' });
+          if (rv.ok) {
+            const reviewData = await rv.json();
+            setQuestions(reviewData.questions || []);
+            setAnswers(
+              (reviewData.graded || []).reduce((acc, g) => {
+                acc[g.questionId] = g.yourAnswer;
+                return acc;
+              }, {}),
+            );
+            setResult({
+              score: reviewData.score,
+              passed: reviewData.passed,
+              earned: reviewData.earned,
+              total: reviewData.total,
+              graded: reviewData.graded,
+            });
+            setPhase('review');
+            return;
+          }
+        }
+        setPhase('ready');
       })
       .catch(() => setError('Failed to load exam data'));
-  }, [slug, session, navigate, isEn]);
+  }, [slug, session, navigate, isEn, examType]);
 
   async function startExam() {
     setError('');
@@ -254,6 +281,77 @@ export default function ExamPage({ language }) {
               )}
             </div>
           </>
+        )}
+
+        {/* REVIEW (past exam) */}
+        {phase === 'review' && result && (
+          <div style={{ textAlign: 'center' }}>
+            <div style={{ fontSize: '40px', marginBottom: '8px' }}>{result.passed ? '🎉' : '📝'}</div>
+            <h1 style={{ fontSize: '26px', fontWeight: 800, color: '#1a1a2e', marginBottom: '4px' }}>
+              {isEn
+                ? `${examType === 'midterm' ? 'Midterm' : 'Final'} Exam — Past Results`
+                : `${examType === 'midterm' ? '期中' : '期末'}考試 — 歷史成績`}
+            </h1>
+            <div style={{ fontSize: '48px', fontWeight: 800, color: result.passed ? '#2e7d32' : '#c62828', margin: '12px 0' }}>
+              {result.score}%
+            </div>
+            <p style={{ color: '#555', fontSize: '15px', marginBottom: '24px' }}>
+              {result.passed
+                ? (isEn ? 'You passed this exam.' : '此次考試已通過。')
+                : (isEn ? 'You did not pass this exam.' : '此次考試未通過。')}
+            </p>
+
+            {/* Answer breakdown */}
+            <details open style={{ textAlign: 'left', marginBottom: '32px' }}>
+              <summary style={{ fontSize: '14px', fontWeight: 700, color: '#2b3d6d', cursor: 'pointer', marginBottom: '16px' }}>
+                {isEn ? 'Answer Breakdown' : '答題詳情'}
+              </summary>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {questions.map((q, i) => {
+                  const g = result.graded?.find((x) => x.questionId === q.id);
+                  return (
+                    <div key={q.id} style={{
+                      padding: '16px', borderRadius: '8px',
+                      background: g?.correct ? '#f1f8e9' : '#ffebee',
+                      border: `1px solid ${g?.correct ? '#c5e1a5' : '#ef9a9a'}`,
+                    }}>
+                      <p style={{ margin: '0 0 6px', fontSize: '13px', fontWeight: 700, color: g?.correct ? '#33691e' : '#b71c1c' }}>
+                        {g?.correct ? '✓' : '✗'} {isEn ? `Q${i + 1}` : `第${i + 1}題`}: {q.question}
+                      </p>
+                      <p style={{ margin: '0 0 4px', fontSize: '12px', color: '#555' }}>
+                        {isEn ? 'Your answer: ' : '你的答案：'}<strong>{answers[q.id] || '—'}</strong>
+                      </p>
+                      {!g?.correct && (
+                        <p style={{ margin: '0 0 4px', fontSize: '12px', color: '#555' }}>
+                          {isEn ? 'Correct answer: ' : '正確答案：'}<strong style={{ color: '#2e7d32' }}>{g?.correctAnswer}</strong>
+                        </p>
+                      )}
+                      {g?.explanation && (
+                        <p style={{ margin: '4px 0 0', fontSize: '12px', color: '#666', fontStyle: 'italic' }}>{g.explanation}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </details>
+
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link to={`/learn/${slug}`} style={{
+                padding: '12px 24px', border: '2px solid #2b3d6d', color: '#2b3d6d',
+                borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '14px',
+              }}>
+                {isEn ? '← Back to Course' : '← 返回課程'}
+              </Link>
+              {!result.passed && (
+                <button onClick={() => setPhase('ready')} style={{
+                  padding: '12px 24px', background: '#2b3d6d', color: '#fff',
+                  border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '14px', cursor: 'pointer',
+                }}>
+                  {isEn ? 'Retake Exam →' : '重新考試 →'}
+                </button>
+              )}
+            </div>
+          </div>
         )}
 
         {/* SUBMITTED RESULTS */}

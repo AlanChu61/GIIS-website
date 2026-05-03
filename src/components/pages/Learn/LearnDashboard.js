@@ -112,7 +112,7 @@ function StatCard({ label, value, sub }) {
       padding: '20px 24px', flex: '1', minWidth: '120px',
     }}>
       <p style={{ fontSize: '11px', fontWeight: 700, color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', margin: '0 0 6px' }}>{label}</p>
-      <p style={{ fontSize: '28px', fontWeight: 800, color: '#1a1a2e', margin: 0, lineHeight: 1 }}>{value ?? '—'}</p>
+      <p style={{ fontSize: 'clamp(20px, 5vw, 28px)', fontWeight: 800, color: '#1a1a2e', margin: 0, lineHeight: 1 }}>{value ?? '—'}</p>
       {sub && <p style={{ fontSize: '12px', color: '#888', margin: '4px 0 0' }}>{sub}</p>}
     </div>
   );
@@ -361,7 +361,7 @@ export default function LearnDashboard({ language }) {
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#2b3d6d', letterSpacing: '2px', textTransform: 'uppercase', margin: '0 0 4px' }}>
               {isEn ? 'Student Portal' : '学生平台'}
             </p>
-            <h1 style={{ fontSize: '32px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px' }}>
+            <h1 style={{ fontSize: 'clamp(22px, 6vw, 32px)', fontWeight: 800, color: '#1a1a2e', margin: '0 0 4px' }}>
               {isEn ? `Welcome back, ${session.student?.name || 'Student'}` : `欢迎回来，${session.student?.name || '同学'}`}
             </h1>
           </div>

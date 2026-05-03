@@ -171,7 +171,7 @@ export default function ModulePage({ language }) {
             </span>
             {quizAttempt && <ScoreBadge score={quizAttempt.score} passed={quizAttempt.passed} />}
           </div>
-          <h1 style={{ fontSize: '32px', fontWeight: 800, color: '#1a1a2e', margin: '0 0 8px' }}>
+          <h1 style={{ fontSize: 'clamp(22px, 6vw, 32px)', fontWeight: 800, color: '#1a1a2e', margin: '0 0 8px' }}>
             {isEn ? mod.title : (mod.titleZh || mod.title)}
           </h1>
           <p style={{ fontSize: '14px', color: '#888' }}>~{mod.estimatedHrs}h {isEn ? 'estimated' : '预计'}</p>
@@ -387,7 +387,7 @@ export default function ModulePage({ language }) {
         </section>
 
         {/* Navigation */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '24px', borderTop: '1px solid #e0e6f0' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', paddingTop: '24px', borderTop: '1px solid #e0e6f0' }}>
           {moduleOrder > 1 ? (
             <Link to={`/learn/${slug}/module/${moduleOrder - 1}`} style={{ fontSize: '14px', fontWeight: 700, color: '#2b3d6d', textDecoration: 'none', padding: '10px 20px', border: '2px solid #2b3d6d', borderRadius: '8px' }}>
               ← {isEn ? 'Previous' : '上一模块'}

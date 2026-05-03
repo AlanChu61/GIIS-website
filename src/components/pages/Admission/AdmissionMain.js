@@ -324,11 +324,11 @@ export default function AdmissionMain({ language, toggleLanguage }) {
             {[
               {
                 q: { en: 'Is this school fully online?', zh: '这是全线上学校吗？' },
-                a: { en: 'Yes. All classes and coursework are delivered 100% online through our Moodle learning management system. Students can attend from anywhere in the world — including China. No relocation required.', zh: '是的。所有课程均通过我们的 Moodle 学习管理系统全程在线进行。学生可在世界任何地方就读，包括中国，无需搬迁。' },
+                a: { en: 'Yes. All classes and coursework are delivered 100% online through our custom learning platform. Students can attend from anywhere in the world — including China. No relocation required.', zh: '是的。所有课程均通过我们自建的在线学习平台全程进行。学生可在世界任何地方就读，包括中国，无需搬迁。' },
               },
               {
                 q: { en: 'Do classes follow a specific time zone?', zh: '课程需要按特定时区上课吗？' },
-                a: { en: 'Most coursework is asynchronous — students complete assignments and lessons on their own schedule. Live sessions with instructors are available and scheduled to accommodate Chinese time zones (UTC+8).', zh: '大多数课程为异步进行，学生可按自己的时间安排完成。与教师的直播课程可以安排，并会考虑中国时区（UTC+8）。' },
+                a: { en: 'All coursework is fully asynchronous — students complete lessons, assignments, and exams on their own schedule, any time of day. There are no mandatory live sessions, making the program ideal for students in any time zone, including China (UTC+8).', zh: '所有课程均为全异步进行——学生可按自己的时间安排完成课程、作业与考试，无需在固定时间上线。没有强制性的直播课程，非常适合包括中国（UTC+8）在内的任何时区的学生。' },
               },
               {
                 q: { en: 'What technology do I need?', zh: '我需要什么设备？' },
@@ -344,7 +344,7 @@ export default function AdmissionMain({ language, toggleLanguage }) {
               },
               {
                 q: { en: 'What support is available for students?', zh: '学生有哪些支持资源？' },
-                a: { en: 'Every student gets assigned an academic advisor who helps design their course plan and pathway. We also provide life counseling, progress check-ins, and access to instructors via Moodle messaging and scheduled office hours.', zh: '每位学生都会被分配一名学业顾问，协助制定选课计划和路径规划。我们还提供生活辅导、学习进度追踪，以及通过 Moodle 消息和预约答疑与教师沟通的渠道。' },
+                a: { en: 'Every student receives personalized guidance from our admissions team to build their course plan and pathway. Our team monitors learning progress and provides feedback on assignments. Students can reach us at any time by email at admissions@genesisideas.school.', zh: '每位学生都能获得招生团队的个性化指导，协助规划课程与学习路径。我们的团队会持续追踪学习进度，并对作业提供反馈。学生可随时通过邮件 admissions@genesisideas.school 联系我们。' },
               },
               {
                 q: { en: 'How is tuition structured?', zh: '学费如何计算？' },

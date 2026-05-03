@@ -9,14 +9,14 @@ const MONTHLY_FEATURES = [
   { en: 'Full access to all 40+ courses', zh: '全部 40+ 门课程无限访问' },
   { en: '8 academic pathway sequences', zh: '8 条完整学习路径' },
   { en: 'Module quizzes, midterm & final exams', zh: '章节测验、期中与期末考试' },
-  { en: 'Dedicated academic advisor', zh: '专属学业顾问' },
+  { en: 'Personalized course planning support', zh: '个性化课程规划支持' },
   { en: 'Official US high school transcript', zh: '美国官方成绩单' },
   { en: 'Cancel anytime', zh: '随时取消' },
 ];
 
 const ANNUAL_EXTRAS = [
   { en: 'Everything in Monthly', zh: '包含所有月付权益' },
-  { en: 'Priority advisor response (24 h)', zh: '顾问优先 24 小时回复' },
+  { en: 'Priority support response (24 h)', zh: '优先 24 小时回复支持' },
   { en: 'US high school diploma upon graduation', zh: '毕业后颁发美国高中文凭' },
   { en: 'Annual academic progress report', zh: '年度学业进展报告' },
   { en: '~$150/month effective rate', zh: '月均约 $150' },
@@ -29,11 +29,11 @@ const FAQS = [
   },
   {
     q: { en: 'What happens if I need to pause?', zh: '如果我需要暂停怎么办？' },
-    a: { en: 'Monthly subscribers can cancel and re-enroll at any time. Annual subscribers may request a pause of up to 60 days per year — contact your advisor.', zh: '月付用户可随时取消并重新注册。年付用户每年可申请最多 60 天暂停，请联系您的顾问。' },
+    a: { en: 'Monthly subscribers can cancel and re-enroll at any time. Annual subscribers may request a pause of up to 60 days per year — contact us at admissions@genesisideas.school.', zh: '月付用户可随时取消并重新注册。年付用户每年可申请最多 60 天暂停，请发邮件至 admissions@genesisideas.school 联系我们。' },
   },
   {
     q: { en: 'Are there any additional fees?', zh: '还有其他费用吗？' },
-    a: { en: 'No. Your subscription covers everything — course content, exams, advisor sessions, and your official transcript. There are no per-course, per-exam, or setup fees.', zh: '没有。订阅费涵盖所有内容——课程资料、考试、顾问辅导及官方成绩单。无单课费、考试费或开户费。' },
+    a: { en: 'No. Your subscription covers everything — course content, exams, email support, and your official transcript. There are no per-course, per-exam, or setup fees.', zh: '没有。订阅费涵盖所有内容——课程资料、考试、邮件支持及官方成绩单。无单课费、考试费或开户费。' },
   },
   {
     q: { en: 'How long does the full diploma program take?', zh: '完整文凭项目需要多长时间？' },
@@ -55,8 +55,8 @@ export default function PricingPage({ language, toggleLanguage }) {
         <meta
           name="description"
           content={isEn
-            ? 'GIIS tuition: $199/month or $1,799/year. Full access to all courses, academic advisor, official US transcript, and diploma.'
-            : 'GIIS 学费：月付 $199，或年付 $1,799。包含全部课程、学业顾问、美国官方成绩单及文凭。'}
+            ? 'GIIS tuition: $199/month or $1,799/year. Full access to all courses, course planning support, official US transcript, and diploma.'
+            : 'GIIS 学费：月付 $199，或年付 $1,799。包含全部课程、课程规划支持、美国官方成绩单及文凭。'}
         />
       </Helmet>
 
@@ -113,14 +113,14 @@ export default function PricingPage({ language, toggleLanguage }) {
                   </li>
                 ))}
               </ul>
-              <a href={`mailto:${SCHOOL_EMAIL}?subject=${encodeURIComponent(isEn ? 'Monthly Enrollment Inquiry' : '月付入学咨询')}`}
+              <Link to="/admission"
                 style={{
                   display: 'block', textAlign: 'center', padding: '14px',
                   border: '2px solid #2b3d6d', borderRadius: '10px',
                   color: '#2b3d6d', fontWeight: 700, fontSize: '15px', textDecoration: 'none',
                 }}>
-                {isEn ? 'Get Started' : '立即开始'}
-              </a>
+                {isEn ? 'Apply Now' : '立即申请'}
+              </Link>
             </div>
 
             {/* Annual */}
@@ -157,14 +157,14 @@ export default function PricingPage({ language, toggleLanguage }) {
                   </li>
                 ))}
               </ul>
-              <a href={`mailto:${SCHOOL_EMAIL}?subject=${encodeURIComponent(isEn ? 'Annual Enrollment Inquiry' : '年付入学咨询')}`}
+              <Link to="/admission"
                 style={{
                   display: 'block', textAlign: 'center', padding: '14px',
                   background: 'rgba(213,168,54,1)', borderRadius: '10px',
                   color: '#1a1a2e', fontWeight: 800, fontSize: '15px', textDecoration: 'none',
                 }}>
-                {isEn ? 'Enroll — Best Value' : '立即入学 · 最划算'}
-              </a>
+                {isEn ? 'Apply Now — Best Value' : '立即申请 · 最划算'}
+              </Link>
             </div>
           </div>
 
@@ -217,7 +217,7 @@ export default function PricingPage({ language, toggleLanguage }) {
                   { label: isEn ? 'US diploma' : '美国文凭', vals: ['✓', '✓', '✓'] },
                   { label: isEn ? 'Learn from China' : '在中国就读', vals: ['✓', '✓', '✗'] },
                   { label: isEn ? 'Flexible schedule' : '时间自由', vals: ['✓', '✗', '✗'] },
-                  { label: isEn ? 'Academic advisor' : '学业顾问', vals: ['✓', '✓', '✓'] },
+                  { label: isEn ? 'Course planning support' : '课程规划支持', vals: ['✓', '✓', '✓'] },
                   { label: isEn ? 'Pathway planning' : '专业方向规划', vals: ['✓', '△', '△'] },
                 ].map((row, ri) => (
                   <tr key={ri} style={{ background: ri % 2 === 0 ? '#fafbff' : '#fff' }}>

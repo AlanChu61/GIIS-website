@@ -24,7 +24,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "transcript-api:db-up": "docker compose up -d",
-    "transcript-api:db-down": "docker compose down"
+    "transcript-api:db-down": "docker compose down",
+    "postinstall": "node -e \"const fs=require('fs'),f='node_modules/dompurify/dist/purify.es.mjs';try{let c=fs.readFileSync(f,'utf8');fs.writeFileSync(f,c.replace(/\\/\\/#\\s*sourceMappingURL=purify\\.es\\.mjs\\.map/,''));}catch(e){}\""
   },
   "eslintConfig": {
     "extends": [

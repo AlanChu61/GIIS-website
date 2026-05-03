@@ -348,19 +348,22 @@ export async function exportTranscriptToPDF({ profile, semesterRowsRef, semester
     const savedX = window.scrollX, savedY = window.scrollY;
     window.scrollTo(0, 0);
 
-    const canvas = await html2canvas(container, {
-      scale: 2,
-      useCORS: true,
-      allowTaint: true,
-      logging: false,
-      scrollX: 0,
-      scrollY: 0,
-      windowWidth: WIN_W_PX,
-      backgroundColor: '#ffffff',
-    });
-
-    document.body.removeChild(container);
-    window.scrollTo(savedX, savedY);
+    let canvas;
+    try {
+      canvas = await html2canvas(container, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: WIN_W_PX,
+        backgroundColor: '#ffffff',
+      });
+    } finally {
+      document.body.removeChild(container);
+      window.scrollTo(savedX, savedY);
+    }
 
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
