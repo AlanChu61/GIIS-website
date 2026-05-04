@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GIIS · Product Walkthrough</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy: #1a1a2e;
+    --navy-2: #2b3d6d;
+    --gold: #d5a836;
+    --gold-soft: rgba(213, 168, 54, 0.12);
+    --bg: #f4f6fa;
+    --text: #1a1d24;
+    --muted: #5c6578;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #000;
+    font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+    color: var(--text);
+    overflow: hidden;
+  }
+  /* 16:9 stage that fills the viewport */
+  .stage {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #000;
+  }
+  .frame {
+    position: relative;
+    width: 100vw; height: 100vh;
+    overflow: hidden;
+    background: #fff;
+  }
+  /* Each scene */
+  .scene {
+    position: absolute; inset: 0;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s ease;
+    display: flex; align-items: center; justify-content: center;
+    padding: 4vh 6vw;
+  }
+  .scene.active { opacity: 1; pointer-events: auto; }
+  .scene-inner {
+    width: 100%; max-width: 1100px;
+  }
+
+  /* Captions — bilingual: English on top, Chinese below */
+  .captions {
+    position: absolute;
+    left: 0; right: 0; bottom: 4vh;
+    display: flex; justify-content: center; pointer-events: none;
+    z-index: 50;
+  }
+  .caption-box {
+    background: rgba(0, 0, 0, 0.78);
+    color: #fff;
+    padding: 10px 22px 12px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 80vw;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 6px 30px rgba(0,0,0,0.4);
+  }
+  .caption-en {
+    font-size: clamp(14px, 1.5vw, 19px);
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+  }
+  .caption-zh {
+    font-family: 'Noto Sans SC', sans-serif;
+    font-size: clamp(11px, 1.15vw, 15px);
+    font-weight: 400;
+    line-height: 1.4;
+    color: rgba(255,255,255,0.72);
+    margin-top: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Top control bar */
+  .controls {
+    position: absolute;
+    top: 16px; right: 16px;
+    display: flex; gap: 8px;
+    z-index: 100;
+  }
+  .ctrl {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--navy);
+    cursor: pointer;
+    backdrop-filter: blur(6px);
+  }
+  .ctrl:hover { background: #fff; }
+  .ctrl.active { background: var(--navy); color: #fff; }
+
+  /* Progress bar */
+  .progress-bar {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 3px;
+    background: rgba(0,0,0,0.06);
+    z-index: 90;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(to right, var(--navy-2), var(--gold));
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* ─────────  SCENE 1 — HOOK ───────── */
+  #scene-hook {
+    background: linear-gradient(135deg, #0d0d1a 0%, var(--navy-2) 100%);
+    color: #fff;
+    text-align: center;
+  }
+  #scene-hook .crest {
+    width: 90px; height: 90px;
+    border: 3px solid var(--gold);
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 36px; font-weight: 800; color: var(--gold);
+    margin-bottom: 28px;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  #scene-hook h1 {
+    font-size: clamp(36px, 6vw, 78px);
+    font-weight: 800; line-height: 1.05;
+    margin: 0 0 18px;
+    letter-spacing: -0.02em;
+  }
+  #scene-hook .accent { color: var(--gold); }
+  #scene-hook p {
+    font-size: clamp(16px, 1.8vw, 22px);
+    color: rgba(255,255,255,0.8);
+    margin: 0;
+    max-width: 720px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* ─────────  SCENE 2 — PATHWAYS ───────── */
+  #scene-pathways {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff;
+  }
+  #scene-pathways .label-eyebrow {
+    color: var(--gold);
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin: 0 0 10px;
+  }
+  #scene-pathways h2 {
+    font-size: clamp(28px, 4.4vw, 48px);
+    font-weight: 800; margin: 0 0 32px;
+    line-height: 1.05;
+  }
+  .pathway-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  .path-card {
+    padding: 22px 18px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-top: 3px solid var(--p-color);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  .path-card.show { opacity: 1; transform: none; }
+  .path-card .emoji { font-size: 30px; margin-bottom: 12px; }
+  .path-card .name { font-size: 14px; font-weight: 700; line-height: 1.3; }
+  .path-card .name-zh { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; }
+
+  /* ─────────  SCENE 3 — DASHBOARD ───────── */
+  #scene-dashboard { background: var(--bg); }
+  .browser-chrome {
+    background: #fff;
+    border-radius: 12px 12px 0 0;
+    padding: 10px 14px;
+    display: flex; align-items: center; gap: 8px;
+    border: 1px solid #e0e6f0; border-bottom: none;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .browser-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .browser-url {
+    flex: 1; background: #f0f2f5; border-radius: 6px;
+    padding: 4px 12px; font-size: 11px; color: #888;
+    margin-left: 12px;
+  }
+  .browser-body {
+    background: #fff;
+    border: 1px solid #e0e6f0; border-top: none;
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+  }
+  .nav-stub {
+    background: #fff;
+    border-bottom: 1px solid #f0f2f8;
+    padding: 14px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-stub .logo {
+    font-weight: 800; color: var(--navy);
+    font-size: 15px; letter-spacing: 0.5px;
+  }
+  .nav-stub .links {
+    display: flex; gap: 18px; font-size: 12px; color: #555;
+  }
+  .dashboard-body { padding: 28px 32px; }
+  .welcome-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; flex-wrap: wrap; gap: 10px; }
+  .welcome-row .eyebrow { font-size: 11px; color: var(--navy-2); font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin: 0; }
+  .welcome-row h2 { font-size: 26px; font-weight: 800; color: #1a1a2e; margin: 4px 0 0; }
+  .pathway-badge {
+    background: #f0f4ff; border: 1.5px solid #c5d0f0; border-radius: 10px;
+    padding: 9px 14px; font-size: 12px; color: var(--navy-2); font-weight: 700;
+  }
+  .stat-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; margin-bottom: 22px;
+  }
+  .stat-card {
+    background: #fff; border: 1px solid #e8edf8; border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .stat-card .lbl { font-size: 10px; font-weight: 700; color: #888; letter-spacing: 1.5px; text-transform: uppercase; }
+  .stat-card .val { font-size: 30px; font-weight: 800; color: var(--navy); margin: 4px 0 2px; line-height: 1; }
+  .stat-card .val .number-anim { display: inline-block; }
+  .stat-card .sub { font-size: 11px; color: #888; }
+  .grad-banner {
+    background: #fff; border: 1px solid #e0e6f0; border-radius: 12px;
+    padding: 18px 22px; margin-bottom: 18px;
+  }
+  .grad-banner .gtitle { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .grad-banner .geyebrow { font-size: 11px; font-weight: 700; color: var(--navy-2); letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 2px; }
+  .grad-banner .gprogress { font-size: 12px; color: #666; margin: 0; }
+  .grad-banner .gpct { font-size: 22px; font-weight: 800; color: var(--navy-2); }
+  .progress-track { background: #e8ecf5; border-radius: 6px; height: 7px; overflow: hidden; }
+  .progress-track .fill {
+    height: 100%; width: 0;
+    background: linear-gradient(to right, var(--navy-2), #4a6fa5);
+    transition: width 1.2s cubic-bezier(0.2, 0.6, 0.2, 1);
+    border-radius: 6px;
+  }
+  .courses-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .course-mini {
+    background: #fff; border: 1px solid #e0e6f0; border-top: 4px solid var(--c-color);
+    border-radius: 10px; padding: 14px 16px;
+  }
+  .course-mini .dept { font-size: 9px; font-weight: 700; color: var(--c-color); letter-spacing: 1px; text-transform: uppercase; }
+  .course-mini .cname { font-size: 13px; font-weight: 700; color: #1a1a2e; margin: 4px 0 8px; line-height: 1.3; }
+  .course-mini .cprog { font-size: 11px; color: #888; }
+
+  /* Cursor */
+  .cursor {
+    position: absolute;
+    width: 26px; height: 26px;
+    z-index: 80;
+    pointer-events: none;
+    transition: left 1s cubic-bezier(0.5, 0, 0.2, 1), top 1s cubic-bezier(0.5, 0, 0.2, 1), opacity 0.3s;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.35));
+  }
+  .cursor svg { width: 100%; height: 100%; }
+  .cursor.click {
+    animation: cursor-click 0.35s ease;
+  }
+  @keyframes cursor-click {
+    0% { transform: scale(1); }
+    40% { transform: scale(0.8); }
+    100% { transform: scale(1); }
+  }
+
+  /* ─────────  SCENE 4 — MODULE ───────── */
+  #scene-module { background: var(--bg); }
+  .module-page { padding: 28px 32px; }
+  .breadcrumb { font-size: 12px; color: #888; margin: 0 0 16px; }
+  .breadcrumb a { color: var(--navy-2); text-decoration: none; }
+  .module-title {
+    font-size: 28px; font-weight: 800; color: #1a1a2e;
+    margin: 4px 0 6px;
+  }
+  .module-meta { font-size: 12px; color: var(--navy-2); font-weight: 700; }
+  .objectives {
+    background: #f0f4ff; border-left: 4px solid var(--navy-2);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px; margin: 20px 0 24px;
+  }
+  .objectives .lbl { font-size: 10px; font-weight: 700; color: var(--navy-2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .objectives p { margin: 0; font-size: 13px; line-height: 1.7; color: #333; }
+  .resource-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 22px; }
+  .resource {
+    background: #fff; border: 1px solid #e8edf8;
+    border-radius: 8px; padding: 12px 16px;
+    display: flex; align-items: center; gap: 14px;
+    opacity: 0; transform: translateX(-12px);
+    transition: opacity 0.4s, transform 0.4s;
+  }
+  .resource.show { opacity: 1; transform: none; }
+  .resource .icn { font-size: 22px; }
+  .resource .meta { flex: 1; }
+  .resource .meta .label { font-size: 12px; font-weight: 700; color: #1a1a2e; }
+  .resource .meta .note { font-size: 11px; color: #888; margin-top: 2px; }
+  .resource .check { color: #2e7d32; font-weight: 800; opacity: 0; transition: opacity 0.3s; }
+  .resource.done .check { opacity: 1; }
+  .assignment-card {
+    background: #fffde7; border: 1px solid #f9a825;
+    border-radius: 10px; padding: 14px 18px;
+    margin-bottom: 14px;
+  }
+  .assignment-card .lbl { font-size: 10px; font-weight: 700; color: #f57f17; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  .assignment-card p { font-size: 13px; color: #333; margin: 0; line-height: 1.7; }
+  .feedback-card {
+    background: #e8f5e9; border: 1px solid #a5d6a7;
+    border-radius: 8px; padding: 12px 16px;
+    font-size: 12px; color: #1b5e20;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .feedback-card.show { opacity: 1; transform: none; }
+  .feedback-card strong { color: #1b5e20; }
+
+  /* ─────────  SCENE 5 — EXAM ───────── */
+  #scene-exam { background: var(--bg); }
+  .exam-page { padding: 36px 40px; }
+  .exam-page h2 { font-size: 24px; font-weight: 800; color: #1a1a2e; margin: 0 0 6px; }
+  .exam-page .sub { font-size: 13px; color: #888; margin: 0 0 22px; }
+  .question-card {
+    background: #fff; border: 1px solid #e0e6f0;
+    border-radius: 10px; padding: 22px 26px;
+    margin-bottom: 14px;
+    transition: all 0.4s ease;
+  }
+  .question-card .qnum { font-size: 11px; color: var(--navy-2); font-weight: 700; letter-spacing: 1px; }
+  .question-card .qtext { font-size: 15px; color: #333; margin: 6px 0 14px; line-height: 1.5; }
+  .opts { display: flex; flex-direction: column; gap: 8px; }
+  .opt {
+    background: #fafbff;
+    border: 1.5px solid #e0e6f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px; color: #444;
+    transition: all 0.35s ease;
+  }
+  .opt.chosen { background: #e8f0fc; border-color: var(--navy-2); color: var(--navy-2); font-weight: 600; }
+  .opt.correct { background: #e8f5e9; border-color: #2e7d32; color: #1b5e20; font-weight: 600; }
+  .score-overlay {
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.96);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.5s;
+  }
+  .score-overlay.show { opacity: 1; }
+  .score-circle {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column;
+    box-shadow: 0 14px 40px rgba(46, 125, 50, 0.35);
+    transform: scale(0.6); opacity: 0;
+    transition: transform 0.6s cubic-bezier(0.2, 1.4, 0.4, 1.0), opacity 0.4s;
+  }
+  .score-overlay.show .score-circle { transform: scale(1); opacity: 1; }
+  .score-circle .pct { font-size: 56px; font-weight: 800; line-height: 1; }
+  .score-circle .lbl { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-top: 8px; }
+  .pass-msg {
+    margin-top: 22px; font-size: 18px; font-weight: 800; color: #1b5e20;
+    opacity: 0; transition: opacity 0.5s 0.5s;
+  }
+  .score-overlay.show .pass-msg { opacity: 1; }
+  .credit-msg {
+    margin-top: 8px; font-size: 14px; color: #555;
+    opacity: 0; transition: opacity 0.5s 0.8s;
+  }
+  .score-overlay.show .credit-msg { opacity: 1; }
+
+  /* ─────────  SCENE 6 — TRANSCRIPT ───────── */
+  #scene-transcript { background: var(--bg); }
+  .transcript {
+    background: #fff;
+    border: 1px solid #d8dee8;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+    padding: 28px 36px;
+    font-family: 'Times New Roman', serif;
+    color: #2a2a2a;
+  }
+  .ts-head { text-align: center; padding-bottom: 16px; border-bottom: 2px solid #2a2a2a; margin-bottom: 14px; }
+  .ts-head .school { font-size: 22px; font-weight: 800; letter-spacing: 1px; }
+  .ts-head .addr { font-size: 11px; color: #555; margin-top: 4px; }
+  .ts-info { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 24px; font-size: 12px; margin-bottom: 12px; }
+  .ts-info .lbl { font-weight: 700; }
+  .ts-table {
+    width: 100%; border-collapse: collapse; font-size: 11.5px;
+  }
+  .ts-table th, .ts-table td {
+    border: 1px solid #aaa; padding: 5px 8px;
+  }
+  .ts-table th { background: #f0f0f0; font-weight: 700; }
+  .ts-row { opacity: 0; transition: opacity 0.3s; }
+  .ts-row.show { opacity: 1; }
+  .ts-summary { margin-top: 12px; display: flex; justify-content: space-between; font-size: 12px; }
+  .ts-summary .item b { font-weight: 800; }
+  .verified-badge {
+    position: absolute; top: 30px; right: 60px;
+    background: #1b5e20; color: #fff;
+    padding: 6px 14px; border-radius: 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 1px;
+    opacity: 0; transform: rotate(-12deg) scale(0.8);
+    transition: all 0.5s cubic-bezier(0.2, 1.4, 0.4, 1.0);
+  }
+  .verified-badge.show { opacity: 1; transform: rotate(-12deg) scale(1); }
+
+  /* ─────────  SCENE 7 — DIPLOMA ───────── */
+  #scene-diploma {
+    background: linear-gradient(135deg, #f7e5b3 0%, #f4f6fa 50%, #f7e5b3 100%);
+  }
+  .diploma {
+    background: #fdf8e8;
+    border: 18px solid var(--gold);
+    box-shadow:
+      0 0 0 2px var(--navy),
+      0 28px 60px rgba(0,0,0,0.18);
+    padding: 36px 56px;
+    text-align: center;
+    color: var(--navy);
+    font-family: 'Times New Roman', serif;
+    position: relative;
+    transform: scale(0.85) rotate(-1deg);
+    opacity: 0;
+    transition: transform 0.9s cubic-bezier(0.2, 1.2, 0.4, 1.0), opacity 0.6s;
+  }
+  .diploma.show { transform: scale(1) rotate(0deg); opacity: 1; }
+  .diploma .seal {
+    position: absolute; bottom: 24px; right: 36px;
+    width: 80px; height: 80px;
+    border: 3px double var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--navy);
+    background: rgba(213,168,54,0.15);
+    transform: rotate(-12deg);
+    line-height: 1.1;
+    text-align: center;
+  }
+  .diploma .lbl-top { font-size: 12px; letter-spacing: 6px; text-transform: uppercase; color: var(--gold); font-family: 'Inter', sans-serif; font-weight: 700; }
+  .diploma .school-name { font-size: 32px; font-weight: 800; margin: 8px 0 6px; letter-spacing: 1px; }
+  .diploma .presents { font-size: 14px; font-style: italic; margin: 10px 0; }
+  .diploma .student-name { font-size: 38px; font-weight: 800; margin: 10px 0; letter-spacing: 1px; color: var(--navy); }
+  .diploma .underline { width: 240px; border-bottom: 1px solid var(--navy); margin: 0 auto 12px; }
+  .diploma .body { font-size: 13px; line-height: 1.7; max-width: 480px; margin: 12px auto; }
+  .diploma .signatures { display: flex; justify-content: space-around; margin-top: 24px; font-size: 11px; gap: 30px; }
+  .diploma .signatures .sig { display: flex; flex-direction: column; align-items: center; }
+  .diploma .signatures .name { font-style: italic; font-size: 16px; font-family: 'Brush Script MT', cursive; margin-bottom: 4px; }
+  .diploma .signatures .role { color: #555; font-size: 10px; }
+  .grad-list {
+    margin-top: 24px;
+    display: flex; flex-direction: column; gap: 6px;
+    align-items: center;
+    opacity: 0; transition: opacity 0.6s;
+  }
+  .grad-list.show { opacity: 1; }
+  .grad-list .item {
+    background: rgba(43,61,109,0.85);
+    color: #fff; padding: 6px 16px;
+    border-radius: 999px; font-size: 12px; font-weight: 700;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* ─────────  SCENE 8 — PARENT VIEW ───────── */
+  #scene-parent { background: var(--bg); }
+  .parent-split {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%; max-width: 1100px;
+  }
+  .email-mock, .parent-dash-mock {
+    background: #fff; border: 1px solid #e0e6f0;
+    border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    overflow: hidden;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .email-mock.show, .parent-dash-mock.show { opacity: 1; transform: none; }
+  .email-mock .head {
+    background: var(--navy);
+    color: #fff;
+    padding: 14px 18px;
+  }
+  .email-mock .head .from { font-size: 11px; color: rgba(255,255,255,0.7); }
+  .email-mock .head .subj { font-size: 14px; font-weight: 700; margin-top: 2px; }
+  .email-mock .body { padding: 18px 22px; }
+  .email-mock h3 { font-size: 16px; font-weight: 800; margin: 0 0 12px; color: #1a1a2e; }
+  .email-line { font-size: 12px; color: #444; margin: 6px 0; line-height: 1.6; padding-left: 20px; position: relative; }
+  .email-line::before { content: '•'; position: absolute; left: 0; color: var(--navy-2); font-weight: 800; }
+  .stat-pill {
+    display: inline-block;
+    background: #f0f4ff; color: var(--navy-2);
+    padding: 4px 10px; border-radius: 6px;
+    font-size: 11px; font-weight: 700;
+    margin: 4px 6px 0 0;
+  }
+  .parent-dash-mock .head {
+    background: var(--gold);
+    color: var(--navy);
+    padding: 14px 18px;
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .parent-dash-mock .body { padding: 16px 20px; }
+  .child-card {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid #eee;
+  }
+  .child-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-2), var(--gold));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 16px;
+  }
+  .child-card .child-name { font-size: 14px; font-weight: 700; color: #1a1a2e; }
+  .child-card .child-meta { font-size: 11px; color: #888; }
+  .activity {
+    padding: 8px 0; font-size: 12px; color: #444;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .activity .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--navy-2); flex-shrink: 0;
+  }
+  .activity .dot.green { background: #2e7d32; }
+  .activity .dot.gold { background: var(--gold); }
+
+  /* ─────────  SCENE 9 — CTA ───────── */
+  #scene-cta {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff;
+    text-align: center;
+  }
+  #scene-cta h2 {
+    font-size: clamp(36px, 5.5vw, 64px);
+    font-weight: 800; margin: 0 0 12px;
+    line-height: 1.05;
+  }
+  #scene-cta .accent { color: var(--gold); }
+  #scene-cta p { font-size: 17px; color: rgba(255,255,255,0.7); margin: 0 0 30px; }
+  .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn {
+    padding: 16px 34px; border-radius: 10px;
+    font-weight: 800; font-size: 15px;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+  .cta-btn:hover { transform: translateY(-2px); }
+  .cta-btn.primary { background: var(--gold); color: var(--navy); }
+  .cta-btn.outline { background: transparent; border: 2px solid rgba(255,255,255,0.3); color: #fff; }
+  .price-row { display: flex; gap: 24px; justify-content: center; margin-bottom: 30px; flex-wrap: wrap; }
+  .price-tag { color: rgba(255,255,255,0.85); font-size: 14px; }
+  .price-tag b { color: var(--gold); font-size: 22px; font-weight: 800; }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  @keyframes typing-dot {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  .typing { display: inline-flex; gap: 3px; }
+  .typing span {
+    width: 4px; height: 4px; border-radius: 50%; background: currentColor;
+    animation: typing-dot 1.2s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+
+  @media (max-width: 720px) {
+    .pathway-grid { grid-template-columns: repeat(2, 1fr); }
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .courses-row { grid-template-columns: 1fr; }
+    .parent-split { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage">
+  <div class="frame" id="frame">
+
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="controls">
+      <button class="ctrl" id="btnReplay">↻ Replay</button>
+    </div>
+
+    <!-- Cursor (animated pointer) -->
+    <div class="cursor" id="cursor" style="left: 50%; top: 50%; opacity: 0;">
+      <svg viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.2">
+        <path d="M3 2 L21 12 L13 14 L11 22 Z" />
+      </svg>
+    </div>
+
+    <!-- ───────── SCENE 1 — HOOK ───────── -->
+    <section class="scene" id="scene-hook">
+      <div class="scene-inner">
+        <div class="crest">G</div>
+        <h1>A real <span class="accent">US High School Diploma.</span><br/>From anywhere.</h1>
+        <p>Genesis of Ideas International School — Florida-registered, Cognia-pathway aligned.</p>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 2 — PATHWAYS ───────── -->
+    <section class="scene" id="scene-pathways">
+      <div class="scene-inner">
+        <p class="label-eyebrow">Designed for your goals</p>
+        <h2>8 Academic Pathways</h2>
+        <div class="pathway-grid" id="pathwayGrid"></div>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 3 — DASHBOARD ───────── -->
+    <section class="scene" id="scene-dashboard">
+      <div class="scene-inner">
+        <div class="browser-chrome">
+          <span class="browser-dot" style="background:#ff5f57"></span>
+          <span class="browser-dot" style="background:#febc2e"></span>
+          <span class="browser-dot" style="background:#28c840"></span>
+          <span class="browser-url">giis.school/learn</span>
+        </div>
+        <div class="browser-body">
+          <div class="nav-stub">
+            <span class="logo">GIIS</span>
+            <div class="links"><span>Home</span><span>Pathways</span><span>Learn</span><span>👤 Yunfan</span></div>
+          </div>
+          <div class="dashboard-body">
+            <div class="welcome-row">
+              <div>
+                <p class="eyebrow">Student Portal</p>
+                <h2>Welcome back, Yunfan</h2>
+              </div>
+              <div class="pathway-badge">Your Pathway · Engineering Science →</div>
+            </div>
+            <div class="stat-grid">
+              <div class="stat-card">
+                <div class="lbl">Credits Earned</div>
+                <div class="val"><span class="number-anim" data-target="22" data-decimals="0">0</span></div>
+                <div class="sub">/ 24 to graduate</div>
+              </div>
+              <div class="stat-card">
+                <div class="lbl">Completed</div>
+                <div class="val"><span class="number-anim" data-target="18" data-decimals="0">0</span></div>
+                <div class="sub">of 21 courses</div>
+              </div>
+              <div class="stat-card">
+                <div class="lbl">GPA (UW)</div>
+                <div class="val"><span class="number-anim" data-target="3.86" data-decimals="2">0.00</span></div>
+                <div class="sub">4.0 scale</div>
+              </div>
+              <div class="stat-card">
+                <div class="lbl">In Progress</div>
+                <div class="val"><span class="number-anim" data-target="3" data-decimals="0">0</span></div>
+                <div class="sub">active courses</div>
+              </div>
+            </div>
+            <div class="grad-banner">
+              <div class="gtitle">
+                <div>
+                  <p class="geyebrow">Graduation Progress</p>
+                  <p class="gprogress">22 / 24 credits earned</p>
+                </div>
+                <span class="gpct">92%</span>
+              </div>
+              <div class="progress-track"><div class="fill" id="gradFill"></div></div>
+            </div>
+            <div class="courses-row">
+              <div class="course-mini" style="--c-color:#1565C0">
+                <div class="dept">Computer Science</div>
+                <div class="cname">AP Computer Science A</div>
+                <div class="cprog">Module 9 / 14 · 64% complete</div>
+              </div>
+              <div class="course-mini" style="--c-color:#4527A0">
+                <div class="dept">Mathematics</div>
+                <div class="cname">AP Calculus AB</div>
+                <div class="cprog">Module 11 / 14 · 79% complete</div>
+              </div>
+              <div class="course-mini" style="--c-color:#1B6B3A">
+                <div class="dept">Economics</div>
+                <div class="cname">AP Microeconomics</div>
+                <div class="cprog">Module 6 / 12 · 50% complete</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 4 — MODULE ───────── -->
+    <section class="scene" id="scene-module">
+      <div class="scene-inner">
+        <div class="browser-chrome">
+          <span class="browser-dot" style="background:#ff5f57"></span>
+          <span class="browser-dot" style="background:#febc2e"></span>
+          <span class="browser-dot" style="background:#28c840"></span>
+          <span class="browser-url">giis.school/learn/ap-calc-ab/module/8</span>
+        </div>
+        <div class="browser-body">
+          <div class="nav-stub">
+            <span class="logo">GIIS</span>
+            <div class="links"><span>Home</span><span>Pathways</span><span>Learn</span><span>👤 Yunfan</span></div>
+          </div>
+          <div class="module-page">
+            <p class="breadcrumb"><a>My Courses</a> → <a>AP Calculus AB</a> → <span style="color:#444">Module 8</span></p>
+            <p class="module-meta">Module 8 of 14</p>
+            <h1 class="module-title">Definite Integrals &amp; the Fundamental Theorem</h1>
+            <div class="objectives">
+              <p class="lbl">Learning Objectives</p>
+              <p>Understand the relationship between differentiation and integration. Apply the Fundamental Theorem of Calculus to evaluate definite integrals and solve real-world accumulation problems.</p>
+            </div>
+            <div class="resource-list" id="resList">
+              <div class="resource" data-step="1"><span class="icn">📖</span><div class="meta"><div class="label">Reading: Stewart Ch. 5.3–5.4</div><div class="note">~45 min · Apply Riemann sums</div></div><span class="check">✓</span></div>
+              <div class="resource" data-step="2"><span class="icn">▶️</span><div class="meta"><div class="label">Video Lesson · Khan Academy</div><div class="note">22 min · Worked examples</div></div><span class="check">✓</span></div>
+              <div class="resource" data-step="3"><span class="icn">✏️</span><div class="meta"><div class="label">Practice problems · 12 questions</div><div class="note">Self-graded · check work as you go</div></div><span class="check">✓</span></div>
+            </div>
+            <div class="assignment-card">
+              <p class="lbl">📝 Assignment</p>
+              <p>Submit a 1-page write-up explaining how the Fundamental Theorem connects derivatives and integrals, with one worked example of your choosing.</p>
+            </div>
+            <div class="feedback-card" id="fbCard">
+              <strong>Teacher feedback: </strong>Excellent work, Yunfan. Your example using velocity and displacement was clear. 95/100.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 5 — EXAM ───────── -->
+    <section class="scene" id="scene-exam">
+      <div class="scene-inner" style="position:relative;">
+        <div class="browser-chrome">
+          <span class="browser-dot" style="background:#ff5f57"></span>
+          <span class="browser-dot" style="background:#febc2e"></span>
+          <span class="browser-dot" style="background:#28c840"></span>
+          <span class="browser-url">giis.school/exam/ap-calc-ab/final</span>
+        </div>
+        <div class="browser-body" style="position:relative;">
+          <div class="exam-page">
+            <h2>AP Calculus AB · Final Exam</h2>
+            <p class="sub">25 questions · 70% to pass · Pass = 1 credit awarded</p>
+            <div class="question-card">
+              <div class="qnum">Question 1 of 25</div>
+              <div class="qtext">Evaluate ∫₀² (3x² + 2x) dx</div>
+              <div class="opts">
+                <div class="opt" data-q="1" data-c="0">A) 8</div>
+                <div class="opt" data-q="1" data-c="1">B) 12</div>
+                <div class="opt" data-q="1" data-c="2">C) 14</div>
+                <div class="opt" data-q="1" data-c="3">D) 18</div>
+              </div>
+            </div>
+            <div class="question-card">
+              <div class="qnum">Question 2 of 25</div>
+              <div class="qtext">Find d/dx [∫₁ˣ sin(t²) dt]</div>
+              <div class="opts">
+                <div class="opt" data-q="2" data-c="0">A) sin(x²)</div>
+                <div class="opt" data-q="2" data-c="1">B) cos(x²)</div>
+                <div class="opt" data-q="2" data-c="2">C) 2x sin(x²)</div>
+                <div class="opt" data-q="2" data-c="3">D) sin(x)</div>
+              </div>
+            </div>
+          </div>
+          <div class="score-overlay" id="scoreOverlay">
+            <div class="score-circle">
+              <div class="pct">92<span style="font-size:24px">%</span></div>
+              <div class="lbl">Passed</div>
+            </div>
+            <div class="pass-msg">Credit earned · 1.0 added to transcript</div>
+            <div class="credit-msg">Sent to your transcript automatically.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 6 — TRANSCRIPT ───────── -->
+    <section class="scene" id="scene-transcript">
+      <div class="scene-inner" style="position:relative;">
+        <div class="transcript">
+          <div class="ts-head">
+            <div class="school">GENESIS OF IDEAS INTERNATIONAL SCHOOL</div>
+            <div class="addr">Florida Private School · Statute 1002.42 · 24-Credit Diploma Framework</div>
+          </div>
+          <div class="ts-info">
+            <div><span class="lbl">Student:</span> Yunfan Yang</div>
+            <div><span class="lbl">Date of Birth:</span> 03/14/2008</div>
+            <div><span class="lbl">Student ID:</span> 26-004</div>
+            <div><span class="lbl">Issued:</span> June 2026</div>
+            <div><span class="lbl">Pathway:</span> Engineering Science</div>
+            <div><span class="lbl">Status:</span> Graduating</div>
+          </div>
+          <table class="ts-table">
+            <thead><tr><th style="width:48%">Course</th><th>Term</th><th>Credit</th><th>Grade</th><th>GPA</th></tr></thead>
+            <tbody id="tsBody">
+              <tr class="ts-row"><td>English Language &amp; Composition</td><td>Fall G11</td><td>1.0</td><td>A</td><td>4.0</td></tr>
+              <tr class="ts-row"><td>AP Calculus AB</td><td>Spring G11</td><td>1.0</td><td>A</td><td>4.0</td></tr>
+              <tr class="ts-row"><td>AP Computer Science A</td><td>Fall G12</td><td>1.0</td><td>A-</td><td>3.7</td></tr>
+              <tr class="ts-row"><td>AP Physics 1</td><td>Spring G12</td><td>1.0</td><td>B+</td><td>3.3</td></tr>
+              <tr class="ts-row"><td>AP Microeconomics</td><td>Fall G12</td><td>1.0</td><td>A</td><td>4.0</td></tr>
+              <tr class="ts-row"><td>US History</td><td>Spring G11</td><td>1.0</td><td>A-</td><td>3.7</td></tr>
+              <tr class="ts-row"><td>Spanish III</td><td>Fall G11</td><td>1.0</td><td>A</td><td>4.0</td></tr>
+              <tr class="ts-row"><td>+ 15 more courses…</td><td colspan="4" style="text-align:center;color:#888;">total 24.0 credits</td></tr>
+            </tbody>
+          </table>
+          <div class="ts-summary">
+            <div class="item">Total Credits: <b>24.0</b></div>
+            <div class="item">Cumulative GPA: <b>3.86 (UW) · 4.21 (W)</b></div>
+            <div class="item">Diploma: <b>Eligible · June 2026</b></div>
+          </div>
+        </div>
+        <div class="verified-badge" id="verifiedBadge">✓ VERIFIED · GIIS</div>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 7 — DIPLOMA ───────── -->
+    <section class="scene" id="scene-diploma">
+      <div class="scene-inner" style="text-align:center; max-width: 880px;">
+        <div class="diploma" id="diploma">
+          <div class="lbl-top">Genesis of Ideas</div>
+          <div class="school-name">International School</div>
+          <div class="presents">Hereby presents to</div>
+          <div class="student-name">Yunfan Yang</div>
+          <div class="underline"></div>
+          <div class="body">
+            This High School Diploma in recognition of the satisfactory completion of the prescribed course of study, having earned 24.0 credits under the Florida 24-credit diploma framework, on this fourteenth day of June, two thousand and twenty-six.
+          </div>
+          <div class="signatures">
+            <div class="sig"><div class="name">Shiyu Zhang, Ph.D.</div><div class="role">President &amp; Principal</div></div>
+            <div class="sig"><div class="name">Yunfan Yang</div><div class="role">Graduate</div></div>
+          </div>
+          <div class="seal">GIIS<br/>SEAL<br/>2026</div>
+        </div>
+        <div class="grad-list" id="gradList">
+          <div class="item">UC Santa Barbara · UC Davis · Ohio State · Syracuse · NJIT</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 8 — PARENT VIEW ───────── -->
+    <section class="scene" id="scene-parent">
+      <div class="scene-inner">
+        <p class="label-eyebrow" style="color:var(--navy-2); font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase; margin: 0 0 8px;">For Parents</p>
+        <h2 style="font-size: clamp(28px,4vw,42px); font-weight:800; color:#1a1a2e; margin: 0 0 24px;">You see every step.</h2>
+        <div class="parent-split">
+          <div class="email-mock" id="emailMock">
+            <div class="head">
+              <div class="from">From: GIIS Weekly Digest &lt;noreply@giis.school&gt;</div>
+              <div class="subj">Yunfan's progress this week — May 2 → May 8</div>
+            </div>
+            <div class="body">
+              <h3>This week 📈</h3>
+              <p class="email-line">Completed Module 8 of AP Calculus AB</p>
+              <p class="email-line">Submitted assignment in AP Computer Science A — graded 95/100</p>
+              <p class="email-line">Passed AP Microeconomics midterm with 88%</p>
+              <div style="margin-top:14px;">
+                <span class="stat-pill">+ 1.0 credit</span>
+                <span class="stat-pill">22 / 24 total</span>
+                <span class="stat-pill">GPA 3.86</span>
+              </div>
+              <p style="margin-top:14px; font-size:12px; color:#666; line-height:1.6;">
+                <em>"Yunfan stayed consistent this week. He is on track for June graduation. — Coach Dean"</em>
+              </p>
+            </div>
+          </div>
+          <div class="parent-dash-mock" id="parentDash">
+            <div class="head">Parent Dashboard</div>
+            <div class="body">
+              <div class="child-card">
+                <div class="child-avatar">YY</div>
+                <div>
+                  <div class="child-name">Yunfan Yang</div>
+                  <div class="child-meta">Grade 12 · Engineering Science Pathway</div>
+                </div>
+              </div>
+              <div style="font-size:11px; font-weight:700; color:#888; letter-spacing:1px; text-transform:uppercase; margin: 12px 0 4px;">Recent activity</div>
+              <div class="activity"><span class="dot green"></span>Earned credit · AP Calculus AB · 2 days ago</div>
+              <div class="activity"><span class="dot"></span>Submitted assignment · AP CS A · 3 days ago</div>
+              <div class="activity"><span class="dot gold"></span>Started new module · AP Microeconomics · 5 days ago</div>
+              <div class="activity"><span class="dot"></span>Teacher feedback received · 1 week ago</div>
+              <div style="margin-top:14px; padding: 10px 14px; background:#f0f4ff; border-radius:8px; font-size:12px; color:var(--navy-2); font-weight:600;">
+                💬 Message your child's advisor
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ───────── SCENE 9 — CTA ───────── -->
+    <section class="scene" id="scene-cta">
+      <div class="scene-inner">
+        <h2>One subscription.<br/><span class="accent">Everything included.</span></h2>
+        <p>From first module to US college acceptance — we'll be with you the whole way.</p>
+        <div class="price-row">
+          <div class="price-tag">Monthly · <b>$199</b></div>
+          <div class="price-tag">Annual · <b>$1,799</b> · save $589</div>
+        </div>
+        <div class="cta-buttons">
+          <a class="cta-btn primary" href="/admission">Apply Now →</a>
+          <a class="cta-btn outline" href="/pricing">See Pricing</a>
+        </div>
+        <p style="margin-top:30px; font-size:13px; color:rgba(255,255,255,0.5);">giis.school · admissions@genesisideas.school</p>
+      </div>
+    </section>
+
+    <!-- Captions: bilingual (English narration + Chinese translation) -->
+    <div class="captions">
+      <div class="caption-box">
+        <div class="caption-en" id="captionEn"></div>
+        <div class="caption-zh" id="captionZh"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ─────────────  Pathway data + dynamic build ───────────── */
+const PATHWAYS = [
+  { emoji: '💻', en: 'CS & Engineering',     zh: '计算机科学',    color: '#1565C0' },
+  { emoji: '⚙️', en: 'Engineering Science',  zh: '工程科学',      color: '#B71C1C' },
+  { emoji: '📐', en: 'Math & Data Science',  zh: '数学与数据科学',color: '#4527A0' },
+  { emoji: '📊', en: 'Business & Marketing', zh: '商业与市场营销',color: '#C84B0A' },
+  { emoji: '📈', en: 'Economics & Finance',  zh: '经济与金融',    color: '#1B6B3A' },
+  { emoji: '🧠', en: 'Psychology',           zh: '心理学',        color: '#5b2c6f' },
+  { emoji: '📡', en: 'Communications',       zh: '传播与媒体',    color: '#E65100' },
+  { emoji: '🎨', en: 'Arts & Design',        zh: '艺术与设计',    color: '#6A1B9A' },
+];
+(function buildPathwayGrid() {
+  const grid = document.getElementById('pathwayGrid');
+  PATHWAYS.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'path-card';
+    card.style.setProperty('--p-color', p.color);
+    card.dataset.idx = i;
+    card.innerHTML = `<div class="emoji">${p.emoji}</div>
+      <div class="name">${p.en}</div>
+      <div class="name-zh">${p.zh}</div>`;
+    grid.appendChild(card);
+  });
+})();
+
+/* ─────────────  Scene timeline ───────────── */
+/* All times in seconds, relative to play start */
+const SCENES = [
+  { id: 'scene-hook',       at: 0.0,  dur: 6.0  },
+  { id: 'scene-pathways',   at: 6.0,  dur: 9.0  },
+  { id: 'scene-dashboard',  at: 15.0, dur: 11.0 },
+  { id: 'scene-module',     at: 26.0, dur: 11.0 },
+  { id: 'scene-exam',       at: 37.0, dur: 9.0  },
+  { id: 'scene-transcript', at: 46.0, dur: 10.0 },
+  { id: 'scene-diploma',    at: 56.0, dur: 8.0  },
+  { id: 'scene-parent',     at: 64.0, dur: 9.0  },
+  { id: 'scene-cta',        at: 73.0, dur: 7.0  },
+];
+const TOTAL_SEC = 80.0;
+
+/* ─────────────  Bilingual captions (synced with audio) ─────────────
+   Each entry: { at, to, en, zh, voice }
+   `voice` is the edge-tts voice that narrates this line on Mac. The
+   four-voice cast gives the demo more "school-feel" by alternating
+   personas instead of one monotone narrator.
+
+      Aria   (en-US-AriaNeural)    — warm female lead. School voice.
+      Guy    (en-US-GuyNeural)     — confident male.   Academic voice.
+      Jenny  (en-US-JennyNeural)   — friendly female.  Student voice.
+      Andrew (en-US-AndrewNeural)  — warm male.        Parent voice.
+*/
+const CAPTIONS = [
+  { at: 0.5,  to: 6.0,  voice: 'en-US-AriaNeural',
+    en: "This is Genesis of Ideas — a real US high school diploma, from anywhere in the world.",
+    zh: "这是 Genesis of Ideas — 真实的美国高中文凭，在世界任何地方就读。" },
+  { at: 6.5,  to: 15.0, voice: 'en-US-GuyNeural',
+    en: "Eight academic pathways. Each one mapped to a specific US college major.",
+    zh: "八条学习路径。每一条都对应美国大学的一个具体专业方向。" },
+  { at: 15.5, to: 26.0, voice: 'en-US-JennyNeural',
+    en: "After enrollment, every student gets a personal portal — credits, GPA, courses, all in one place.",
+    zh: "入学后，每位学生都有专属平台 — 学分、GPA、课程，一目了然。" },
+  { at: 26.5, to: 37.0, voice: 'en-US-JennyNeural',
+    en: "Inside each course: structured modules with reading, video, practice, and a real assignment graded by our team.",
+    zh: "每门课程内含模块化的阅读、视频、练习与真实作业，由我们团队批改。" },
+  { at: 37.5, to: 46.0, voice: 'en-US-JennyNeural',
+    en: "When ready, take the credit exam. Pass with 70% — and you've earned a real high school credit.",
+    zh: "准备好后参加学分考试。通过 70% — 就赢得了一个真实的美国高中学分。" },
+  { at: 46.5, to: 56.0, voice: 'en-US-GuyNeural',
+    en: "Every credit lands on your official transcript. Florida 24-credit framework. Recognized by US universities.",
+    zh: "每个学分即时记入官方成绩单。Florida 24 学分框架，被美国大学认可。" },
+  { at: 56.5, to: 64.0, voice: 'en-US-AriaNeural',
+    en: "Twenty-four credits — and you graduate. Class of 2026: UCSB, UC Davis, Ohio State, Syracuse, NJIT.",
+    zh: "完成 24 学分即可毕业。2026 届：UCSB、UC Davis、俄亥俄州立、雪城、NJIT。" },
+  { at: 64.5, to: 73.0, voice: 'en-US-AndrewNeural',
+    en: "And every step — parents see it too. Weekly progress emails, a parent dashboard, real teachers leaving real feedback.",
+    zh: "每一步家长都能看到。每周进度邮件、家长面板、真实老师的真实反馈。" },
+  { at: 73.5, to: 80.0, voice: 'en-US-AriaNeural',
+    en: "One subscription. Everything included. Start your application today.",
+    zh: "一份订阅，一切皆含。今天就开始你的申请。" },
+];
+
+/* ─────────────  Scene-specific animations ───────────── */
+function resetSceneAnimations() {
+  // pathway cards
+  document.querySelectorAll('#pathwayGrid .path-card').forEach(el => el.classList.remove('show'));
+  // dashboard
+  document.querySelectorAll('.number-anim').forEach(el => {
+    el.textContent = el.dataset.decimals === '0' ? '0' : '0.00';
+    el.dataset.played = '';
+  });
+  document.getElementById('gradFill').style.width = '0';
+  // module
+  document.querySelectorAll('#resList .resource').forEach(el => { el.classList.remove('show', 'done'); });
+  document.getElementById('fbCard').classList.remove('show');
+  // exam
+  document.querySelectorAll('.opt').forEach(el => { el.classList.remove('chosen', 'correct'); });
+  document.getElementById('scoreOverlay').classList.remove('show');
+  // transcript
+  document.querySelectorAll('#tsBody .ts-row').forEach(el => el.classList.remove('show'));
+  document.getElementById('verifiedBadge').classList.remove('show');
+  // diploma
+  document.getElementById('diploma').classList.remove('show');
+  document.getElementById('gradList').classList.remove('show');
+  // parent
+  document.getElementById('emailMock').classList.remove('show');
+  document.getElementById('parentDash').classList.remove('show');
+}
+
+function animateNumber(el, durMs, instant) {
+  if (el.dataset.played === '1') return;
+  el.dataset.played = '1';
+  const target = parseFloat(el.dataset.target);
+  const decimals = parseInt(el.dataset.decimals || '0');
+  if (instant) {
+    el.textContent = decimals === 0 ? Math.round(target).toString() : target.toFixed(decimals);
+    return;
+  }
+  const start = performance.now();
+  function step(now) {
+    const t = Math.min(1, (now - start) / durMs);
+    const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
+    const v = target * eased;
+    el.textContent = decimals === 0 ? Math.round(v).toString() : v.toFixed(decimals);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+function runSceneEffects(sceneId, sceneStartSec, currentSec, opts) {
+  const elapsed = currentSec - sceneStartSec; // seconds inside this scene
+  const instant = opts && opts.instant;
+
+  if (sceneId === 'scene-pathways') {
+    document.querySelectorAll('#pathwayGrid .path-card').forEach((el, i) => {
+      const showAt = 0.4 + i * 0.45;
+      if (elapsed >= showAt) el.classList.add('show');
+    });
+  } else if (sceneId === 'scene-dashboard') {
+    if (elapsed >= 0.6) {
+      document.querySelectorAll('.number-anim').forEach(el => animateNumber(el, 1500, instant));
+      document.getElementById('gradFill').style.width = '92%';
+    }
+  } else if (sceneId === 'scene-module') {
+    document.querySelectorAll('#resList .resource').forEach((el, i) => {
+      const showAt = 0.3 + i * 0.6;
+      const doneAt = showAt + 1.4;
+      if (elapsed >= showAt) el.classList.add('show');
+      if (elapsed >= doneAt) el.classList.add('done');
+    });
+    if (elapsed >= 5.5) document.getElementById('fbCard').classList.add('show');
+  } else if (sceneId === 'scene-exam') {
+    const opts = document.querySelectorAll('.opt');
+    if (elapsed >= 0.8) {
+      opts[1]?.classList.add('chosen'); // Q1 chosen B (incorrect to pick correct)
+    }
+    if (elapsed >= 1.6) {
+      // reveal correct
+      opts[2]?.classList.add('correct'); // C is the correct (12)
+    }
+    if (elapsed >= 2.6) {
+      opts[6]?.classList.add('chosen'); // Q2 → 2x sin(x²)  index 6
+    }
+    if (elapsed >= 3.4) {
+      opts[6]?.classList.add('correct');
+    }
+    if (elapsed >= 5.5) {
+      document.getElementById('scoreOverlay').classList.add('show');
+    }
+  } else if (sceneId === 'scene-transcript') {
+    document.querySelectorAll('#tsBody .ts-row').forEach((el, i) => {
+      if (elapsed >= 0.4 + i * 0.4) el.classList.add('show');
+    });
+    if (elapsed >= 4.5) document.getElementById('verifiedBadge').classList.add('show');
+  } else if (sceneId === 'scene-diploma') {
+    if (elapsed >= 0.4) document.getElementById('diploma').classList.add('show');
+    if (elapsed >= 4.0) document.getElementById('gradList').classList.add('show');
+  } else if (sceneId === 'scene-parent') {
+    if (elapsed >= 0.5) document.getElementById('emailMock').classList.add('show');
+    if (elapsed >= 1.4) document.getElementById('parentDash').classList.add('show');
+  }
+}
+
+/* ─────────────  Main timeline driver ───────────── */
+let startTime = null;
+let rafId = null;
+let activeSceneId = null;
+
+const scenes = SCENES.map(s => ({ ...s, el: document.getElementById(s.id) }));
+const captionEnEl = document.getElementById('captionEn');
+const captionZhEl = document.getElementById('captionZh');
+const progressFill = document.getElementById('progressFill');
+
+function getCaption(t) {
+  for (const c of CAPTIONS) {
+    if (t >= c.at && t < c.to) return c;
+  }
+  return null;
+}
+function renderCaption(t) {
+  const c = getCaption(t);
+  captionEnEl.textContent = c ? c.en : '';
+  captionZhEl.textContent = c ? c.zh : '';
+}
+
+function tick(now) {
+  if (startTime === null) startTime = now;
+  const t = (now - startTime) / 1000.0;
+  if (t > TOTAL_SEC) {
+    progressFill.style.width = '100%';
+    renderCaption(-1);
+    return; // stop loop
+  }
+
+  progressFill.style.width = `${Math.min(100, (t / TOTAL_SEC) * 100)}%`;
+
+  // Pick active scene
+  let active = scenes[0];
+  for (const s of scenes) {
+    if (t >= s.at && t < s.at + s.dur) { active = s; break; }
+    if (t >= s.at) active = s;
+  }
+  if (active.id !== activeSceneId) {
+    activeSceneId = active.id;
+    scenes.forEach(s => s.el.classList.toggle('active', s.id === active.id));
+  }
+
+  // Run scene-specific animations
+  runSceneEffects(active.id, active.at, t);
+
+  // Bilingual captions
+  renderCaption(t);
+
+  rafId = requestAnimationFrame(tick);
+}
+
+function start() {
+  cancelAnimationFrame(rafId);
+  resetSceneAnimations();
+  startTime = null;
+  activeSceneId = null;
+  scenes.forEach(s => s.el.classList.remove('active'));
+  rafId = requestAnimationFrame(tick);
+}
+
+/* Render at a specific time t (seconds) without realtime playback —
+   used by the screenshot-based recording script. */
+function seek(t) {
+  cancelAnimationFrame(rafId);
+  resetSceneAnimations();
+  // Re-run all elapsed scene effects so cumulative animations land correctly
+  for (const s of scenes) {
+    if (t >= s.at) {
+      const cap = Math.min(t, s.at + s.dur - 0.001);
+      runSceneEffects(s.id, s.at, cap, { instant: true });
+    }
+  }
+  // Pick active scene and toggle visibility
+  let active = scenes[0];
+  for (const s of scenes) {
+    if (t >= s.at && t < s.at + s.dur) { active = s; break; }
+    if (t >= s.at) active = s;
+  }
+  scenes.forEach(s => s.el.classList.toggle('active', s.id === active.id));
+  // Caption
+  renderCaption(t);
+  progressFill.style.width = `${Math.min(100, (t / TOTAL_SEC) * 100)}%`;
+}
+
+document.getElementById('btnReplay').addEventListener('click', start);
+
+// Auto-start
+window.addEventListener('load', () => setTimeout(start, 300));
+
+/* Expose for recording script */
+window.GIIS_DEMO = { start, seek, SCENES, TOTAL_SEC, CAPTIONS };
+</script>
+</body>
+</html>

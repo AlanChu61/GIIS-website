@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { getStudentSession } from '../../../api/authStorage';
 import { getApiBase } from '../../../config/apiBase';
 import Nav from '../../main/Nav.js';
+import './learn-mobile.css';
 
 const API = getApiBase();
 
@@ -353,10 +354,10 @@ export default function LearnDashboard({ language }) {
         <Nav language={language} />
       </div>
 
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '36px 5% 100px', fontFamily: 'Inter, sans-serif' }}>
+      <div data-m="learn-page" style={{ maxWidth: '1100px', margin: '0 auto', padding: '36px 5% 100px', fontFamily: 'Inter, sans-serif' }}>
 
         {/* Header + Pathway badge */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '28px' }}>
+        <div data-m="welcome-row" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px', marginBottom: '28px' }}>
           <div>
             <p style={{ fontSize: '11px', fontWeight: 700, color: '#2b3d6d', letterSpacing: '2px', textTransform: 'uppercase', margin: '0 0 4px' }}>
               {isEn ? 'Student Portal' : '学生平台'}
@@ -383,7 +384,7 @@ export default function LearnDashboard({ language }) {
 
         {/* Stats */}
         {myEnrollments.length > 0 && (
-          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '24px' }}>
+          <div data-m="stat-grid" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '24px' }}>
             <StatCard label={isEn ? 'Credits Earned' : '已获学分'} value={creditsEarned % 1 === 0 ? creditsEarned : creditsEarned.toFixed(1)} sub={`/ ${GRAD_CREDITS} ${isEn ? 'to graduate' : '毕业学分'}`} />
             <StatCard label={isEn ? 'Completed' : '已完成'} value={completed.length} sub={isEn ? `of ${myEnrollments.length} courses` : `共 ${myEnrollments.length} 门`} />
             <StatCard label="GPA (UW)" value={fmt2(gpa) ?? '—'} sub={isEn ? '4.0 scale' : '4.0 制'} />
@@ -393,7 +394,7 @@ export default function LearnDashboard({ language }) {
 
         {/* Graduation banner */}
         {myEnrollments.length > 0 && (isGradEligible ? (
-          <div style={{
+          <div data-m="banner-row" style={{
             background: 'linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%)',
             borderRadius: '14px', padding: '22px 28px', marginBottom: '28px',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap',
@@ -436,7 +437,7 @@ export default function LearnDashboard({ language }) {
 
         {/* Continue learning spotlight */}
         {spotlight && (
-          <div style={{
+          <div data-m="banner-row" style={{
             background: 'linear-gradient(135deg, #1a1a2e 0%, #2b3d6d 100%)',
             borderRadius: '14px', padding: '22px 28px', marginBottom: '36px',
             display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px', flexWrap: 'wrap',
@@ -479,7 +480,7 @@ export default function LearnDashboard({ language }) {
                 </Link>
               )}
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '12px' }}>
+            <div data-m="course-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '12px' }}>
               {recommendedCourses.map(c => {
                 const color = DEPT_COLORS[c.department] || '#2b3d6d';
                 return (
@@ -537,7 +538,7 @@ export default function LearnDashboard({ language }) {
                   <p style={{ fontSize: '11px', fontWeight: 700, color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', margin: '0 0 10px' }}>
                     {isEn ? `In Progress — ${inProgress.length}` : `进行中 — ${inProgress.length}`}
                   </p>
-                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
+                  <div data-m="course-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
                     {inProgress.map((enr) => <CourseCard key={enr.id} enr={enr} isEn={isEn} />)}
                   </div>
                 </div>
@@ -650,7 +651,7 @@ export default function LearnDashboard({ language }) {
               {isEn ? 'No more courses in this department.' : '该分类暂无更多课程。'}
             </p>
           ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: '12px' }}>
+            <div data-m="course-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(270px, 1fr))', gap: '12px' }}>
               {catalogCourses.map((c) => {
                 const color = DEPT_COLORS[c.department] || '#2b3d6d';
                 const pathway = DEPT_TO_PATHWAY[c.department];

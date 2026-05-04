@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GIIS Parent Dashboard · Mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy: #1a1a2e;
+    --navy-2: #2b3d6d;
+    --gold: #d5a836;
+    --bg: #f4f6fa;
+    --text: #1a1d24;
+    --muted: #5c6578;
+    --green: #2e7d32;
+    --orange: #e65100;
+    --red: #c62828;
+    --border: #e0e6f0;
+    --shadow-sm: 0 1px 3px rgba(26,26,46,0.06), 0 1px 2px rgba(26,26,46,0.04);
+    --shadow-md: 0 4px 12px rgba(26,26,46,0.08), 0 2px 4px rgba(26,26,46,0.04);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    font-family: 'Inter', 'Noto Sans SC', system-ui, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+  }
+  a { color: var(--navy-2); }
+  .mockup-banner {
+    background: rgba(213,168,54,0.18);
+    border-bottom: 1px solid var(--gold);
+    padding: 8px 24px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8a6a14;
+    letter-spacing: 0.5px;
+  }
+  /* ── Top bar ── */
+  .topbar {
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .topbar .brand { display: flex; align-items: center; gap: 10px; }
+  .topbar .crest {
+    width: 32px; height: 32px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--gold); font-weight: 800; font-size: 14px;
+  }
+  .topbar .brand-name { font-size: 14px; font-weight: 800; color: var(--navy); letter-spacing: 0.5px; }
+  .topbar .brand-name span { color: var(--muted); font-weight: 500; margin-left: 6px; }
+  .topbar .user {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; color: var(--text);
+  }
+  .topbar .user .avatar {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy-2), var(--gold));
+    color: #fff; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+  }
+
+  /* ── Layout ── */
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 28px 32px 64px;
+  }
+  .greeting {
+    font-size: 11px; font-weight: 700; color: var(--navy-2);
+    letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 4px;
+  }
+  h1 {
+    font-size: 28px; font-weight: 800; margin: 0 0 24px;
+    letter-spacing: -0.01em;
+  }
+  h1 .name-zh { color: var(--muted); font-weight: 500; font-size: 18px; margin-left: 8px; }
+  .layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow-sm);
+  }
+  .card-head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 12px; font-weight: 700; color: var(--muted);
+    letter-spacing: 1.5px; text-transform: uppercase; margin: 0;
+  }
+  .card-title-zh { font-size: 11px; color: #999; font-weight: 400; margin-left: 8px; }
+
+  /* ── Hero student card ── */
+  .student-hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-2) 100%);
+    color: #fff;
+    border: none;
+    padding: 24px 28px;
+  }
+  .student-hero .row {
+    display: flex; align-items: center; gap: 18px; margin-bottom: 18px;
+  }
+  .student-hero .photo {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: rgba(213,168,54,0.25);
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 24px;
+    flex-shrink: 0;
+  }
+  .student-hero .student-name {
+    font-size: 22px; font-weight: 800; margin: 0 0 4px;
+  }
+  .student-hero .student-meta {
+    font-size: 13px; color: rgba(255,255,255,0.65);
+    margin: 0;
+  }
+  .student-hero .stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .student-hero .stat .lbl {
+    font-size: 10px; font-weight: 700; color: rgba(213,168,54,0.85);
+    letter-spacing: 1.2px; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .student-hero .stat .val {
+    font-size: 22px; font-weight: 800; color: #fff; line-height: 1;
+  }
+  .student-hero .stat .sub {
+    font-size: 11px; color: rgba(255,255,255,0.55); margin-top: 3px;
+  }
+
+  /* ── Progress bar ── */
+  .grad-progress {
+    margin-top: 18px;
+  }
+  .grad-progress .bar-row {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+  }
+  .grad-progress .bar-label {
+    font-size: 12px; color: rgba(255,255,255,0.7);
+  }
+  .grad-progress .bar-pct {
+    font-size: 13px; font-weight: 800; color: var(--gold);
+  }
+  .grad-progress .bar-track {
+    height: 8px; background: rgba(255,255,255,0.12);
+    border-radius: 999px; overflow: hidden;
+  }
+  .grad-progress .bar-fill {
+    height: 100%;
+    width: 92%;
+    background: linear-gradient(to right, var(--gold), #ffce5b);
+    border-radius: 999px;
+  }
+
+  /* ── Course rows ── */
+  .courses { padding: 0; }
+  .course-row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    gap: 14px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f0f2f8;
+  }
+  .course-row:last-child { border-bottom: none; }
+  .course-row .dot {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--c-color);
+    color: #fff; font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .course-row .info { min-width: 0; }
+  .course-row .name {
+    font-size: 14px; font-weight: 700; color: var(--navy);
+    margin: 0 0 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .course-row .meta {
+    font-size: 12px; color: var(--muted); margin: 0;
+  }
+  .course-row .progress-mini {
+    width: 80px; height: 6px;
+    background: #eef0f4; border-radius: 999px;
+    overflow: hidden;
+  }
+  .course-row .progress-mini > div {
+    height: 100%;
+    background: var(--c-color);
+    border-radius: 999px;
+  }
+  .course-row .pct {
+    font-size: 12px; font-weight: 700; color: var(--navy-2);
+    min-width: 36px; text-align: right;
+  }
+
+  /* ── Activity feed ── */
+  .activity-row {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f2f8;
+    font-size: 13px;
+  }
+  .activity-row:last-child { border-bottom: none; }
+  .activity-row .badge {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .activity-row .badge.green { background: #e8f5e9; color: var(--green); }
+  .activity-row .badge.gold { background: rgba(213,168,54,0.18); color: #b8862e; }
+  .activity-row .badge.blue { background: #e3f2fd; color: var(--navy-2); }
+  .activity-row .badge.feedback { background: #fff3e0; color: var(--orange); }
+  .activity-row .text { flex: 1; }
+  .activity-row .text .lead { color: var(--text); font-weight: 500; }
+  .activity-row .text .lead b { color: var(--navy); font-weight: 700; }
+  .activity-row .text .when { color: var(--muted); font-size: 11px; margin-top: 3px; }
+
+  /* ── Sidebar ── */
+  .sidebar-card {
+    background: #fff; border: 1px solid var(--border);
+    border-radius: 12px; padding: 18px 20px;
+    margin-bottom: 16px; box-shadow: var(--shadow-sm);
+  }
+  .sidebar-card.advisor {
+    background: linear-gradient(135deg, #fffaeb 0%, #fff5d6 100%);
+    border-color: var(--gold);
+  }
+  .sidebar-card.advisor .label-eyebrow { color: #8a6a14; }
+  .label-eyebrow {
+    font-size: 11px; font-weight: 700; color: var(--navy-2);
+    letter-spacing: 1.5px; text-transform: uppercase; margin: 0 0 8px;
+  }
+  .label-eyebrow .zh { color: var(--muted); font-weight: 400; margin-left: 6px; letter-spacing: 0.5px; }
+  .advisor-quote {
+    font-size: 14px; line-height: 1.6; color: var(--text);
+    margin: 0 0 12px;
+    font-style: italic;
+  }
+  .advisor-byline {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: var(--muted);
+  }
+  .advisor-byline .avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    background: var(--navy-2); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px;
+  }
+  .advisor-byline b { color: var(--text); }
+
+  /* ── Quick links ── */
+  .quick-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+    text-decoration: none; color: var(--text);
+    font-size: 13px; font-weight: 600;
+    margin-bottom: 8px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+  .quick-link:hover { border-color: var(--navy-2); transform: translateY(-1px); }
+  .quick-link .icn { font-size: 18px; }
+  .quick-link .arrow { margin-left: auto; color: var(--muted); }
+
+  /* ── Upcoming ── */
+  .upcoming-row {
+    display: flex; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid #f0f2f8;
+    font-size: 13px;
+  }
+  .upcoming-row:last-child { border-bottom: none; }
+  .upcoming-row .when {
+    flex-shrink: 0; width: 60px;
+    text-align: center;
+    background: #f0f4ff; border-radius: 6px;
+    padding: 6px;
+  }
+  .upcoming-row .when .day {
+    font-size: 11px; font-weight: 700; color: var(--navy-2);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .upcoming-row .when .num {
+    font-size: 18px; font-weight: 800; color: var(--navy);
+    line-height: 1; margin-top: 2px;
+  }
+  .upcoming-row .what { font-weight: 600; color: var(--text); }
+  .upcoming-row .what .sub { font-weight: 400; color: var(--muted); font-size: 11px; margin-top: 2px; }
+
+  @media (max-width: 880px) {
+    .layout { grid-template-columns: 1fr; }
+    .student-hero .stats { grid-template-columns: repeat(2, 1fr); gap: 16px 14px; }
+    .topbar { padding: 12px 18px; }
+    .container { padding: 20px 18px 56px; }
+    .course-row { grid-template-columns: auto 1fr auto; }
+    .course-row .progress-mini { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">
+  ★ MOCKUP — Phase 1 Parent Portal · 这是设计草稿，不是真实数据
+</div>
+
+<header class="topbar">
+  <div class="brand">
+    <div class="crest">G</div>
+    <div class="brand-name">GIIS <span>Parent Portal · 家长门户</span></div>
+  </div>
+  <div class="user">
+    <div class="avatar">YL</div>
+    <div>
+      <div style="font-weight:700;">Yali Yang</div>
+      <div style="font-size:11px;color:var(--muted);">Parent · 家长</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+  <p class="greeting">Hello Yali · 您好</p>
+  <h1>Yunfan's progress this week<span class="name-zh">芸帆本周进度</span></h1>
+
+  <div class="layout">
+    <!-- ───────── LEFT COLUMN ───────── -->
+    <div>
+      <!-- Student hero -->
+      <div class="card student-hero">
+        <div class="row">
+          <div class="photo">YY</div>
+          <div>
+            <p class="student-name">Yunfan Yang · 杨芸帆</p>
+            <p class="student-meta">Grade 12 · Engineering Science Pathway · Student #26-004</p>
+          </div>
+        </div>
+        <div class="stats">
+          <div class="stat">
+            <div class="lbl">Credits Earned</div>
+            <div class="val">22.0</div>
+            <div class="sub">/ 24 to graduate</div>
+          </div>
+          <div class="stat">
+            <div class="lbl">GPA · UW</div>
+            <div class="val">3.86</div>
+            <div class="sub">4.0 scale</div>
+          </div>
+          <div class="stat">
+            <div class="lbl">In Progress</div>
+            <div class="val">3</div>
+            <div class="sub">active courses</div>
+          </div>
+          <div class="stat">
+            <div class="lbl">This week</div>
+            <div class="val">+1.0</div>
+            <div class="sub">credit earned</div>
+          </div>
+        </div>
+        <div class="grad-progress">
+          <div class="bar-row">
+            <span class="bar-label">Graduation progress · 毕业进度</span>
+            <span class="bar-pct">92%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill"></div></div>
+        </div>
+      </div>
+
+      <!-- Active courses -->
+      <div class="card">
+        <div class="card-head">
+          <p class="card-title">Active Courses<span class="card-title-zh">进行中课程</span></p>
+          <a href="#" style="font-size:12px; font-weight:700; text-decoration:none;">View all →</a>
+        </div>
+        <div class="courses">
+          <div class="course-row" style="--c-color:#1565C0">
+            <div class="dot">CS</div>
+            <div class="info">
+              <p class="name">AP Computer Science A</p>
+              <p class="meta">Module 9 of 14 · Last activity 2 days ago</p>
+            </div>
+            <div class="progress-mini"><div style="width:64%"></div></div>
+            <div class="pct">64%</div>
+          </div>
+          <div class="course-row" style="--c-color:#4527A0">
+            <div class="dot">M</div>
+            <div class="info">
+              <p class="name">AP Calculus AB</p>
+              <p class="meta">Module 11 of 14 · Final exam ready</p>
+            </div>
+            <div class="progress-mini"><div style="width:79%"></div></div>
+            <div class="pct">79%</div>
+          </div>
+          <div class="course-row" style="--c-color:#1B6B3A">
+            <div class="dot">EC</div>
+            <div class="info">
+              <p class="name">AP Microeconomics</p>
+              <p class="meta">Module 6 of 12 · Midterm passed (88%)</p>
+            </div>
+            <div class="progress-mini"><div style="width:50%"></div></div>
+            <div class="pct">50%</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <div class="card">
+        <div class="card-head">
+          <p class="card-title">Recent Activity<span class="card-title-zh">最近动态</span></p>
+          <span style="font-size:11px;color:var(--muted);">May 2 → May 8</span>
+        </div>
+        <div class="activity-row">
+          <div class="badge green">✓</div>
+          <div class="text">
+            <p class="lead">Earned 1.0 credit · <b>AP Calculus AB</b> final exam passed (92%)</p>
+            <p class="when">May 7 · 2 days ago</p>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="badge feedback">📝</div>
+          <div class="text">
+            <p class="lead">Teacher feedback received on <b>AP CS A — Module 8 assignment</b> (95/100)</p>
+            <p class="when">May 6 · 3 days ago</p>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="badge blue">📖</div>
+          <div class="text">
+            <p class="lead">Completed <b>Module 6</b> of AP Microeconomics</p>
+            <p class="when">May 5 · 4 days ago</p>
+          </div>
+        </div>
+        <div class="activity-row">
+          <div class="badge gold">★</div>
+          <div class="text">
+            <p class="lead">Passed <b>AP Microeconomics midterm</b> with 88%</p>
+            <p class="when">May 3 · 6 days ago</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ───────── RIGHT SIDEBAR ───────── -->
+    <div>
+      <!-- Advisor note -->
+      <div class="sidebar-card advisor">
+        <p class="label-eyebrow">Advisor note<span class="zh">顾问留言</span></p>
+        <p class="advisor-quote">
+          "Yunfan stayed consistent this week and is on track for June graduation. We're now
+          focusing on his college essay drafts. He's well-prepared for the Engineering Science
+          pathway final."
+        </p>
+        <div class="advisor-byline">
+          <div class="avatar">SD</div>
+          <div>
+            <div><b>Shiyu Zhang, Ph.D.</b></div>
+            <div>President &amp; Principal · 5 days ago</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming -->
+      <div class="sidebar-card">
+        <p class="label-eyebrow">Upcoming<span class="zh">近期重点</span></p>
+        <div class="upcoming-row">
+          <div class="when">
+            <div class="day">May</div>
+            <div class="num">14</div>
+          </div>
+          <div class="what">
+            AP Calculus AB Final
+            <div class="sub">Tuesday · 70% to pass</div>
+          </div>
+        </div>
+        <div class="upcoming-row">
+          <div class="when">
+            <div class="day">May</div>
+            <div class="num">21</div>
+          </div>
+          <div class="what">
+            AP CS A — Module 10 due
+            <div class="sub">Tuesday · Project submission</div>
+          </div>
+        </div>
+        <div class="upcoming-row">
+          <div class="when">
+            <div class="day">Jun</div>
+            <div class="num">14</div>
+          </div>
+          <div class="what">
+            Diploma eligibility
+            <div class="sub">2 more credits needed</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick links -->
+      <div class="sidebar-card">
+        <p class="label-eyebrow">Quick links<span class="zh">快速操作</span></p>
+        <a class="quick-link" href="#"><span class="icn">📧</span> Message advisor <span class="arrow">→</span></a>
+        <a class="quick-link" href="#"><span class="icn">📄</span> Download transcript <span class="arrow">→</span></a>
+        <a class="quick-link" href="#"><span class="icn">💳</span> Billing &amp; payment <span class="arrow">→</span></a>
+        <a class="quick-link" href="#"><span class="icn">📅</span> School calendar <span class="arrow">→</span></a>
+      </div>
+
+      <!-- Weekly digest opt-in -->
+      <div class="sidebar-card" style="background:#f0f4ff; border-color:#c5d0f0;">
+        <p class="label-eyebrow">Weekly email digest<span class="zh">每周邮件摘要</span></p>
+        <p style="font-size:13px; line-height:1.55; margin:0 0 10px;">
+          You're subscribed to weekly Sunday email digests at <b>yali.yang@example.com</b>.
+        </p>
+        <p style="font-size:12px; color:var(--muted); margin:0;">
+          Last sent · May 5 · <a href="#" style="text-decoration:none; font-weight:700;">View archive</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Foot note -->
+  <p style="margin-top:48px; text-align:center; font-size:12px; color:var(--muted);">
+    GIIS Parent Portal mockup · for design review only · 2026-05
+  </p>
+</div>
+
+</body>
+</html>

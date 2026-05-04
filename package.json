@@ -25,6 +25,10 @@
     "eject": "react-scripts eject",
     "transcript-api:db-up": "docker compose up -d",
     "transcript-api:db-down": "docker compose down",
+    "make-demo": "node scripts/make-demo.mjs",
+    "make-demo:force": "node scripts/make-demo.mjs --force",
+    "make-demo:audio": "node scripts/make-demo.mjs --audio-only",
+    "make-demo:merge": "node scripts/make-demo.mjs --merge-only",
     "postinstall": "node -e \"const fs=require('fs'),f='node_modules/dompurify/dist/purify.es.mjs';try{let c=fs.readFileSync(f,'utf8');fs.writeFileSync(f,c.replace(/\\/\\/#\\s*sourceMappingURL=purify\\.es\\.mjs\\.map/,''));}catch(e){}\""
   },
   "eslintConfig": {
@@ -46,6 +50,7 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "playwright": "^1.45.0"
   }
 }

@@ -5,6 +5,7 @@ import Nav from '../../main/Nav.js';
 import ImgSlider from './Homepage/ImgSlider.js';
 import Slogan from './Homepage/Slogan';
 import Introduction from './Homepage/Introduction';
+import HomepageDemo from './Homepage/HomepageDemo';
 import FacultyGraduates from './Homepage/FacultyGraduates.js';
 import ContactForm from './Homepage/ContactForm';
 import SuccessStories from './Homepage/SuccessStories';
@@ -110,6 +111,9 @@ function HomepageMain({ language, toggleLanguage }) {
       <div id="about" style={{ background: '#f4f6fb' }}>
         <Introduction language={language} />
       </div>
+
+      {/* 80-second product walkthrough — bridge from "why us" to "what we offer" */}
+      <HomepageDemo language={language} />
 
       {/* 8 Pathways showcase */}
       <HomepagePathways language={language} />

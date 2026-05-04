@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getStudentSession } from '../../../api/authStorage';
 import { getApiBase } from '../../../config/apiBase';
 import Nav from '../../main/Nav.js';
+import './learn-mobile.css';
 
 const API = getApiBase();
 const MIDTERM_CUTOFF = 7;
@@ -64,9 +65,9 @@ export default function CoursePage({ language }) {
       </Helmet>
       <div className="row"><Nav language={language} /></div>
 
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '48px 5% 80px', fontFamily: 'Inter, sans-serif' }}>
+      <div data-m="learn-page" style={{ maxWidth: '900px', margin: '0 auto', padding: '48px 5% 80px', fontFamily: 'Inter, sans-serif' }}>
         {/* Breadcrumb */}
-        <p style={{ fontSize: '13px', color: '#888', marginBottom: '24px' }}>
+        <p data-m="breadcrumb" style={{ fontSize: '13px', color: '#888', marginBottom: '24px' }}>
           <Link to="/learn" style={{ color: '#2b3d6d', textDecoration: 'none' }}>← {isEn ? 'My Courses' : '我的课程'}</Link>
         </p>
 
@@ -83,7 +84,7 @@ export default function CoursePage({ language }) {
           </p>
 
           {/* Stats row */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+          <div data-m="course-stats" style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: '200px' }}>
               <div style={{ flex: 1, background: '#e8ecf5', borderRadius: '4px', height: '8px' }}>
                 <div style={{ width: `${totalModules > 0 ? Math.round((submittedQuizSet.size / totalModules) * 100) : 0}%`, background: '#2b3d6d', borderRadius: '4px', height: '100%', transition: 'width 0.3s' }} />

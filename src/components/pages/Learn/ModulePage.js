@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getStudentSession } from '../../../api/authStorage';
 import { getApiBase } from '../../../config/apiBase';
 import Nav from '../../main/Nav.js';
+import './learn-mobile.css';
 
 const API = getApiBase();
 
@@ -151,9 +152,9 @@ export default function ModulePage({ language }) {
       </Helmet>
       <div className="row"><Nav language={language} /></div>
 
-      <div style={{ maxWidth: '820px', margin: '0 auto', padding: '48px 5% 80px', fontFamily: 'Inter, sans-serif' }}>
+      <div data-m="learn-page" style={{ maxWidth: '820px', margin: '0 auto', padding: '48px 5% 80px', fontFamily: 'Inter, sans-serif' }}>
         {/* Breadcrumb */}
-        <p style={{ fontSize: '13px', color: '#888', marginBottom: '24px' }}>
+        <p data-m="breadcrumb" style={{ fontSize: '13px', color: '#888', marginBottom: '24px' }}>
           <Link to="/learn" style={{ color: '#2b3d6d', textDecoration: 'none' }}>{isEn ? 'My Courses' : '我的课程'}</Link>
           {' → '}
           <Link to={`/learn/${slug}`} style={{ color: '#2b3d6d', textDecoration: 'none' }}>

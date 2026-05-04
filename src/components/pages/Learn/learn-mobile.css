@@ -1,0 +1,91 @@
+/* Learn Portal — mobile responsive overrides.
+   Imported once by LearnDashboard, CoursePage, ModulePage.
+   Targets `data-m="..."` attributes so we don't have to rewrite inline styles. */
+
+@media (max-width: 768px) {
+  /* All Learn pages use the same outer container pattern */
+  [data-m="learn-page"] {
+    padding: 20px 16px 80px !important;
+    max-width: 100% !important;
+  }
+
+  /* Top welcome / breadcrumb row — let it wrap naturally */
+  [data-m="welcome-row"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  [data-m="pathway-badge"] {
+    margin-top: 4px !important;
+  }
+
+  /* Stat cards: 4-across → 2-across on phones */
+  [data-m="stat-grid"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  [data-m="stat-grid"] > * {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    padding: 14px 16px !important;
+  }
+
+  /* Banners (graduation, continue learning) — vertical stack on phones */
+  [data-m="banner-row"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 14px !important;
+    padding: 18px 22px !important;
+  }
+  [data-m="banner-row"] a,
+  [data-m="banner-row"] [data-m-cta] {
+    align-self: stretch !important;
+    text-align: center !important;
+  }
+
+  /* Course / Module / Resource grids — single column */
+  [data-m="course-grid"],
+  [data-m="module-grid"],
+  [data-m="resource-grid"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Section header rows — wrap title + secondary action */
+  [data-m="section-header"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  /* Module page: assignment textarea + quiz options */
+  [data-m="quiz-opt"],
+  [data-m="quiz-row"] {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+  [data-m="quiz-opt"] {
+    width: 100% !important;
+  }
+
+  /* Tighten outer breadcrumbs on small screens */
+  [data-m="breadcrumb"] {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Course page header stats — wrap on phone */
+  [data-m="course-stats"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+  }
+  [data-m="course-stats"] > div {
+    width: 100% !important;
+  }
+}
+
+/* Slightly tighter on very small phones (iPhone SE etc) */
+@media (max-width: 380px) {
+  [data-m="learn-page"] { padding: 16px 12px 64px !important; }
+  [data-m="stat-grid"] > * .stat-val { font-size: 22px !important; }
+}

@@ -1,7 +1,10 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-02  
+> 最後更新：2026-05-04
 > **核心目標：讓家長願意付錢，並且持續付錢。**
+>
+> 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
+> 每個未完成項目都標註：檔案、acceptance criteria、依賴。挑一個就能直接開動。
 
 ---
 
@@ -13,345 +16,305 @@
 2. **透明** — 我看得到孩子在學什麼、學得怎麼樣嗎？
 3. **結果** — 孩子有在進步嗎？這筆錢花得值得嗎？
 
-目前系統對**學生**來說功能已經相當完整，但對**家長**來說幾乎完全不存在。家長要付錢，卻沒有任何介面、任何溝通、任何保證。這是最大的問題。
+---
+
+## ✅ Phase 0 — 上線前堵漏洞（已完成）
+
+> 修掉錯誤承諾與基本可用性問題。家長看到這些不一致就會立刻離開。
+
+- ✅ **0-A FAQ 錯誤承諾** — `AdmissionMain.js` 的 FAQ 早期已修；本輪補修 Tuition 區塊兩處漏網之魚（"Dedicated academic advisor" / "Priority advisor response" → 改成 "Personalized course planning support" / "Priority email support (24h)"）
+- ✅ **0-B Pricing Enroll 按鈕** — 早期已從 `mailto:` 改成 `<Link to="/admission">`，本輪驗證確認 OK
+- ✅ **0-C Learn Portal 手機版** — 新增 `src/components/pages/Learn/learn-mobile.css`，用 `data-m="..."` attribute 統一 hook 進三個 Learn 頁。768px 以下 stat 卡 4→2、banner 直立、課程卡單欄；380px 以下更緊湊
 
 ---
 
-## 三個視角的目標
+## ✅ 行銷資產 — Demo 影片（已完成）
 
-### 家長視角 — 願意付錢的條件
-- [ ] 不用登入就能收到孩子的進度報告（週報 email）
-- [ ] 有家長帳號，隨時可以看孩子在學什麼
-- [ ] 知道有真人老師在批改作業、給回饋
-- [ ] 文憑和成績單在大學申請時被認可（可驗證）
-- [ ] 付款流程清楚、簡單，支援信用卡
-- [ ] 入學流程不需要找人幫忙，自己就能完成
-- [ ] 每學期有一份正式的報告單
-- [ ] 遇到問題有管道聯絡學校
+> 解決 ROADMAP 列出的「課程內容無法預覽」流失點。
 
-### 管理員 / 老師視角 — 能有效管理的條件
-- [ ] 一個頁面看到所有學生的學習進度（誰卡關、誰沒動）
-- [ ] 待批作業清單，不用去資料庫找
-- [ ] 批改作業後系統自動通知學生和家長
-- [ ] 能幫學生加退課，不只是學生自己操作
-- [ ] 收到付款、入學申請的即時通知
-- [ ] 能對每位學生寫學習建議筆記
-- [ ] 批量建立學生帳號（CSV 匯入）
-- [ ] 直接從 UI 新增 / 編輯課程內容，不用改 JSON 再 re-seed
+- ✅ **80 秒自播放 walkthrough** — `public/demo/walkthrough.html`。九個 scene（hook → 8 pathways → dashboard → module → exam → transcript → diploma → parent view → CTA），英文旁白 + 中英雙語字幕
+- ✅ **多角色配音** — 4 個 edge-tts 神經語音輪流講：Aria（學校代言）、Guy（學術權威）、Jenny（學生視角）、Andrew（家長視角）
+- ✅ **MP4 渲染 pipeline** — `scripts/make-demo.mjs`（idempotent + 多階段 cache）、`scripts/README-demo.md`、`npm run make-demo` 一鍵跑完
+- ✅ **首頁嵌入** — `src/components/pages/Homepage/Homepage/HomepageDemo.js`，塞在 Introduction 與 8 Pathways 之間
+- ✅ **家長 Dashboard mockup** — `public/demo/parent-dashboard-mockup.html`（給 Phase 1 當設計參考）
 
-### 學生視角 — 願意持續學習的條件
-- [ ] 每門課有清楚的進度條，知道自己完成了多少
-- [ ] Quiz 沒過時，明確告訴我該複習哪裡，不是直接擋住
-- [ ] 考試失敗後顯示還要等幾小時才能重考
-- [ ] 作業有了老師評語時，主動通知我（不用自己去翻）
-- [ ] 忘記密碼可以自己重設，不用找 admin
-- [ ] 可以直接上傳 PDF / 圖片作為作業，不只是貼連結
-- [ ] 有地方可以問老師問題（不只是 Google）
-- [ ] 推薦下一步選什麼課，而不是自己在 91 門課裡猜
-- [ ] 用手機也能正常學習（目前 Learn Portal 手機版跑版）
+### 🔧 Demo 後續小事（code mode 5 分鐘）
+
+- [ ] 在 Mac 上跑一次 `npm run make-demo` 取代 sandbox espeak 預覽版（產出真神經語音版自動覆蓋到 `public/demo/giis-demo.mp4`）
+- [ ] 把 demo 也放在 `Admission` 與 `Pricing` 頁（現只有首頁）
+  - **檔案**：`src/components/pages/Admission/AdmissionMain.js`、`src/components/pages/Pricing/PricingPage.js`
+  - **做法**：把 `HomepageDemo.js` 的 video 區塊抽成 `src/components/main/DemoEmbed.js`（接受 `language` prop），三個頁面都引用
+  - **位置建議**：Admission 在「How to Apply」步驟之後；Pricing 在價格卡之前（讓家長付錢前先看到「我會買到什麼」）
 
 ---
 
-## 現況（已建立的）
+## 🚧 Phase 1 — 讓家長能「看到」孩子在學習
 
-**學生端（✅ 功能完整）**
-- 登入、選課、學習 Module、交作業
-- Quiz、期中考、期末考（含 gated unlock 邏輯）
-- 成績計算（加權 GPA、學分累計）
-- 成績單查看、文憑下載（24 學分後）
-- 個人 Profile
+> 目標：家長打開手機就能知道孩子這週做了什麼。
 
-**管理員端（✅ 基本可用）**
-- 學生名冊、新增/停用學生
-- 成績單編輯、Audit Log
-- 作業 feedback API 已建（無 UI）
+### 1. 把家長 Dashboard mockup 轉成真的 React 頁面
 
-**網站公開頁面（✅ 已有）**
-- 首頁、Academics、Discovery、Pathways（8 個 pathway）
-- Admission 頁面（4 步驟流程、文件要求、文憑認可說明、FAQ、定價）
-- Pricing 頁面（$199/月 或 $1,799/年）
-- 法律頁面（隱私政策、使用條款）
-- 首頁 Contact Form（Netlify Forms，已可接收詢問）
+**設計來源**：`public/demo/parent-dashboard-mockup.html`（已完成的視覺草稿，含 student hero、active courses、recent activity、advisor note、upcoming、quick links、weekly digest）
 
-## ⚠️ 已發現的內容問題（上線前必須修正）
+**檔案**：
+- 新建 `src/components/pages/Parent/ParentDashboard.js`
+- 新建 `src/components/pages/Parent/ParentLogin.js`
+- `src/App.js` 加 routes：`/parent/login`、`/parent/dashboard`
+- `src/api/parentAuth.js` — 仿 `src/api/authStorage.js` 寫一個 parent session
 
-這些是**現在就存在的錯誤承諾**，家長付錢後發現不符會要求退款：
+**Acceptance**：
+- 家長用 email + password 登入
+- Dashboard 顯示孩子的學分、GPA、進行中課程、最近活動、advisor note
+- 跑 `npm run build` 沒 error
+- 手機 (≤768px) sidebar 折到下方、stat 變 2 欄
 
-| 問題 | 位置 | 實際狀況 |
-|------|------|---------|
-| FAQ 寫「透過 Moodle 系統學習」 | AdmissionMain.js FAQ | 系統是自建的 Learn Portal，不是 Moodle |
-| FAQ 寫「有直播課程，配合中國時區」 | AdmissionMain.js FAQ | 完全沒有直播基礎設施 |
-| FAQ 寫「每位學生有 dedicated academic advisor」 | AdmissionMain.js FAQ + PricingPage.js | 系統沒有顧問互動功能，只是 admin 手動 |
-| Pricing 頁的「Enroll」按鈕是 `mailto:` 連結 | PricingPage.js | 點下去只是開 email client，不是真正付款 |
+**依賴**：先做下面的 #2 schema 與 API。
 
 ---
 
----
+### 2. Schema：`ParentAccount` 與 `Student.parentEmail`
 
-## 缺口分析：從家長付錢的角度
+**檔案**：`server/prisma/schema.prisma`
 
-### 家長完全看不到的東西
+**新增 model**：
+```prisma
+model ParentAccount {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id])
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+}
+```
 
-| 問題 | 影響 |
-|------|------|
-| 沒有家長帳號 | 家長無法追蹤孩子進度，只能靠孩子自己說 |
-| 沒有進度報告 | 孩子一個月沒動，家長也不知道 |
-| 沒有與學校溝通的管道 | 有問題只能發 email 或打電話，沒有正式渠道 |
-| 沒有付款流程 | 定價頁面有數字，但無法實際付款 |
-| 沒有入學流程 | 家長不知道怎麼幫孩子報名，要找 admin 手動建帳號 |
+**改 Student**：加 `parentEmail String?`、加 `parentAccounts ParentAccount[]` 反向關聯。
 
-### 讓家長「不確定要不要付」的東西
-
-| 問題 | 影響 |
-|------|------|
-| 課程內容無法預覽 | 家長不知道孩子會學到什麼，只有課程名稱，付錢前看不到實際內容 |
-| 沒有老師/顧問的形象 | 看不到誰在教，感覺像無人機器，沒有真人背書 |
-| 學生交了作業沒有 feedback | 家長問孩子學到什麼，孩子說不知道老師什麼時候回覆 |
-| 沒有 social proof | Admission 頁已有 Yunfan / Baoyi 的錄取案例，但首頁沒有，需要更多 |
-| 手機體驗很差 | Learn Portal 幾乎沒有 mobile CSS，家長用手機看會跑版 |
-
----
+**Acceptance**：
+- `npx prisma migrate dev --name add_parent_account` 過
+- Admin UI 建立學生時可填 parentEmail（先放 form，後端寫入即可）
+- 一個 student 可以有多個 ParentAccount（離婚家長 / 雙親各自登入）
 
 ---
 
-## Phase 0 — 上線前必須修正（錯誤承諾）
+### 3. API：家長登入 + Dashboard 資料
 
-> **這些問題現在就存在，不修就不應該開始收錢。**
+**新檔**：
+- `server/src/routes/parent-auth.js`
+  - `POST /api/parent/login` → bcrypt 比對 → 回傳 JWT
+  - `POST /api/parent/setup` → 用一次性 token 設定密碼（admin 寄邀請信用）
+- `server/src/routes/parent-data.js`
+  - `GET /api/parent/me` → 認證後回傳家長綁定的 student 資料（複用現有的 transcript / enrollments query，但只能看自己孩子）
 
-### 0-A. 修正 FAQ 的錯誤描述
-
-**Admission 頁面 FAQ 裡有三個不符合實際的承諾：**
-
-1. **Moodle** → 改成「我們自建的學習平台」
-2. **直播課程** → 改成「非同步自學為主，可預約顧問視訊」（如果真的有的話）或直接刪除
-3. **Dedicated academic advisor** → 說清楚是什麼：定期 email 回覆？還是只是 admin？定義清楚再寫上去
-
-**涉及檔案：** `src/components/pages/Admission/AdmissionMain.js`
-
----
-
-### 0-B. Pricing 頁面的 Enroll 按鈕
-
-**目前 Pricing 頁的「Enroll」按鈕是 `mailto:` 連結**，點下去只是開 email client。
-
-在 Stripe 接好之前的過渡方案：
-- 按鈕改成連到 `/apply` 入學申請表（Phase 2 建）
-- 或直接連到 Contact Form（已有 Netlify Forms）
-- 不要讓家長以為點了就完成付款
-
-**涉及檔案：** `src/components/pages/Pricing/PricingPage.js`
+**Acceptance**：
+- Postman 測試：登入後 `Authorization: Bearer <token>` 能拿到 JSON 結構（student, enrollments[], recentActivity[], advisorNote）
+- 沒登入 / 用別的 student id → 401 / 403
+- `server/src/index.js` 把新 routes 掛上去
 
 ---
 
-### 0-C. 手機版基本可用性
+### 4. 每週進度 Email 報告（Resend）
 
-**Learn Portal 幾乎沒有 mobile CSS。** 目前整個 `src/components/pages/Learn/` 只有 13 處 maxWidth 設定，沒有任何 `@media` query。家長用手機看學習進度會跑版。
+> 不需要家長登入，系統主動推訊息。Phase 1 最重要的單一功能。
 
-最低標準（不需要完美，但不能跑版）：
-- `LearnDashboard.js` — 課程卡片在小螢幕換成單欄
-- `CoursePage.js` — Module 列表在手機可讀
-- `ModulePage.js` — 文字和按鈕不超出螢幕
+**檔案**：
+- 新建 `server/src/jobs/weekly-digest.js` — 計算過去 7 天每個學生的活動，組成 HTML email
+- 新建 `server/src/templates/weekly-digest.html` — Handlebars / nunjucks 模板
+- `server/src/lib/resend.js` — Resend SDK wrapper
+- 部署：用 Render Cron / AWS EventBridge / 簡單 node-cron 每週日 19:00 CST 觸發
 
----
-
-## Phase 1 — 讓家長能「看到」孩子在學習
-
-> **目標：** 家長打開手機就能知道孩子這週做了什麼。這是信任的基礎。
-
-### 1. 每週進度 Email 報告（自動寄給家長）
-
-**這是最重要的單一功能。** 不需要家長登入，不需要他們做任何事，系統自動告訴他們孩子在做什麼。
-
-**內容：**
-- 這週完成了哪些 Module
+**Email 內容**（中英雙語，模仿 mockup 的 advisor note 語氣）：
+- 完成的 Module
 - Quiz / 考試分數
-- 作業提交狀態
 - 累計學分進度（X / 24）
-- 一句話結語（「Yunfan 本週完成了 Calculus Module 3，保持得很好！」）
+- 一句話結語（先 hardcode，Phase 3 改成 advisor 真寫）
 
-**需求：**
-- `Student` 新增 `parentEmail` 欄位
-- Admin 建立學生時可填家長 email
-- 每週一固定時間（cron job）寄出
-- 如果這週沒有任何活動，改寄「提醒」版本
+**Acceptance**：
+- 跑 `node server/src/jobs/weekly-digest.js --dry-run` 列出會寄哪些 email
+- `--dry-run=false` 真寄出
+- 寄出記錄存到 `EmailLog` table（避免重複寄）
+- 寄到測試學生 `26-004 Yunfan Yang` 自己的 admin email 看 render
 
-**Schema 異動：**
-- `Student` 新增 `parentEmail String?`
-
-**外部依賴：** Resend（免費 tier：3,000 封/月，夠用）
+**依賴**：Resend API key（Alan 在 resend.com 拿，存 `server/.env` 的 `RESEND_API_KEY`）
 
 ---
 
-### 2. 作業批改介面 + 批改後通知家長
+### 5. 作業批改 UI + 批改後通知家長
 
-**家長最常問：「老師有在看我孩子的作業嗎？」** 目前作業交了就沒下文。
+**家長最常問**：「老師有在看我孩子的作業嗎？」
 
-**需求：**
-- Admin Dashboard 新增「待批作業」清單
-  - 欄位：學生姓名、課程、Module、提交時間、內容連結
-  - 篩選：未批 / 已批
-- 批改後 email 同時寄給：學生（「你的作業有了新評語」）+ 家長（「老師批改了 [孩子名字] 的作業」）
-- 學生端 Module 頁面高亮顯示新的 feedback
+**檔案**：
+- 新建 `src/components/pages/Admin/AssignmentQueue.js` — 待批清單（學生姓名、課程、Module、提交時間、內容連結、批分、評語、submit）
+- `src/App.js` 加 route `/admin/assignments`
+- `server/src/routes/admin-assignments.js`
+  - `GET /api/admin/assignments/pending`
+  - `PATCH /api/admin/assignments/:id` → 寫 score + feedback，觸發兩封 email（學生 + 家長）
+- Schema：`AssignmentSubmission` 新增 `score Decimal?`、`gradedAt DateTime?`、`gradedById String?`
 
-**API 新增：** `GET /api/admin/assignments/pending`  
-**Schema 異動：** `AssignmentSubmission` 新增 `score Decimal?`
+**Acceptance**：
+- Admin 在 `/admin/assignments` 看到所有 submission，篩選未批 / 已批
+- 批改 submit 後，學生在 `ModulePage` 的 feedback card 立刻顯示新 feedback
+- 家長收到 email：「老師批改了 Yunfan 的 [Module 8 作業]」
 
----
-
-### 3. 家長入口（Parent View）
-
-**家長需要一個地方登入，看到一個簡單的 dashboard。**
-
-**需求：**
-- 新增 `ParentAccount` — `{ id, email, passwordHash, studentId }`
-- `/parent/login` — 家長登入頁
-- `/parent/dashboard` — 只讀：
-  - 孩子的照片 / 姓名 / 年級
-  - 目前選課清單 + 每門課完成 % 進度條
-  - 最近 5 筆活動（完成 Module、通過考試、交作業）
-  - 累計學分 / GPA
-  - 聯絡學校按鈕（開啟 email 或 contact form）
-- Admin 建立學生時可同時建立家長帳號（或獨立寄邀請連結）
-
-**Schema 新增：** `ParentAccount` model
+**依賴**：#4 的 Resend wrapper
 
 ---
 
-## Phase 2 — 讓家長能「付款並信任」
+### 6. Demo embed 抽成共用 component
 
-> **目標：** 付款流程順暢，學校看起來是一間真正的機構。
+**目標**：避免在 Homepage / Admission / Pricing 重複 video JSX
 
-### 4. 付款整合
+**檔案**：
+- 新建 `src/components/main/DemoEmbed.js`，從 `HomepageDemo.js` 抽出 video 區塊，加可選的 `variant` prop（`'full'` / `'compact'`）
+- `HomepageDemo.js`、新加的 Admission / Pricing 嵌入點都用這個
 
-**定價頁面有數字，但沒有辦法付錢，等於白搭。**
-
-**方案：** Stripe（支援信用卡、分期，介面可嵌入，最快整合）
-
-**需求：**
-- Pricing 頁面加入「Enroll Now」按鈕 → Stripe Checkout
-- 付款方案：月費 / 學期費 / 年費（依你的定價策略）
-- 付款成功後：
-  - 自動建立學生帳號（或啟用帳號）
-  - 自動寄歡迎 email（含登入資訊）給學生 + 家長
-- Admin 後台顯示付款狀態 / 到期日
-
-**Schema 新增：**
-- `Subscription` — `{ id, studentId, stripeCustomerId, status, currentPeriodEnd }`
+**Acceptance**：grep `<source src="/demo/giis-demo.mp4"` 只剩一個地方寫死。
 
 ---
 
-### 5. 入學流程（Self-service Onboarding）
+## 💰 Phase 2 — 讓家長能「付款並信任」
 
-**目前沒有家長可以自己完成的入學流程。** 全靠 admin 手動建帳號。
+### 7. Stripe Checkout 整合
 
-**需求：**
-- `/apply` 入學表單：學生姓名、生日、家長姓名、家長 email、電話
-- 提交後：
-  - Admin 收到通知 email
-  - 家長收到「申請已收到，我們會在 24 小時內聯絡您」確認信
-- Admin 審核後一鍵建立帳號 + 觸發付款連結 / 歡迎信
+**檔案**：
+- `server/src/routes/checkout.js` — `POST /api/checkout/create-session`（建 Stripe Checkout Session，return url 帶 session_id）
+- `server/src/routes/webhooks-stripe.js` — `POST /api/webhooks/stripe`（驗 signature、處理 `checkout.session.completed` → 建學生帳號 / 啟用 subscription / 寄歡迎信）
+- 新 schema：`Subscription { id, studentId, stripeCustomerId, stripeSubscriptionId, status, currentPeriodEnd }`
+- 前端 `PricingPage.js` Apply Now → POST `/api/checkout/create-session` → `window.location = checkoutUrl`
 
----
+**Acceptance**：
+- Stripe test mode 跑通：填 `4242 4242 4242 4242` 之後自動建學生帳號 + 寄出歡迎信
+- Webhook 在 Stripe Dashboard 測試 `checkout.session.completed` 能收到並回 200
+- Subscription 過期前 7 天自動寄續費提醒（Phase 3 再做）
 
-### 6. 成績單與文憑的公信力強化
-
-**家長付錢的一大原因是拿到有意義的文憑。** 目前文憑和成績單外觀已經做得不錯，但公信力不夠清楚。
-
-**需求：**
-- 成績單 / 文憑上加入驗證 QR code，掃描後顯示「此文件由 GIIS 官方發出，學生：XXX，日期：XXXX」
-- `/verify/:studentCode` 公開驗證頁面（不需登入，輸入學號或掃 QR 即可確認真實性）
-- Cognias 認證 logo 在網站首頁、About 頁更顯眼
-- School Profile 頁面補充「我們的文憑被哪些大學認可 / 提交過哪些申請案例」
+**依賴**：#4 的 Resend wrapper
 
 ---
 
-## Phase 3 — 讓家長「一直付錢」（Retention）
+### 8. 入學流程（`/apply`）
 
-> **目標：** 不只是第一次付，而是每學期續費。
+**檔案**：
+- 新建 `src/components/pages/Apply/ApplyForm.js` — 學生姓名、生日、grade level、家長姓名、家長 email、電話
+- `server/src/routes/applications.js` — `POST /api/applications`（存 `Application` row、寄 admin 通知 + 家長確認信）
+- 新 schema：`Application { id, studentName, dob, gradeLevel, parentName, parentEmail, phone, status, createdAt, reviewedAt, reviewedById }`
+- Admin 介面 `src/components/pages/Admin/ApplicationsQueue.js` — 一鍵 approve → 觸發 Stripe checkout link 寄給家長
 
-### 7. 學習顧問功能（Advisor 角色）
-
-家長付錢後，最常問的問題是：「我的孩子下一步該選什麼課？」目前系統沒有人回答這個問題。
-
-**需求：**
-- Admin 可以對每位學生留下「學習建議」筆記
-- 每學期初自動寄給家長：「根據 Yunfan 的學習進度，我們建議下學期選修以下課程...」
-- 家長 Dashboard 顯示「顧問建議」區塊
-
-### 8. 學期總結報告（Semester Report Card）
-
-- 每學期末自動生成 PDF 報告寄給家長
-- 內容：這學期完成的課程、GPA、老師評語、下學期建議
-- 感覺像真正的學校在認真追蹤孩子的學習
-
-### 9. 忘記密碼（學生自助）
-
-- 學生 / 家長自己可以 reset 密碼，不用找 admin
-- 需要接 email 服務（Phase 1 就應該接了）
-
-### 10. 考試冷卻倒計時
-
-- 考試失敗後顯示「還要等 X 小時才能重考」
-- 小改動，但讓體驗更清楚
+**Acceptance**：訪客填表→admin 審核→家長收到付款 link→付完款→學生帳號自動建立。
 
 ---
 
-## Phase 4 — 規模化
+### 9. 文憑 / 成績單驗證 QR
 
-> 有了穩定付費用戶後才考慮
+**檔案**：
+- `src/components/pages/Diploma/DiplomaPage.js` 與 `Transcript/TranscriptContent.js` 加 QR code（`qrcode.react`）指向 `/verify/:studentCode`
+- 新建 `src/components/pages/Verify/VerifyPage.js` — 公開頁，輸入學號或掃 QR 顯示「此文件由 GIIS 官方發出，學生：XXX，發證日期：XXXX」
+- `server/src/routes/verify.js` — `GET /api/verify/:code` 回傳最小公開資料（姓名、發證日期、是否畢業）
 
-### 管理員端
-| 功能 | 對應目標 |
-|------|---------|
-| 課程 / 題目管理 UI | admin 可從 UI 新增 / 編輯課程，不用改 JSON + re-seed |
-| 批量學生匯入（CSV）| 一次建立多個帳號，自動寄歡迎信 |
-| 學生進度看板 | 一頁看所有學生進度、誰卡關、誰超過 14 天沒動 |
-| Admin 代替學生加退課 | 學生 Profile 頁可直接管理 Enrollment |
-
-### 學生端
-| 功能 | 對應目標 |
-|------|---------|
-| 課程進度條 | Dashboard 每張課程卡顯示 `已完成 X / Y Modules` |
-| Quiz 失敗引導 | 沒過時顯示「建議複習這個 Module 的哪個部分」 |
-| 考試冷卻倒計時 | 失敗後顯示「還要等 X 小時才能重考」 |
-| 作業檔案上傳 | 支援 PDF / DOCX（Cloudflare R2 或 S3）|
-| 學生討論 / Q&A | 每個 Module 下方討論區，老師可回覆 |
-| 課程推薦優化 | 根據 GPA、已選課程、Pathway 推薦下一步 |
-
-### 成長機制
-| 功能 | 說明 |
-|------|------|
-| 推薦人機制 | 現有家長推薦新生，雙方獲得學費折扣 |
-| Alumni 展示頁 | 畢業生去了哪間大學，增加公信力 |
+**Acceptance**：列印的成績單上掃 QR 就能驗證真偽，不需登入。
 
 ---
 
-## 技術債（隨時可處理，不影響家長付錢）
+## 🔁 Phase 3 — 留住付費用戶
 
-| 項目 | 影響 |
-|------|------|
-| 移除 Bootstrap（僅用了幾個 class）| Bundle 減少 ~200KB |
-| 移除 react-slick → CSS scroll-snap | 少 2 個套件 |
-| 首頁圖片轉 WebP（9.9MB → ~2MB）| 首頁載入快 3–4 倍 |
-| Login / exam submit 加 rate limiting | 安全性 |
-| Server-side PDF（Puppeteer）| PDF 品質更穩定，不受瀏覽器影響 |
+### 10. Advisor 筆記 + 學期建議
+
+- Admin 對每位學生留 markdown 筆記（`AdvisorNote { studentId, body, createdAt, authorId }`）
+- 家長 Dashboard 的「Advisor note」區塊讀最新一筆（mockup 已有版位）
+- 每學期初 cron job 自動寄出「建議下學期選修」email（用 pathway + 已完成課程算）
+
+### 11. 學期總結報告 PDF
+
+- 既有的 `transcriptPdf.js` 已能生成成績單 PDF，extend 為 semester report
+- cron job 每學期末（5/31, 12/31）自動生成 + 寄出
+
+### 12. 忘記密碼（學生 + 家長）
+
+- `POST /api/auth/forgot-password` → 寄 reset link（24h 有效）
+- `src/components/pages/Auth/ResetPassword.js`
+- 學生 + 家長共用同一條 flow
+
+### 13. 考試冷卻倒計時
+
+- 既有的 exam attempt 有 `nextAttemptAt`，UI 把這欄轉成 "還要等 X 小時 Y 分鐘"
+- 改 `src/components/pages/Learn/ExamPage.js`
+
+---
+
+## 📈 Phase 4 — 規模化
+
+> 等有穩定付費用戶後才考慮，列項即可。
+
+| 區塊 | 功能 | 對應檔案概念 |
+|------|------|-------------|
+| Admin | 課程 / 題目管理 UI | 取代手改 JSON + re-seed |
+| Admin | 批量學生匯入 CSV | `/admin/students/bulk-import` |
+| Admin | 學生進度看板 | `/admin/students/dashboard` 一頁看誰卡關 |
+| Admin | 代替學生加退課 | 在 student profile 頁加 enrollment 編輯 |
+| Student | 課程進度條 | `LearnDashboard.js` 課程卡顯示 X/Y modules |
+| Student | Quiz 失敗引導 | 沒過時建議複習特定章節 |
+| Student | 作業檔案上傳 | Cloudflare R2 / S3 |
+| Student | Q&A 討論區 | 每個 Module 下方 |
+| 成長 | 推薦人機制 | 雙方學費折扣 |
+| 成長 | Alumni 展示頁 | 畢業生大學去處 |
+
+---
+
+## 🛠️ 技術債
+
+| 項目 | 影響 | 對應檔案 |
+|------|------|---------|
+| 移除 Bootstrap | Bundle 減 ~200KB | grep `bootstrap`，主要在 `Header/`、`Footer/` |
+| 移除 react-slick → CSS scroll-snap | 少 2 個套件 | `ImgSlider.js` |
+| 首頁圖片轉 WebP | 載入快 3-4 倍 | `src/img/Homepage/*.png` → 用 sharp 一次轉 |
+| Login / exam submit rate limiting | 安全 | `server/src/middleware/rate-limit.js` (新建) |
+| Server-side PDF（Puppeteer） | PDF 品質穩定 | 取代現有 jspdf |
+
+---
+
+## 📝 Code Mode 須知（這輪建立的慣例）
+
+### Demo pipeline
+- 字幕 source of truth：`public/demo/walkthrough.html` 的 `const CAPTIONS = [...]`
+- `make-demo.mjs` 自動 parse 出來，不要在 `make-demo.mjs` 裡另外 hardcode 字幕
+- 改字幕後跑 `npm run make-demo:audio && npm run make-demo:merge`（不用全 force）
+
+### 4-voice cast convention
+- Aria（學校代言）、Guy（學術權威）、Jenny（學生視角）、Andrew（家長視角）
+- 新增 scene 時要決定哪個 persona 講
+- 列所有可選聲音：`edge-tts --list-voices | grep en-`
+
+### 手機 CSS pattern
+- 不重寫 inline style，新增 `data-m="..."` attribute hook 到 `learn-mobile.css`
+- 命名：`learn-page` / `welcome-row` / `stat-grid` / `banner-row` / `course-grid` / `breadcrumb` / `course-stats`
+- 新頁也用同一條 css，加新 `data-m` 命名先看 css 已有哪些可重用
+
+### 雙語慣例
+- 所有家長 / 行銷面文案用 `language` prop 切換 EN/中文
+- 中文用簡體（`zh-CN`），跟既有 `siteStrings.js` 一致
+- Admin 介面英文即可（給 Alan 用）
+
+### 校長簽名（不要再寫錯）
+- 校長：**Shiyu Zhang, Ph.D.**，職稱 **President & Principal**
+- 第二簽名線是畢業生本人
+- 參考：`src/components/pages/Diploma/DiplomaPage.js` line 337
 
 ---
 
 ## 開發優先序總結
 
 ```
-立刻做（Phase 1）：
-  週報 email → 作業批改 + 通知 → 家長 Portal
+Phase 1（讓家長看到）：
+  Demo 補放 Admission/Pricing → Parent Dashboard 真版 → Schema + API → 週報 email → 作業批改 UI
 
-讓錢進來（Phase 2）：
-  Stripe 付款 → 入學表單 → 文憑驗證
+Phase 2（讓錢進來）：
+  Stripe → /apply → 文憑驗證 QR
 
-留住付費用戶（Phase 3）：
-  顧問建議 → 學期報告 → 密碼重設
+Phase 3（留住付費用戶）：
+  Advisor 筆記 → 學期報告 → 密碼重設 → 考試冷卻
 
-等有規模再做（Phase 4）：
-  課程管理 UI → 批量操作 → 討論區
+Phase 4（有規模再做）：
+  Admin 課程 UI → 批量操作 → 討論區
 ```
 
 ---
@@ -362,6 +325,7 @@
 - **Backend:** Express + Prisma ORM + PostgreSQL / 目標 AWS Lightsail
 - **Email（待接）:** Resend（免費 3,000 封/月，API key 在 resend.com）
 - **付款（待接）:** Stripe（Phase 2）
+- **TTS（demo 用）:** edge-tts（`pip3 install edge-tts`）
 - **學生資料備份:** `server/data-backup/students_transcript_export.json`
 
 ## 測試帳號
@@ -373,4 +337,4 @@
 | 26-003 | Baoyi Lu ★ | baoyi.lu@genesisideas.school |
 | 26-004 | Yunfan Yang ★ | yunfan.yang@genesisideas.school |
 
-★ Yunfan Yang 有最多考試記錄，最適合測試。
+★ Yunfan Yang 有最多考試記錄，最適合測試（demo 也以他為主角）。

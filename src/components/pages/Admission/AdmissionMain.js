@@ -247,7 +247,7 @@ export default function AdmissionMain({ language, toggleLanguage }) {
                 {[
                   isEn ? 'Full access to all 8 pathways' : '全部 8 条路径无限访问',
                   isEn ? 'Unlimited course exams' : '无限次课程考试',
-                  isEn ? 'Dedicated academic advisor' : '专属学业顾问',
+                  isEn ? 'Personalized course planning support' : '个性化课程规划支持',
                   isEn ? 'Official US transcript' : '美国官方成绩单',
                 ].map((item) => (
                   <li key={item} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'rgba(255,255,255,0.82)', fontSize: '14px' }}>
@@ -285,7 +285,7 @@ export default function AdmissionMain({ language, toggleLanguage }) {
               <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
                   isEn ? 'Everything in monthly' : '包含所有月付内容',
-                  isEn ? 'Priority advisor response' : '顾问优先回复',
+                  isEn ? 'Priority email support (24h)' : '优先邮件支持（24 小时内回复）',
                   isEn ? 'US diploma upon completion' : '完成学业后颁发美国文凭',
                   isEn ? '~$150/month effective rate' : '月均约 $150',
                 ].map((item) => (

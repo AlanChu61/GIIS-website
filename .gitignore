@@ -23,3 +23,13 @@ yarn-debug.log*
 yarn-error.log*
 .claude/
 .tmp_pdf_render/
+
+# Demo render artifacts: keep the canonical mp4 + mp3 in demo-output/, ignore the cache
+demo-output/_cache/
+demo-output/giis-demo-en.mp4
+demo-output/giis-demo-zh.mp4
+demo-output/giis-demo-voiceover-en.mp3
+demo-output/giis-demo-voiceover-zh.mp3
+
+# Teaching video assets — large binaries, keep locally only
+teaching-videos/
