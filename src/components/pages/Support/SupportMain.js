@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '../../main/Nav.js';
-import heroImg from '../../../img/Homepage/homepage5.png';
+import heroImg from '../../../img/Hero/diploma-screen.jpg';
 
 const SCHOOL_PHONE = '+1 (813) 501-5756';
 const SCHOOL_EMAIL = 'support@genesisideas.school';

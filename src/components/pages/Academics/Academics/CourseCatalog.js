@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-// Florida 24-credit graduation framework (industry standard for accredited private schools)
+// Florida 24-credit graduation framework (industry standard for Florida-registered private schools)
 const GRAD_REQUIREMENTS = [
   { area: 'English Language Arts', areaZh: '英语语言艺术', credits: 4,   color: '#2b3d6d' },
   { area: 'Mathematics',           areaZh: '数学',         credits: 4,   color: '#1a5276' },
@@ -776,8 +776,8 @@ const DEPARTMENTS = [
     required: { en: '3 credits required', zh: '必修 3 学分' },
     color: '#7a3b3b',
     note: {
-      en: 'Covers U.S. and world history, geography, government, and economics — all required for Florida accreditation. AP Human Geography and AP Psychology are available for advanced study.',
-      zh: '涵盖美国与世界历史、地理、政府与经济学，均为 Florida 认证要求科目。进阶学生可选修 AP 人文地理及 AP 心理学。',
+      en: 'Covers U.S. and world history, geography, government, and economics — all required for the Florida 24-credit framework. AP Human Geography and AP Psychology are available for advanced study.',
+      zh: '涵盖美国与世界历史、地理、政府与经济学，均为 Florida 24 学分框架要求科目。进阶学生可选修 AP 人文地理及 AP 心理学。',
     },
     courses: [
       { name: 'World History',      type: 'Core', credits: '0.5', grade: '9',     term: 'Fall' },
@@ -899,8 +899,8 @@ function RequirementBar({ language }) {
       </h3>
       <p style={{ fontSize: '13px', color: '#666', marginBottom: '16px' }}>
         {isEn
-          ? 'GIIS follows the Florida 24-credit accreditation framework, the standard for US-accredited private high schools recognized by US colleges and universities.'
-          : 'GIIS 遵循 Florida 24 学分认证框架，此为美国各大学认可的美国私立高中标准学制。'}
+          ? 'GIIS follows the Florida 24-credit graduation framework, the standard for Florida-registered private high schools issuing diplomas recognized by US colleges and universities.'
+          : 'GIIS 遵循 Florida 24 学分毕业框架，此为 Florida 注册私立高中颁发文凭的标准学制，被美国各大学认可。'}
       </p>
       <div style={{ display: 'flex', height: '12px', borderRadius: '6px', overflow: 'hidden', marginBottom: '12px' }}>
         {GRAD_REQUIREMENTS.map((r) => (

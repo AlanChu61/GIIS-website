@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '../../main/Nav.js';
-import heroImg from '../../../img/Homepage/homepage3.png';
+import heroImg from '../../../img/Hero/transcript-screen.jpg';
 
 const SCHOOL_PHONE = '+1 (813) 501-5756';
 const SCHOOL_EMAIL = 'admissions@genesisideas.school';
@@ -180,7 +180,7 @@ export default function AdmissionMain({ language, toggleLanguage }) {
               {
                 icon: '🎓',
                 title: { en: 'Accepted by US Universities', zh: '美国大学认可' },
-                body: { en: 'Class of 2026 graduates have been accepted to UCSB, The Ohio State University, UC Davis, Syracuse University, and NJIT.', zh: '2026 届毕业生已获 UCSB、俄亥俄州立大学、UC Davis、雪城大学及 NJIT 录取。' },
+                body: { en: 'Class of 2026 graduates have been accepted to UC Santa Barbara, The Ohio State University, UC Davis, Syracuse University, and New Jersey Institute of Technology.', zh: '2026 届毕业生已获 UC Santa Barbara、俄亥俄州立大学、UC Davis、雪城大学（Syracuse University）及新泽西理工学院（New Jersey Institute of Technology）录取。' },
               },
             ].map((item) => (
               <div key={item.icon} style={{
@@ -207,8 +207,8 @@ export default function AdmissionMain({ language, toggleLanguage }) {
               </p>
               <p style={{ margin: 0, fontSize: '13px', color: '#2e7d32', lineHeight: 1.7 }}>
                 {isEn
-                  ? 'Yunfan Yang accepted to UC Santa Barbara, Ohio State, UC Davis (Kinesiology). Baoyi Lu accepted to Syracuse University SIT and NJIT.'
-                  : '杨芸帆已获 UC Santa Barbara、俄亥俄州立大学、UC Davis（运动科学）录取。卢抱一已获雪城大学信息研究学院及 NJIT 录取。'}
+                  ? 'Yunfan Yang accepted to UC Santa Barbara, The Ohio State University, and UC Davis (Kinesiology). Baoyi Lu accepted to Syracuse University and New Jersey Institute of Technology.'
+                  : '杨芸帆已获 UC Santa Barbara、俄亥俄州立大学、UC Davis（运动科学）录取。卢抱一已获雪城大学（Syracuse University）及新泽西理工学院（New Jersey Institute of Technology）录取。'}
               </p>
             </div>
           </div>
@@ -234,14 +234,20 @@ export default function AdmissionMain({ language, toggleLanguage }) {
               borderRadius: '14px', padding: '36px 32px',
             }}>
               <p style={{ color: 'rgba(213,168,54,1)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', margin: '0 0 16px' }}>
-                {isEn ? 'Monthly' : '月付'}
+                {isEn ? 'Founders Monthly' : '创校月付'}
               </p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '8px' }}>
-                <span style={{ color: '#fff', fontSize: '56px', fontWeight: 800, lineHeight: 1 }}>$199</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px' }}>
+                <span style={{ color: '#fff', fontSize: '56px', fontWeight: 800, lineHeight: 1 }}>$19.90</span>
                 <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '16px' }}>{isEn ? '/ month' : '/ 月'}</span>
               </div>
-              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '13px', margin: '0 0 24px' }}>
-                {isEn ? 'Cancel anytime' : '随时取消'}
+              <p style={{ fontSize: '13px', margin: '0 0 6px' }}>
+                <span style={{ color: 'rgba(255,255,255,0.4)', textDecoration: 'line-through' }}>$199</span>
+                <span style={{ color: '#a5d6a7', fontWeight: 700, marginLeft: '8px' }}>
+                  {isEn ? '90% off' : '省 90%'}
+                </span>
+              </p>
+              <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', margin: '0 0 24px' }}>
+                {isEn ? 'First 100 students · Locked for 12 months' : '限前 100 名学生 · 锁定 12 个月'}
               </p>
               <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
@@ -273,21 +279,27 @@ export default function AdmissionMain({ language, toggleLanguage }) {
                 {isEn ? 'BEST VALUE' : '最划算'}
               </div>
               <p style={{ color: 'rgba(213,168,54,1)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', margin: '0 0 16px' }}>
-                {isEn ? 'Annual' : '年付'}
+                {isEn ? 'Founders Annual' : '创校年付'}
               </p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', marginBottom: '4px' }}>
-                <span style={{ color: '#fff', fontSize: '56px', fontWeight: 800, lineHeight: 1 }}>$1,799</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '6px' }}>
+                <span style={{ color: '#fff', fontSize: '56px', fontWeight: 800, lineHeight: 1 }}>$199</span>
                 <span style={{ color: 'rgba(255,255,255,0.5)', fontSize: '16px' }}>{isEn ? '/ year' : '/ 年'}</span>
               </div>
-              <p style={{ color: 'rgba(213,168,54,0.85)', fontSize: '13px', fontWeight: 600, margin: '0 0 24px' }}>
-                {isEn ? 'Save $589 vs. monthly' : '比月付节省 $589'}
+              <p style={{ fontSize: '13px', margin: '0 0 6px' }}>
+                <span style={{ color: 'rgba(255,255,255,0.4)', textDecoration: 'line-through' }}>$1,799</span>
+                <span style={{ color: '#a5d6a7', fontWeight: 700, marginLeft: '8px' }}>
+                  {isEn ? '90% off · ~$16.6/mo' : '省 90% · 月均约 $16.60'}
+                </span>
+              </p>
+              <p style={{ color: 'rgba(213,168,54,0.85)', fontSize: '12px', fontWeight: 600, margin: '0 0 24px' }}>
+                {isEn ? 'Save $40 vs monthly · Locked for 12 months' : '比月付节省 $40 · 锁定 12 个月'}
               </p>
               <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {[
                   isEn ? 'Everything in monthly' : '包含所有月付内容',
                   isEn ? 'Priority email support (24h)' : '优先邮件支持（24 小时内回复）',
                   isEn ? 'US diploma upon completion' : '完成学业后颁发美国文凭',
-                  isEn ? '~$150/month effective rate' : '月均约 $150',
+                  isEn ? 'Lock in $19.90/month rate for 12 months' : '锁定 $19.90/月，12 个月不涨价',
                 ].map((item) => (
                   <li key={item} style={{ display: 'flex', alignItems: 'center', gap: '10px', color: 'rgba(255,255,255,0.82)', fontSize: '14px' }}>
                     <span style={{ color: 'rgba(213,168,54,1)', fontSize: '16px', flexShrink: 0 }}>✓</span>
@@ -348,7 +360,7 @@ export default function AdmissionMain({ language, toggleLanguage }) {
               },
               {
                 q: { en: 'How is tuition structured?', zh: '学费如何计算？' },
-                a: { en: 'GIIS uses a simple monthly subscription model: $199/month or $1,799/year (save $589). Your subscription gives full access to all course materials. Study at your own pace and take credit exams when ready — no per-course fees.', zh: 'GIIS 采用简单的订阅制：月付 $199，或年付 $1,799（节省 $589）。订阅后即可无限访问所有课程资料，按自己节奏学习，准备好后参加学分考试，无单课收费。' },
+                a: { en: 'GIIS Founders pricing is $19.90/month (locked for 12 months, regular rate $199/month) or $199/year (regular $1,799). Limited to the first 100 enrolled students. Your subscription gives full access to all course materials. Study at your own pace and take credit exams when ready — no per-course fees.', zh: 'GIIS 创校价为月付 $19.90（锁定 12 个月，原价 $199/月）或年付 $199（原价 $1,799）。限前 100 名学生。订阅后即可无限访问所有课程资料，按自己节奏学习，准备好后参加学分考试，无单课收费。' },
               },
               {
                 q: { en: 'Can I transfer credits from my previous school?', zh: '我可以转入之前学校的学分吗？' },

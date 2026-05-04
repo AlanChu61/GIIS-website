@@ -55,8 +55,8 @@ function Footer({ language }) {
           </p>
           <p style={{ margin: '0 0 20px', fontSize: '13px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 }}>
             {en
-              ? 'US-accredited online high school for Chinese students targeting top US universities.'
-              : '面向中国学生的美国认证在线高中，助力申请顶尖大学。'}
+              ? 'Florida-registered online high school for Chinese students targeting top US universities.'
+              : '面向中国学生的 Florida 注册在线高中，助力申请顶尖大学。'}
           </p>
           <span style={{
             display: 'inline-block', fontSize: '10px', fontWeight: 700,

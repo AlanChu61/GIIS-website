@@ -37,7 +37,7 @@ export default function Introduction({ language }) {
         </h2>
         <p style={{ fontSize: '17px', color: '#555', maxWidth: '640px', lineHeight: 1.7, margin: '0 0 52px' }}>
           {isEn
-            ? "GIIS is a fully online, US-accredited international high school designed specifically for Chinese students targeting top US universities. We combine rigorous academics with personalized pathway planning and AI-powered learning tools."
+            ? "GIIS is a fully online, Florida-registered private high school designed specifically for Chinese students targeting top US universities. We combine rigorous academics with personalized pathway planning and AI-powered learning tools."
             : '艾迪尔国际学校是一所完全在线的 Florida 注册私立学校，专为目标申请美国顶尖大学的中国学生而设计，将严格的学术课程与个性化路径规划及 AI 学习工具相结合。'}
         </p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '24px' }}>

@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Nav from '../../main/Nav.js';
-import ImgSlider from './Homepage/ImgSlider.js';
+import HeroSection from './Homepage/HeroSection';
 import Slogan from './Homepage/Slogan';
 import Introduction from './Homepage/Introduction';
 import HomepageDemo from './Homepage/HomepageDemo';
@@ -90,8 +90,8 @@ function HomepageMain({ language, toggleLanguage }) {
         <meta
           name="description"
           content={isEn
-            ? 'Genesis of Ideas International School — US-accredited online high school with 8 academic pathways for Chinese students targeting top US universities.'
-            : '艾迪尔国际学校（Genesis of Ideas International School）— 美国认证在线高中，提供8条学习路径，专为目标申请美国顶尖大学的中国学生设计。'}
+            ? 'Genesis of Ideas International School — Florida-registered online private high school with 8 academic pathways for Chinese students targeting top US universities.'
+            : '艾迪尔国际学校（Genesis of Ideas International School）— Florida 注册私立在线高中，提供 8 条学习路径，专为目标申请美国顶尖大学的中国学生设计。'}
         />
       </Helmet>
 
@@ -99,9 +99,9 @@ function HomepageMain({ language, toggleLanguage }) {
         <Nav language={language} toggleLanguage={toggleLanguage} />
       </div>
 
-      {/* Hero slider */}
+      {/* Hero — bilingual headline + real product screenshot + trust strip */}
       <div id="homepage">
-        <ImgSlider />
+        <HeroSection language={language} />
       </div>
 
       {/* CTA strip */}
@@ -113,7 +113,9 @@ function HomepageMain({ language, toggleLanguage }) {
       </div>
 
       {/* 80-second product walkthrough — bridge from "why us" to "what we offer" */}
-      <HomepageDemo language={language} />
+      <div id="demo" style={{ scrollMarginTop: '24px' }}>
+        <HomepageDemo language={language} />
+      </div>
 
       {/* 8 Pathways showcase */}
       <HomepagePathways language={language} />

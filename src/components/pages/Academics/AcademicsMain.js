@@ -2,7 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Nav from '../../main/Nav.js';
-import img from '../../../img/Homepage/homepage8.png';
+import img from '../../../img/Hero/module-screen.jpg';
 import AcademicsIntroduction from './Academics/Academicsintroduction.js';
 import AcademicsIntroduction2 from './Academics/Academicsintroduction2.js';
 import CourseCatalog from './Academics/CourseCatalog.js';
@@ -28,7 +28,7 @@ function AcademicsMain({ language, toggleLanguage }) {
         <meta
           name="description"
           content={isEn
-            ? 'Academic programs and course catalog at Genesis of Ideas International School — 8 pathways, Florida-accredited diploma.'
+            ? 'Academic programs and course catalog at Genesis of Ideas International School — 8 pathways, Florida-registered private school diploma.'
             : '艾迪尔国际学校学术课程与路径介绍，提供8条学习路径与Florida注册私立学校文凭。'}
         />
       </Helmet>
@@ -53,8 +53,8 @@ function AcademicsMain({ language, toggleLanguage }) {
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.78)', fontSize: '17px', margin: 0, maxWidth: '520px', lineHeight: 1.65, fontFamily: 'Inter, sans-serif' }}>
             {isEn
-              ? 'US-accredited diploma program with 8 academic pathways designed for Chinese students targeting top US universities.'
-              : '专为中国学生设计的美国认证高中课程，提供8条针对美国顶尖大学申请的学习路径。'}
+              ? 'Florida-registered private high school program with 8 academic pathways designed for Chinese students targeting top US universities.'
+              : '专为中国学生设计的 Florida 注册私立高中课程，提供 8 条针对美国顶尖大学申请的学习路径。'}
           </p>
         </div>
       </div>

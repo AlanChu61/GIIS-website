@@ -1,7 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '../../main/Nav.js';
-import img from '../../../img/Homepage/homepage3.png';
+import img from '../../../img/Hero/pathways-screen.jpg';
 import DiscoveryIntroduction from './Discovery/DiscoveryIntroduction.js';
 import DiscoveryIntroduction2 from './Discovery/DiscoveryIntroduction2.js';
 

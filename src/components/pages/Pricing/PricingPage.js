@@ -55,8 +55,8 @@ export default function PricingPage({ language, toggleLanguage }) {
         <meta
           name="description"
           content={isEn
-            ? 'GIIS tuition: $199/month or $1,799/year. Full access to all courses, course planning support, official US transcript, and diploma.'
-            : 'GIIS 学费：月付 $199，或年付 $1,799。包含全部课程、课程规划支持、美国官方成绩单及文凭。'}
+            ? 'GIIS Founders pricing: $19.90/month for the first 100 students (regular $199/month). Full access to all courses, course planning support, official US transcript, and diploma.'
+            : 'GIIS 创校价：限前 100 名学生 $19.90/月（原价 $199/月）。包含全部课程、课程规划支持、美国官方成绩单及文凭。'}
         />
       </Helmet>
 
@@ -66,19 +66,19 @@ export default function PricingPage({ language, toggleLanguage }) {
       <div style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #2b3d6d 100%)', padding: '80px 0 72px', fontFamily: 'Inter, sans-serif' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 10%', textAlign: 'center' }}>
           <p style={{ color: 'rgba(213,168,54,1)', fontSize: '12px', fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', margin: '0 0 14px' }}>
-            {isEn ? 'Simple, Transparent Pricing' : '简单透明的收费标准'}
+            {isEn ? 'Founders Pricing · Limited' : '创校价 · 限量'}
           </p>
           <h1 style={{ color: '#fff', fontSize: 'clamp(36px, 5vw, 64px)', fontWeight: 800, lineHeight: 1.05, margin: '0 0 16px' }}>
-            {isEn ? 'One Subscription.' : '一份订阅。'}
+            {isEn ? 'First 100 students' : '前 100 名学生'}
             <br />
             <span style={{ color: 'rgba(213,168,54,1)' }}>
-              {isEn ? 'Everything Included.' : '一切皆含。'}
+              {isEn ? 'pay $19.90 / month.' : '月付 $19.90。'}
             </span>
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '17px', maxWidth: '520px', margin: '0 auto', lineHeight: 1.7 }}>
+          <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '17px', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
             {isEn
-              ? 'No per-course fees. No hidden charges. Access all 40+ courses, exams, and your official US transcript from day one.'
-              : '无单课收费，无隐藏费用。从第一天起即可访问全部 40+ 门课程、考试及美国官方成绩单。'}
+              ? 'Lock in $19.90/month for 12 months — 90% off our regular $199/month rate. Full access to all 40+ courses, exams, official US transcript, and diploma.'
+              : '锁定 $19.90/月，12 个月不涨价 — 较正常 $199/月省 90%。包含全部 40+ 门课程、考试、美国官方成绩单与文凭。'}
           </p>
         </div>
       </div>
@@ -96,14 +96,20 @@ export default function PricingPage({ language, toggleLanguage }) {
               boxShadow: '0 4px 20px rgba(43,61,109,0.08)',
             }}>
               <p style={{ margin: '0 0 6px', fontSize: '12px', fontWeight: 700, color: '#2b3d6d', letterSpacing: '2px', textTransform: 'uppercase' }}>
-                {isEn ? 'Monthly' : '月付'}
+                {isEn ? 'Founders Monthly' : '创校月付'}
               </p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', margin: '0 0 4px' }}>
-                <span style={{ fontSize: '60px', fontWeight: 800, color: '#1a1a2e', lineHeight: 1 }}>$199</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 4px' }}>
+                <span style={{ fontSize: '60px', fontWeight: 800, color: '#1a1a2e', lineHeight: 1 }}>$19.90</span>
                 <span style={{ fontSize: '16px', color: '#888' }}>{isEn ? '/ month' : '/ 月'}</span>
               </div>
-              <p style={{ margin: '0 0 28px', fontSize: '13px', color: '#aaa' }}>
-                {isEn ? 'Cancel anytime' : '随时取消'}
+              <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#999' }}>
+                <span style={{ textDecoration: 'line-through', color: '#bbb' }}>$199</span>
+                <span style={{ color: '#1B6B3A', fontWeight: 700, marginLeft: '8px' }}>
+                  {isEn ? '90% off' : '省 90%'}
+                </span>
+              </p>
+              <p style={{ margin: '0 0 28px', fontSize: '12px', color: '#aaa' }}>
+                {isEn ? 'Locked for 12 months · Cancel anytime' : '锁定 12 个月 · 随时取消'}
               </p>
               <ul style={{ margin: '0 0 32px', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {MONTHLY_FEATURES.map((f) => (
@@ -140,14 +146,20 @@ export default function PricingPage({ language, toggleLanguage }) {
                 {isEn ? 'BEST VALUE' : '最划算'}
               </div>
               <p style={{ margin: '0 0 6px', fontSize: '12px', fontWeight: 700, color: 'rgba(213,168,54,1)', letterSpacing: '2px', textTransform: 'uppercase' }}>
-                {isEn ? 'Annual' : '年付'}
+                {isEn ? 'Founders Annual' : '创校年付'}
               </p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '6px', margin: '0 0 4px' }}>
-                <span style={{ fontSize: '60px', fontWeight: 800, color: '#fff', lineHeight: 1 }}>$1,799</span>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 4px' }}>
+                <span style={{ fontSize: '60px', fontWeight: 800, color: '#fff', lineHeight: 1 }}>$199</span>
                 <span style={{ fontSize: '16px', color: 'rgba(255,255,255,0.5)' }}>{isEn ? '/ year' : '/ 年'}</span>
               </div>
-              <p style={{ margin: '0 0 28px', fontSize: '13px', color: 'rgba(213,168,54,0.85)', fontWeight: 600 }}>
-                {isEn ? 'Save $589 · ~$150/month' : '节省 $589 · 月均约 $150'}
+              <p style={{ margin: '0 0 8px', fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>
+                <span style={{ textDecoration: 'line-through', color: 'rgba(255,255,255,0.35)' }}>$1,799</span>
+                <span style={{ color: 'rgba(213,168,54,0.95)', fontWeight: 700, marginLeft: '8px' }}>
+                  {isEn ? '~$16.6/month effective' : '月均约 $16.60'}
+                </span>
+              </p>
+              <p style={{ margin: '0 0 28px', fontSize: '12px', color: 'rgba(213,168,54,0.85)', fontWeight: 600 }}>
+                {isEn ? 'Save $40 vs monthly · Lock in for 12 months' : '比月付节省 $40 · 锁定 12 个月'}
               </p>
               <ul style={{ margin: '0 0 32px', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {ANNUAL_EXTRAS.map((f) => (
@@ -213,7 +225,7 @@ export default function PricingPage({ language, toggleLanguage }) {
               </thead>
               <tbody>
                 {[
-                  { label: isEn ? 'Annual cost' : '年费用', vals: ['~$1,799', '$15,000–30,000', '$50,000–80,000'] },
+                  { label: isEn ? 'Annual cost' : '年费用', vals: [isEn ? '~$199 founders' : '~$199 创校价', '$15,000–30,000', '$50,000–80,000'] },
                   { label: isEn ? 'US diploma' : '美国文凭', vals: ['✓', '✓', '✓'] },
                   { label: isEn ? 'Learn from China' : '在中国就读', vals: ['✓', '✓', '✗'] },
                   { label: isEn ? 'Flexible schedule' : '时间自由', vals: ['✓', '✗', '✗'] },

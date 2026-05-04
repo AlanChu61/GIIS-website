@@ -1,6 +1,6 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-04
+> 最後更新：2026-05-04（晚間）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
@@ -25,6 +25,42 @@
 - ✅ **0-A FAQ 錯誤承諾** — `AdmissionMain.js` 的 FAQ 早期已修；本輪補修 Tuition 區塊兩處漏網之魚（"Dedicated academic advisor" / "Priority advisor response" → 改成 "Personalized course planning support" / "Priority email support (24h)"）
 - ✅ **0-B Pricing Enroll 按鈕** — 早期已從 `mailto:` 改成 `<Link to="/admission">`，本輪驗證確認 OK
 - ✅ **0-C Learn Portal 手機版** — 新增 `src/components/pages/Learn/learn-mobile.css`，用 `data-m="..."` attribute 統一 hook 進三個 Learn 頁。768px 以下 stat 卡 4→2、banner 直立、課程卡單欄；380px 以下更緊湊
+- ✅ **0-D 拿掉 Cognia 引用** — 不是會員不能寫，全站 0 殘留
+- ✅ **0-E 「US-accredited」→「Florida-registered」** — accreditation ≠ private school registration。Footer / Hero / Introduction / AcademicsMain / CourseCatalog / SEO meta 全改完。SchoolProfile 既有「in the process of pursuing regional accreditation」誠實說法保留
+- ✅ **0-F 大學校名統一** — Syracuse University (SIT) → Syracuse University；NJIT → New Jersey Institute of Technology；UCSB → UC Santa Barbara。SuccessStories / HeroSection / AdmissionMain / walkthrough.html 全部對齊
+- ✅ **0-G Yunfan/Baoyi GPA 校準** — 從 `server/prisma/seed.js` 重算，兩人之前在 SuccessStories 是顛倒的：
+  - Yunfan: 3.78 → **3.85** (UW, 28 完成學分)
+  - Baoyi:  3.90 → **3.77** (UW, 29 完成學分)
+  - walkthrough.html dashboard + transcript scene 都對齊到 Yunfan 真實數據
+
+---
+
+## ✅ 視覺風格大整修（已完成）
+
+> 把 AI 生成圖換成真實產品截圖。家長對 AI 圖很敏感，看到=立刻打折扣。
+
+- ✅ **首頁 hero** — 移除 `<ImgSlider />` AI 7 張輪播圖，改成 `HeroSection.js`：左側雙語標題 + Founders pricing + 兩 CTA，右側真實 Dashboard 截圖（從 walkthrough 抓的，含 Yunfan 名字、GPA、進度條）+ 信任 strip（Florida Statute · 24-credit · Class of 2026 · Real teacher feedback）
+- ✅ **4 個內頁 hero 全換** — 從 walkthrough 各 scene 抓的真實截圖：
+  - **Admission** ← `transcript-screen.jpg`（被錄取家長最關心的官方文件）
+  - **Discovery** ← `pathways-screen.jpg`（8 條 pathway 全展示）
+  - **Academics** ← `module-screen.jpg`（Module 學習頁，看真實內容）
+  - **Support** ← `diploma-screen.jpg`（最終目的地：文憑）
+- ✅ **孤兒 AI 檔案**（沒被引用，可刪）：`src/img/Homepage/homepage[1-8].png`、`src/img/cognia.png`、`src/img/Homepage/cognia_logo.jpg`、`src/components/pages/Homepage/Homepage/ImgSlider.js`
+
+---
+
+## ✅ Founders Pricing 上線（已完成）
+
+> 降低入手門檻又不打折信任：誠實說「這是限量創校價」。
+
+- **公開價格**：~~$199/月~~ → **$19.90/月** Founders（前 100 名 · 鎖定 12 個月）
+- **年付**：~~$1,799/年~~ → **$199/年** Founders（月均約 $16.60）
+- **共識**：12 個月後是否漲到原價（或維持），需要 Alan 在 Stripe 整合時設好
+- 已改：`HeroSection.js`、`PricingPage.js`、`AdmissionMain.js` Tuition、`walkthrough.html` CTA scene
+
+⚠️ **後續觀察**：$19.9/月 vs Khan Academy ($4-44/月) 同 segment 重疊。如果 Founders 賣完想穩定 retention，需要：
+- 推出第二層 tier（$19.9 自學 vs $99 含批改 vs $199 含 advisor）
+- 或者誠實漲價時推出有信用的「Beta 用戶終身 50% 折扣」之類
 
 ---
 
@@ -34,17 +70,16 @@
 
 - ✅ **80 秒自播放 walkthrough** — `public/demo/walkthrough.html`。九個 scene（hook → 8 pathways → dashboard → module → exam → transcript → diploma → parent view → CTA），英文旁白 + 中英雙語字幕
 - ✅ **多角色配音** — 4 個 edge-tts 神經語音輪流講：Aria（學校代言）、Guy（學術權威）、Jenny（學生視角）、Andrew（家長視角）
-- ✅ **MP4 渲染 pipeline** — `scripts/make-demo.mjs`（idempotent + 多階段 cache）、`scripts/README-demo.md`、`npm run make-demo` 一鍵跑完
-- ✅ **首頁嵌入** — `src/components/pages/Homepage/Homepage/HomepageDemo.js`，塞在 Introduction 與 8 Pathways 之間
+- ✅ **MP4 渲染 pipeline** — `scripts/make-demo.mjs`（idempotent + 多階段 cache）、`scripts/README-demo.md`、`npm run make-demo` 一鍵跑完，且自動 deploy 到 `public/demo/giis-demo.mp4`
+- ✅ **首頁嵌入** — `src/components/pages/Homepage/Homepage/HomepageDemo.js`，塞在 Introduction 與 8 Pathways 之間（含 `id="demo"` anchor 給 hero 的「Watch tour」按鈕跳轉）
 - ✅ **家長 Dashboard mockup** — `public/demo/parent-dashboard-mockup.html`（給 Phase 1 當設計參考）
 
 ### 🔧 Demo 後續小事（code mode 5 分鐘）
 
 - [ ] 在 Mac 上跑一次 `npm run make-demo` 取代 sandbox espeak 預覽版（產出真神經語音版自動覆蓋到 `public/demo/giis-demo.mp4`）
-- [ ] 把 demo 也放在 `Admission` 與 `Pricing` 頁（現只有首頁）
-  - **檔案**：`src/components/pages/Admission/AdmissionMain.js`、`src/components/pages/Pricing/PricingPage.js`
+- [ ] 把 demo 也放在 `Pricing` 頁（首頁、Admission 已有；Pricing 還沒）
+  - **檔案**：`src/components/pages/Pricing/PricingPage.js`
   - **做法**：把 `HomepageDemo.js` 的 video 區塊抽成 `src/components/main/DemoEmbed.js`（接受 `language` prop），三個頁面都引用
-  - **位置建議**：Admission 在「How to Apply」步驟之後；Pricing 在價格卡之前（讓家長付錢前先看到「我會買到什麼」）
 
 ---
 
