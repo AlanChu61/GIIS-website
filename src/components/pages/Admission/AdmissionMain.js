@@ -1,6 +1,7 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import Nav from '../../main/Nav.js';
+import DemoEmbed from '../../main/DemoEmbed.js';
 import heroImg from '../../../img/Hero/transcript-screen.jpg';
 
 const SCHOOL_PHONE = '+1 (813) 501-5756';
@@ -116,6 +117,23 @@ export default function AdmissionMain({ language, toggleLanguage }) {
           </div>
         </div>
       </div>
+
+      {/* Product walkthrough — show what your child will actually experience */}
+      <DemoEmbed
+        language={language}
+        variant="compact"
+        background="#fff"
+        eyebrow={isEn ? 'Before You Apply' : '申请之前先看看'}
+        headline={{
+          en: 'See exactly what your child will experience',
+          zh: '看清楚你的孩子每一步会经历什么',
+        }}
+        subline={{
+          en: '80 seconds inside GIIS — from picking a pathway to walking away with a US diploma.',
+          zh: '80 秒看遍 GIIS — 从选择学习路径到拿到美国高中文凭。',
+        }}
+        showCtas={false}
+      />
 
       {/* Requirements */}
       <div style={{ background: '#fff', padding: '80px 0' }}>

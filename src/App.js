@@ -42,6 +42,12 @@ const GradesPage = lazy(() => import('./components/pages/Learn/GradesPage'));
 const SyllabusPage = lazy(() => import('./components/pages/Learn/SyllabusPage'));
 const ProfilePage = lazy(() => import('./components/pages/Profile/ProfilePage'));
 const PricingPage = lazy(() => import('./components/pages/Pricing/PricingPage'));
+const ParentDashboardDemo = lazy(() => import('./components/pages/Parent/ParentDashboardDemo'));
+const ParentLogin = lazy(() => import('./components/pages/Parent/ParentLogin'));
+const ParentDashboard = lazy(() => import('./components/pages/Parent/ParentDashboard'));
+const AssignmentQueue = lazy(() => import('./components/pages/Admin/AssignmentQueue'));
+const ApplicationsQueue = lazy(() => import('./components/pages/Admin/ApplicationsQueue'));
+const ApplyForm = lazy(() => import('./components/pages/Apply/ApplyForm'));
 
 const LANGUAGE_STORAGE_KEY = 'giis-language';
 
@@ -134,6 +140,12 @@ function App() {
         <Route path="/school-profile" element={<SchoolProfilePage />} />
          <Route path="/profile" element={<ProfilePage language={language} />} />
          <Route path="/pricing" element={<PricingPage language={language} toggleLanguage={toggleLanguage} />} />
+         <Route path="/parent/demo" element={<ParentDashboardDemo language={language} />} />
+         <Route path="/parent/login" element={<ParentLogin language={language} />} />
+         <Route path="/parent/dashboard" element={<ParentDashboard language={language} />} />
+         <Route path="/admin/assignments" element={<AssignmentQueue />} />
+         <Route path="/admin/applications" element={<ApplicationsQueue />} />
+         <Route path="/apply" element={<ApplyForm language={language} />} />
          <Route path="/privacy" element={<PrivacyPolicy language={language} />} />
          <Route path="/terms" element={<TermsOfUse language={language} />} />
          <Route path="*" element={<NotFound language={language} />} />

@@ -5,6 +5,16 @@
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
 > 每個未完成項目都標註：檔案、acceptance criteria、依賴。挑一個就能直接開動。
+>
+> ---
+>
+> ### 🔁 Agent working ritual — never skip
+>
+> **Before any task** → read this whole file first. Find what's done, what's pending, where your task fits.
+> **After any task** → update this file immediately. Mark ✅ with a one-line summary, or add new items found during the work.
+>
+> The roadmap is the only persistent memory across sessions. If it's not here, the next agent won't know.
+> Full conventions live in [`CLAUDE.md`](./CLAUDE.md) — read once per session.
 
 ---
 
@@ -74,18 +84,24 @@
 - ✅ **首頁嵌入** — `src/components/pages/Homepage/Homepage/HomepageDemo.js`，塞在 Introduction 與 8 Pathways 之間（含 `id="demo"` anchor 給 hero 的「Watch tour」按鈕跳轉）
 - ✅ **家長 Dashboard mockup** — `public/demo/parent-dashboard-mockup.html`（給 Phase 1 當設計參考）
 
-### 🔧 Demo 後續小事（code mode 5 分鐘）
+### 🔧 Demo 後續小事
 
-- [ ] 在 Mac 上跑一次 `npm run make-demo` 取代 sandbox espeak 預覽版（產出真神經語音版自動覆蓋到 `public/demo/giis-demo.mp4`）
-- [ ] 把 demo 也放在 `Pricing` 頁（首頁、Admission 已有；Pricing 還沒）
-  - **檔案**：`src/components/pages/Pricing/PricingPage.js`
-  - **做法**：把 `HomepageDemo.js` 的 video 區塊抽成 `src/components/main/DemoEmbed.js`（接受 `language` prop），三個頁面都引用
+- [ ] **(needs Mac)** 在 Mac 上跑一次 `npm run make-demo` 取代 sandbox espeak 預覽版（產出真神經語音版，自動覆蓋到 `public/demo/giis-demo.mp4`）
+- ✅ **DemoEmbed 抽成共用 component** — 新建 `src/components/main/DemoEmbed.js`，接受 `language` / `variant` (full|compact) / `eyebrow` / `headline` / `subline` / `showCtas` / `primaryCtaTo` 等 props。`HomepageDemo.js` 改成 wrapper 用 full variant；`AdmissionMain.js` 在 Steps 後 + Requirements 前用 compact variant（"Before You Apply · 看清楚孩子會經歷什麼"）；`PricingPage.js` 在價格卡前用 compact variant（"$19.90 unlocks · 付費前先看清楚平台"）。grep `<source src="/demo/giis-demo.mp4"` 只剩 DemoEmbed.js 一處
 
 ---
 
 ## 🚧 Phase 1 — 讓家長能「看到」孩子在學習
 
 > 目標：家長打開手機就能知道孩子這週做了什麼。
+
+### ✅ 0. 公開可瀏覽的 Parent Dashboard demo（已完成 — 早期）
+
+`src/components/pages/Parent/ParentDashboardDemo.js` 上線於 `/parent/demo`。完整重現未來家長面板的視覺，含 Yunfan 真實 seed 數據（22/24 學分、3.85 GPA、3 進行中課程、advisor note 用 Shiyu Zhang Ph.D. 名義）。雙語、頂部黃色 PREVIEW banner 強調是示例資料、底部 CTA 引導 Apply / Pricing。Pricing 頁的 CTA 區塊也加了「Or preview the parent dashboard you'll get」連結指過來。
+
+未來 Phase 1 #1 真實 logged-in 版上線時，這頁保留作為 marketing 入口（不需要登入）。
+
+---
 
 ### 1. 把家長 Dashboard mockup 轉成真的 React 頁面
 
@@ -196,15 +212,14 @@ model ParentAccount {
 
 ---
 
-### 6. Demo embed 抽成共用 component
+### ✅ 6. Demo embed 抽成共用 component（已完成）
 
-**目標**：避免在 Homepage / Admission / Pricing 重複 video JSX
+`src/components/main/DemoEmbed.js` 上線。三個頁面都已切換：
+- HomepageDemo (full variant) — Introduction 與 8 Pathways 之間
+- AdmissionMain (compact variant, "Before You Apply") — Steps 後
+- PricingPage (compact variant, "What $19.90 unlocks") — 價格卡前
 
-**檔案**：
-- 新建 `src/components/main/DemoEmbed.js`，從 `HomepageDemo.js` 抽出 video 區塊，加可選的 `variant` prop（`'full'` / `'compact'`）
-- `HomepageDemo.js`、新加的 Admission / Pricing 嵌入點都用這個
-
-**Acceptance**：grep `<source src="/demo/giis-demo.mp4"` 只剩一個地方寫死。
+Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 
 ---
 

@@ -91,3 +91,30 @@ export function clearStudentSession() {
     /* ignore */
   }
 }
+
+// ── Parent ────────────────────────────────────────────────────────────────────
+
+const PARENT_INFO_KEY = 'giis_parent_info';
+
+export function getParentSession() {
+  try {
+    const raw = localStorage.getItem(PARENT_INFO_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw);
+    return p?.studentId ? p : null;
+  } catch { return null; }
+}
+
+export function setParentSession(info) {
+  try {
+    if (info?.studentId) {
+      localStorage.setItem(PARENT_INFO_KEY, JSON.stringify(info));
+    } else {
+      clearParentSession();
+    }
+  } catch { /* ignore */ }
+}
+
+export function clearParentSession() {
+  try { localStorage.removeItem(PARENT_INFO_KEY); } catch { /* ignore */ }
+}

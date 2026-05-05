@@ -34,10 +34,12 @@ model Student {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
+  parentEmail     String?
   account     StudentAccount?
   semesters   Semester[]
   auditLogs   AuditLog[]
   enrollments Enrollment[]
+  parentAccounts ParentAccount[]
 }
 
 /// Self-service student login (one account per student record).
@@ -202,8 +204,38 @@ model AssignmentSubmission {
   updatedAt    DateTime @updatedAt
   content      String
   feedback     String   @default("")
+  score        Decimal? @db.Decimal(5, 2)
+  gradedAt     DateTime?
+  gradedById   String?
 
   @@unique([enrollmentId, moduleOrder])
+}
+
+/// One parent can link to multiple students (e.g. siblings, divorced parents with separate accounts).
+model ParentAccount {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  studentId    String
+  student      Student  @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+}
+
+/// Prospective student application submitted via /apply.
+model Application {
+  id           String   @id @default(cuid())
+  studentName  String
+  dob          String
+  gradeLevel   String
+  parentName   String
+  parentEmail  String
+  phone        String   @default("")
+  notes        String   @default("")
+  status       String   @default("pending")  // pending | approved | rejected
+  createdAt    DateTime @default(now())
+  reviewedAt   DateTime?
+  reviewedById String?
 }
 
 /// Immutable record of admin/student actions on student data.

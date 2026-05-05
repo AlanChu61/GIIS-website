@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Nav from '../../main/Nav.js';
+import DemoEmbed from '../../main/DemoEmbed.js';
 
 const SCHOOL_EMAIL = 'admissions@genesisideas.school';
 
@@ -82,6 +83,23 @@ export default function PricingPage({ language, toggleLanguage }) {
           </p>
         </div>
       </div>
+
+      {/* Show what they're paying for — product walkthrough */}
+      <DemoEmbed
+        language={language}
+        variant="compact"
+        background="#fff"
+        eyebrow={isEn ? 'What $19.90 unlocks' : '$19.90 解锁什么'}
+        headline={{
+          en: 'See the platform before you pay',
+          zh: '付费之前先看清楚平台',
+        }}
+        subline={{
+          en: '80 seconds inside the Learn Portal — every parent\'s 5-minute concern, answered in advance.',
+          zh: '80 秒看完学习平台 — 家长最常问的所有问题，先讲清楚。',
+        }}
+        showCtas={false}
+      />
 
       {/* Pricing Cards */}
       <div style={{ background: '#f4f6fa', padding: '60px 0', fontFamily: 'Inter, sans-serif' }}>
@@ -277,10 +295,15 @@ export default function PricingPage({ language, toggleLanguage }) {
           <h2 style={{ color: '#fff', fontSize: '36px', fontWeight: 800, margin: '0 0 16px' }}>
             {isEn ? 'Ready to get started?' : '准备好开始了吗？'}
           </h2>
-          <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '16px', margin: '0 0 32px', lineHeight: 1.7 }}>
+          <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '16px', margin: '0 0 12px', lineHeight: 1.7 }}>
             {isEn
               ? 'Contact our admissions team and we\'ll design the right academic plan for you.'
               : '联系我们的招生团队，我们将为您量身制定学习计划。'}
+          </p>
+          <p style={{ margin: '0 0 32px', fontSize: '13px' }}>
+            <Link to="/parent/demo" style={{ color: '#d5a836', textDecoration: 'underline', fontWeight: 600 }}>
+              {isEn ? 'Or preview the parent dashboard you\'ll get →' : '或先预览家长面板长怎样 →'}
+            </Link>
           </p>
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/admission" style={{

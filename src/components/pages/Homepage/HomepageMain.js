@@ -5,7 +5,7 @@ import Nav from '../../main/Nav.js';
 import HeroSection from './Homepage/HeroSection';
 import Slogan from './Homepage/Slogan';
 import Introduction from './Homepage/Introduction';
-import HomepageDemo from './Homepage/HomepageDemo';
+import DemoEmbed from '../../main/DemoEmbed';
 import FacultyGraduates from './Homepage/FacultyGraduates.js';
 import ContactForm from './Homepage/ContactForm';
 import SuccessStories from './Homepage/SuccessStories';
@@ -114,7 +114,7 @@ function HomepageMain({ language, toggleLanguage }) {
 
       {/* 80-second product walkthrough — bridge from "why us" to "what we offer" */}
       <div id="demo" style={{ scrollMarginTop: '24px' }}>
-        <HomepageDemo language={language} />
+        <DemoEmbed language={language} variant="full" />
       </div>
 
       {/* 8 Pathways showcase */}
