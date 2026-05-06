@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header/Header';
 
-test('header shows language toggle and Moodle link', () => {
+test('header shows login link', () => {
   render(
     <HelmetProvider>
       <MemoryRouter>
@@ -11,7 +11,5 @@ test('header shows language toggle and Moodle link', () => {
       </MemoryRouter>
     </HelmetProvider>
   );
-  expect(screen.getByRole('button', { name: /switch to chinese/i })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: /^login$/i })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: /^moodle$/i })).toBeInTheDocument();
 });

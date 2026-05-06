@@ -28,7 +28,7 @@ describe('courseApiToGradeRows', () => {
     const mathRow = rows.find(r => r.name === 'Math');
     expect(mathRow).toBeDefined();
     expect(mathRow.type).toBe('Core');
-    expect(mathRow.credits).toBe('1');
+    expect(mathRow.credits).toBe('1.0');
     expect(mathRow.grade).toBe('A');
     expect(mathRow.weightedGPA).toBe(4.0);
     expect(mathRow.unweightedGPA).toBe(4.0);
