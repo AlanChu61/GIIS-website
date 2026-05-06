@@ -198,6 +198,84 @@ router.post('/', authenticate, requireAdmin, async (req, res) => {
   res.status(201).json({ student: serializeStudent(student) });
 });
 
+/** Student learning progress summary — admin only */
+router.get('/progress', authenticate, requireAdmin, async (req, res) => {
+  const students = await prisma.student.findMany({
+    where: { withdrawalDate: null },
+    orderBy: { name: 'asc' },
+    select: {
+      id: true,
+      studentCode: true,
+      name: true,
+      graduationDate: true,
+      enrollments: {
+        select: {
+          creditEarned: true,
+          course: { select: { credits: true } },
+          quizAttempts: {
+            select: { submittedAt: true },
+            orderBy: { submittedAt: 'desc' },
+            take: 1,
+          },
+          examAttempts: {
+            where: { submittedAt: { not: null } },
+            select: { submittedAt: true },
+            orderBy: { submittedAt: 'desc' },
+            take: 1,
+          },
+          assignments: {
+            select: { updatedAt: true },
+            orderBy: { updatedAt: 'desc' },
+            take: 1,
+          },
+        },
+      },
+    },
+  });
+
+  const now = new Date();
+  const result = students.map((s) => {
+    const enrollments = s.enrollments || [];
+    const creditsEarned = enrollments
+      .filter((e) => e.creditEarned)
+      .reduce((sum, e) => sum + Number(e.course.credits), 0);
+
+    const dates = [];
+    for (const enr of enrollments) {
+      if (enr.quizAttempts[0]?.submittedAt) dates.push(new Date(enr.quizAttempts[0].submittedAt));
+      if (enr.examAttempts[0]?.submittedAt) dates.push(new Date(enr.examAttempts[0].submittedAt));
+      if (enr.assignments[0]?.updatedAt) dates.push(new Date(enr.assignments[0].updatedAt));
+    }
+    const lastActivity = dates.length > 0 ? new Date(Math.max(...dates)) : null;
+    const daysInactive = lastActivity
+      ? Math.floor((now - lastActivity) / (1000 * 60 * 60 * 24))
+      : null;
+
+    return {
+      id: s.id,
+      studentCode: s.studentCode,
+      name: s.name,
+      currentGrade: computeCurrentGrade(s.graduationDate),
+      creditsEarned,
+      inProgress: enrollments.filter((e) => !e.creditEarned).length,
+      completed: enrollments.filter((e) => e.creditEarned).length,
+      totalEnrollments: enrollments.length,
+      lastActivity: lastActivity?.toISOString() ?? null,
+      daysInactive,
+    };
+  });
+
+  // Sort: never-active first, then most-inactive first
+  result.sort((a, b) => {
+    if (a.daysInactive === null && b.daysInactive === null) return a.name.localeCompare(b.name);
+    if (a.daysInactive === null) return -1;
+    if (b.daysInactive === null) return 1;
+    return b.daysInactive - a.daysInactive;
+  });
+
+  res.json({ students: result });
+});
+
 /** Full student + nested transcript — admin or that student */
 router.get('/:id', authenticate, requireStudentOrAdminForStudentParam, async (req, res) => {
   const isAdmin = req.auth?.role === 'admin';

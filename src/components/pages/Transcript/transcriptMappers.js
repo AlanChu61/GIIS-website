@@ -43,6 +43,14 @@ function normalizeGpaCell(v) {
   return Number.isFinite(n) ? n : '-';
 }
 
+function normalizeCredit(v) {
+  const n = parseFloat(v);
+  if (!Number.isFinite(n)) return '';
+  if (n === 1) return '1.0';
+  if (n === 0.5) return '0.5';
+  return String(n);
+}
+
 /**
  * Build grade-table rows (including Semester Totals) from API course rows.
  */
@@ -51,7 +59,7 @@ export function courseApiToGradeRows(courseRowsFromApi) {
     name: c.courseName || '',
     type: c.courseType || '',
     credits: (c.credits != null && String(c.credits).trim() !== '')
-      ? String(c.credits)
+      ? normalizeCredit(String(c.credits))
       : (c.courseType === 'Core' || c.courseType === 'Core (AP)') ? '1.0' : '',
     grade: c.letterGrade || '',
     weightedGPA: normalizeGpaCell(c.weightedGpa),

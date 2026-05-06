@@ -128,6 +128,9 @@ export default function AdminDashboard({ language }) {
           </p>
         </div>
         <div>
+          <Link to="/admin/progress" className="btn btn-outline-success btn-sm me-2">
+            {isEn ? 'Progress' : '学习进度'}
+          </Link>
           <Link to="/school-profile" target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary btn-sm me-2">
             {isEn ? 'School Profile' : '学校简介'}
           </Link>
