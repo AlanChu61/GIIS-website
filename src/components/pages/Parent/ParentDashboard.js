@@ -52,7 +52,7 @@ function ActivityRow({ event, isEn }) {
 
 function CourseBar({ enr, isEn }) {
   const color = DEPT_COLORS[enr.department] || '#2b3d6d';
-  const pct = enr.totalModules > 0 ? Math.round((enr.completedModules / enr.totalModules) * 100) : 0;
+  const pct = (enr.totalModules ?? 0) > 0 ? Math.round((enr.completedModules / enr.totalModules) * 100) : 0;
   return (
     <div style={{ padding: '12px 0', borderBottom: '1px solid #f0f2f8' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>

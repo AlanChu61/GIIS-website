@@ -27,7 +27,7 @@ router.get('/me', async (req, res) => {
     include: {
       enrollments: {
         include: {
-          course: { select: { name: true, nameZh: true, slug: true, department: true, credits: true } },
+          course: { select: { name: true, nameZh: true, slug: true, department: true, credits: true, _count: { select: { modules: true } } } },
           examAttempts: { orderBy: { submittedAt: 'desc' }, take: 5 },
           assignments: { orderBy: { updatedAt: 'desc' }, take: 5 },
           quizAttempts: { orderBy: { submittedAt: 'desc' }, take: 5 },
@@ -80,7 +80,7 @@ router.get('/me', async (req, res) => {
     enrollments: student.enrollments.map(e => ({
       id: e.id, slug: e.course.slug, name: e.course.name, nameZh: e.course.nameZh,
       department: e.course.department, credits: Number(e.course.credits),
-      completedModules: e.completedModules.length, creditEarned: e.creditEarned,
+      completedModules: e.completedModules.length, totalModules: e.course._count.modules, creditEarned: e.creditEarned,
     })),
     recentActivity: events.slice(0, 10),
   });

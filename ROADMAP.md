@@ -103,65 +103,23 @@
 
 ---
 
-### 1. 把家長 Dashboard mockup 轉成真的 React 頁面
+### ✅ 1. 把家長 Dashboard mockup 轉成真的 React 頁面（已完成）
 
-**設計來源**：`public/demo/parent-dashboard-mockup.html`（已完成的視覺草稿，含 student hero、active courses、recent activity、advisor note、upcoming、quick links、weekly digest）
-
-**檔案**：
-- 新建 `src/components/pages/Parent/ParentDashboard.js`
-- 新建 `src/components/pages/Parent/ParentLogin.js`
-- `src/App.js` 加 routes：`/parent/login`、`/parent/dashboard`
-- `src/api/parentAuth.js` — 仿 `src/api/authStorage.js` 寫一個 parent session
-
-**Acceptance**：
-- 家長用 email + password 登入
-- Dashboard 顯示孩子的學分、GPA、進行中課程、最近活動、advisor note
-- 跑 `npm run build` 沒 error
-- 手機 (≤768px) sidebar 折到下方、stat 變 2 欄
-
-**依賴**：先做下面的 #2 schema 與 API。
+`src/components/pages/Parent/ParentDashboard.js` + `ParentLogin.js` 上線於 `/parent/dashboard` 與 `/parent/login`。Cookie-based JWT auth、顯示學生學分 / GPA / 進行中課程 / 最近活動、進度條（completedModules / totalModules，已修復 totalModules 缺失 bug）。雙欄佈局含 `.giis-parent-grid` class，手機版 `@media (max-width: 880px)` 折成單欄。
 
 ---
 
-### 2. Schema：`ParentAccount` 與 `Student.parentEmail`
+### ✅ 2. Schema：`ParentAccount` 與 `Student.parentEmail`（已完成）
 
-**檔案**：`server/prisma/schema.prisma`
-
-**新增 model**：
-```prisma
-model ParentAccount {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  studentId    String
-  student      Student  @relation(fields: [studentId], references: [id])
-  createdAt    DateTime @default(now())
-  lastLoginAt  DateTime?
-}
-```
-
-**改 Student**：加 `parentEmail String?`、加 `parentAccounts ParentAccount[]` 反向關聯。
-
-**Acceptance**：
-- `npx prisma migrate dev --name add_parent_account` 過
-- Admin UI 建立學生時可填 parentEmail（先放 form，後端寫入即可）
-- 一個 student 可以有多個 ParentAccount（離婚家長 / 雙親各自登入）
+`server/prisma/schema.prisma` 已加入：`ParentAccount`（email, passwordHash, studentId, lastLoginAt）、`Application`（studentName, dob, gradeLevel, parentName, parentEmail, phone, notes, status）、`Student.parentEmail String?`、`AssignmentSubmission.score Decimal?`、`gradedAt DateTime?`、`gradedById String?`。`npx prisma db push` 已同步到本地 DB。
 
 ---
 
-### 3. API：家長登入 + Dashboard 資料
+### ✅ 3. API：家長登入 + Dashboard 資料（已完成）
 
-**新檔**：
-- `server/src/routes/parent-auth.js`
-  - `POST /api/parent/login` → bcrypt 比對 → 回傳 JWT
-  - `POST /api/parent/setup` → 用一次性 token 設定密碼（admin 寄邀請信用）
-- `server/src/routes/parent-data.js`
-  - `GET /api/parent/me` → 認證後回傳家長綁定的 student 資料（複用現有的 transcript / enrollments query，但只能看自己孩子）
-
-**Acceptance**：
-- Postman 測試：登入後 `Authorization: Bearer <token>` 能拿到 JSON 結構（student, enrollments[], recentActivity[], advisorNote）
-- 沒登入 / 用別的 student id → 401 / 403
-- `server/src/index.js` 把新 routes 掛上去
+- `server/src/routes/parent-auth.js`：`POST /api/parent/login`（bcrypt + cookie JWT）、`POST /api/parent/logout`、`POST /api/parent/setup`（admin 建帳用）
+- `server/src/routes/parent-data.js`：`GET /api/parent/me`（cookie auth，回傳 student / stats / enrollments[含 totalModules] / recentActivity）
+- 掛載於 `server/src/index.js`
 
 ---
 
@@ -191,24 +149,9 @@ model ParentAccount {
 
 ---
 
-### 5. 作業批改 UI + 批改後通知家長
+### ✅ 5. 作業批改 UI（已完成，email 通知待 Resend）
 
-**家長最常問**：「老師有在看我孩子的作業嗎？」
-
-**檔案**：
-- 新建 `src/components/pages/Admin/AssignmentQueue.js` — 待批清單（學生姓名、課程、Module、提交時間、內容連結、批分、評語、submit）
-- `src/App.js` 加 route `/admin/assignments`
-- `server/src/routes/admin-assignments.js`
-  - `GET /api/admin/assignments/pending`
-  - `PATCH /api/admin/assignments/:id` → 寫 score + feedback，觸發兩封 email（學生 + 家長）
-- Schema：`AssignmentSubmission` 新增 `score Decimal?`、`gradedAt DateTime?`、`gradedById String?`
-
-**Acceptance**：
-- Admin 在 `/admin/assignments` 看到所有 submission，篩選未批 / 已批
-- 批改 submit 後，學生在 `ModulePage` 的 feedback card 立刻顯示新 feedback
-- 家長收到 email：「老師批改了 Yunfan 的 [Module 8 作業]」
-
-**依賴**：#4 的 Resend wrapper
+`src/components/pages/Admin/AssignmentQueue.js` 上線於 `/admin/assignments`。篩選 Pending / Graded / All，展開可填 feedback + score，submit 後即更新。`server/src/routes/admin-assignments.js`：`GET /pending`、`GET /`（帶 `?graded=`）、`PATCH /:id`（寫入 feedback / score / gradedAt / gradedById）。Schema 字段已在 #2 同步。**Email 通知（Resend）留待 #4 的 Resend wrapper 完成後補充。**
 
 ---
 
@@ -242,15 +185,9 @@ Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 
 ---
 
-### 8. 入學流程（`/apply`）
+### ✅ 8. 入學流程 `/apply`（UI 完成，Stripe link 待接）
 
-**檔案**：
-- 新建 `src/components/pages/Apply/ApplyForm.js` — 學生姓名、生日、grade level、家長姓名、家長 email、電話
-- `server/src/routes/applications.js` — `POST /api/applications`（存 `Application` row、寄 admin 通知 + 家長確認信）
-- 新 schema：`Application { id, studentName, dob, gradeLevel, parentName, parentEmail, phone, status, createdAt, reviewedAt, reviewedById }`
-- Admin 介面 `src/components/pages/Admin/ApplicationsQueue.js` — 一鍵 approve → 觸發 Stripe checkout link 寄給家長
-
-**Acceptance**：訪客填表→admin 審核→家長收到付款 link→付完款→學生帳號自動建立。
+`src/components/pages/Apply/ApplyForm.js` 上線於 `/apply`（雙語，含驗證，送出後顯示確認畫面）。`server/src/routes/applications.js`：`POST /api/applications`（public）、`GET /api/applications?status=`（admin）、`PATCH /api/applications/:id`（approve/reject）。`src/components/pages/Admin/ApplicationsQueue.js` 上線於 `/admin/applications`。Schema 已同步。**Approve → 寄 Stripe checkout link 待 #7 Stripe 完成後補。**
 
 ---
 
@@ -299,7 +236,7 @@ Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 |------|------|-------------|
 | Admin | 課程 / 題目管理 UI | 取代手改 JSON + re-seed |
 | Admin | 批量學生匯入 CSV | `/admin/students/bulk-import` |
-| Admin | 學生進度看板 | `/admin/students/dashboard` 一頁看誰卡關 |
+| ✅ Admin | 學生進度看板 | `/admin/progress`：活動時間、學分進度條、進行中 / 完成課程數、color-coded badge（今天 / N天前 / Never active）。`server/src/routes/students.js` GET /progress，`src/components/pages/Admin/AdminProgressPage.js`，AdminDashboard 已加入口按鈕 |
 | Admin | 代替學生加退課 | 在 student profile 頁加 enrollment 編輯 |
 | Student | 課程進度條 | `LearnDashboard.js` 課程卡顯示 X/Y modules |
 | Student | Quiz 失敗引導 | 沒過時建議複習特定章節 |
