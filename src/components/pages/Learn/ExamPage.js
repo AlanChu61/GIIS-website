@@ -23,6 +23,8 @@ export default function ExamPage({ language }) {
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [courseName, setCourseName] = useState('');
+  const [submittedAt, setSubmittedAt] = useState(null);
+  const [, forceUpdate] = useState(0);
 
   useEffect(() => {
     if (!session) { navigate('/login', { replace: true }); return; }
@@ -58,6 +60,7 @@ export default function ExamPage({ language }) {
               total: reviewData.total,
               graded: reviewData.graded,
             });
+            setSubmittedAt(new Date(submittedAttempt.submittedAt));
             setPhase('review');
             return;
           }
@@ -102,12 +105,25 @@ export default function ExamPage({ language }) {
       return;
     }
     setResult(d);
+    setSubmittedAt(new Date(d.submittedAt || Date.now()));
     setPhase('submitted');
   }
+
+  useEffect(() => {
+    if (!submittedAt || result?.passed) return;
+    const id = setInterval(() => forceUpdate((n) => n + 1), 60_000);
+    return () => clearInterval(id);
+  }, [submittedAt, result]);
 
   if (!session) return null;
 
   const answeredCount = Object.keys(answers).length;
+  const cooldownRemaining = submittedAt
+    ? Math.max(0, submittedAt.getTime() + 24 * 3600 * 1000 - Date.now())
+    : 0;
+  const inCooldown = cooldownRemaining > 0;
+  const cooldownHours = Math.floor(cooldownRemaining / 3_600_000);
+  const cooldownMins = Math.floor((cooldownRemaining % 3_600_000) / 60_000);
 
   return (
     <>
@@ -343,12 +359,18 @@ export default function ExamPage({ language }) {
                 {isEn ? '← Back to Course' : '← 返回課程'}
               </Link>
               {!result.passed && (
-                <button onClick={() => setPhase('ready')} style={{
-                  padding: '12px 24px', background: '#2b3d6d', color: '#fff',
-                  border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '14px', cursor: 'pointer',
-                }}>
-                  {isEn ? 'Retake Exam →' : '重新考試 →'}
-                </button>
+                inCooldown ? (
+                  <div style={{ padding: '12px 24px', background: '#fff3e0', border: '1px solid #ffcc80', borderRadius: '8px', fontSize: '13px', fontWeight: 600, color: '#e65100' }}>
+                    {isEn ? `Retake available in ${cooldownHours}h ${cooldownMins}m` : `${cooldownHours}小时${cooldownMins}分钟后可重考`}
+                  </div>
+                ) : (
+                  <button onClick={() => setPhase('ready')} style={{
+                    padding: '12px 24px', background: '#2b3d6d', color: '#fff',
+                    border: 'none', borderRadius: '8px', fontWeight: 700, fontSize: '14px', cursor: 'pointer',
+                  }}>
+                    {isEn ? 'Retake Exam →' : '重新考試 →'}
+                  </button>
+                )
               )}
             </div>
           </div>
@@ -382,8 +404,12 @@ export default function ExamPage({ language }) {
               <div style={{ background: '#fff3e0', border: '1px solid #ffcc80', borderRadius: '12px', padding: '20px', marginBottom: '32px' }}>
                 <p style={{ margin: 0, fontSize: '14px', color: '#e65100' }}>
                   {isEn
-                    ? 'Review the modules and try again after 24 hours. You need 70% to pass.'
-                    : '请复习学习模块后，24小时后可重新参加考试。需要70%才能通过。'}
+                    ? inCooldown
+                      ? `Review the modules and retake in ${cooldownHours}h ${cooldownMins}m. You need 70% to pass.`
+                      : 'Modules reviewed? You can retake the exam now. You need 70% to pass.'
+                    : inCooldown
+                      ? `请复习学习模块。${cooldownHours}小时${cooldownMins}分钟后可重新参加考试。需要70%才能通过。`
+                      : '已复习学习模块？现在可以重新参加考试了。需要70%才能通过。'}
                 </p>
               </div>
             )}

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import logoSlogan from '../../../img/logo_slogan.png';
 import GradeTable from './GradeTable.js';
 import TranscriptActions from './TranscriptActions.js';
@@ -275,7 +276,23 @@ function TranscriptContent({
             </table>
           </div>
 
-          <div className="pdf-page-number" style={{ textAlign: 'center', fontFamily: 'Times New Roman, Times, serif', fontSize: '8pt', marginTop: '4px' }}>-- 1 of 1 --</div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '6px' }}>
+            <div className="pdf-page-number" style={{ fontFamily: 'Times New Roman, Times, serif', fontSize: '8pt', flex: 1 }}>-- 1 of 1 --</div>
+            {profile?.studentCode && (
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: 6 }}>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ fontSize: '6pt', color: '#555', margin: '0 0 2px', fontFamily: 'Times New Roman, Times, serif' }}>Scan to verify authenticity</p>
+                  <QRCodeSVG
+                    value={`https://genesisideas.school/verify/${profile.studentCode}`}
+                    size={48}
+                    bgColor="transparent"
+                    fgColor="#000"
+                    level="M"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -49,6 +49,7 @@ const ParentDashboard = lazy(() => import('./components/pages/Parent/ParentDashb
 const AssignmentQueue = lazy(() => import('./components/pages/Admin/AssignmentQueue'));
 const ApplicationsQueue = lazy(() => import('./components/pages/Admin/ApplicationsQueue'));
 const ApplyForm = lazy(() => import('./components/pages/Apply/ApplyForm'));
+const VerifyPage = lazy(() => import('./components/pages/Verify/VerifyPage'));
 
 const LANGUAGE_STORAGE_KEY = 'giis-language';
 
@@ -148,6 +149,7 @@ function App() {
          <Route path="/admin/assignments" element={<AssignmentQueue />} />
          <Route path="/admin/applications" element={<ApplicationsQueue />} />
          <Route path="/apply" element={<ApplyForm language={language} />} />
+         <Route path="/verify/:code" element={<VerifyPage />} />
          <Route path="/privacy" element={<PrivacyPolicy language={language} />} />
          <Route path="/terms" element={<TermsOfUse language={language} />} />
          <Route path="*" element={<NotFound language={language} />} />

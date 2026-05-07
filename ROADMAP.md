@@ -1,6 +1,6 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-04（晚間）
+> 最後更新：2026-05-06（教學影片 pipeline 跑通 + Module 4/9 兩支真 Aria sample）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
@@ -91,15 +91,96 @@
 
 ---
 
-## 🚧 Phase 1 — 讓家長能「看到」孩子在學習
+## 🎓 教學影片產線（pilot 完成，等批次擴大）
+
+> 為什麼重要：每個 module 一支 5-30 分鐘授課影片，是家長「看得到孩子在學什麼」的最直接證據（Phase 1 透明度的核心）。Khan Academy 用這條路長大；我們用同一條路 + GIIS 品牌風格 + 中文/英文雙語潛力。
+
+- ✅ **Pilot #1：Algebra I — Module 4（One-Step & Two-Step Equations）** — `teaching-videos/algebra-i-module-4-sample/`。約 6 分鐘，1920×1080，GIIS 校徽配色（maroon `#6B1F2A` + gold `#D4A634` + cream `#FAF6EC`），16 sections 含 2 次 pause-and-try、3s intro/outro 自製合成 chord、英文 Aria 神經語音 + 燒入英文字幕。第一段用珍奶找錢做 hook
+- ✅ **Pilot #2：Algebra I — Module 9（Slope & Rate of Change）** — `teaching-videos/algebra-i-module-9-slope/`。約 6 分鐘，15 sections，含**真實 Cartesian graph 視覺**（rise/run 黃線標註）、樓梯陡緩對比 hook、four-flavors-of-slope 卡牌、real-life rate-of-change 對應（速度/儲蓄/坡度/降溫）、常見「混亂順序 sign 錯」陷阱頁
+- ✅ **老師人格** — 高中老師 + 一點粘的口吻（"You've been doing algebra since you were a kid", "knock these out like they owe you money", "Module 5 — get spicy", "rate of change — that's just slope wearing a different jacket"）
+- ✅ **Lesson-video skill（自包整套）** — `tools/lesson-video/SKILL.md` + `make_lesson.py`（一指令：synth + merge）+ `merge_lesson.py`（合成主程式）+ `intro_music.wav`/`outro_music.wav`（numpy 合成的 C 大調 chord，無版權）。Claude 看到「merge the lesson」就會跑 merge skill
+- ✅ **Mac 零依賴** — 透過 `imageio-ffmpeg`（PyPI 套件內建 ffmpeg static binary）讓 Mac 完全不需 `brew install ffmpeg`。`pip install edge-tts imageio-ffmpeg` 一次性裝完就好
+- ✅ **跨 ffmpeg 版本 robust** — 解決 ffmpeg 8.1.1 的兩個 breaking changes：(1) `force_style=...` 內逗號 escape 規則改了 → 改用直接生 `subtitles.ass`（樣式內嵌，不靠 cli 參數）；(2) brew 8.x 預設沒 `--enable-libass`（subtitles filter 整個不存在！）→ `find_ffmpeg()` 自動偵測 libass 支援，沒有就 fallback 到 imageio_ffmpeg 的 static binary
+- ✅ **Pipeline 全鏈確認** — Claude 寫 `script.json` + 生 slides → user `python3 tools/lesson-video/make_lesson.py teaching-videos/<lesson>/` → 自動 edge-tts 生 Aria MP3 → 自動 merge → MP4 落地。一個指令、ZERO Mac 系統依賴、可重複
+- ✅ **跨科目驗證 — English I Module 1（Reading Comprehension）** — `teaching-videos/english-i-module-1-reading/`。約 6 分鐘，14 sections。視覺風格從方程式換成 quote 卡 + parchment 段落底色 + inference 箭頭，但同一個 `make_lesson.py`/`merge_lesson.py` 不用改。Pipeline 確認跨科目通用
+- ✅ **每科一位老師（聲音指派）** — Math=Aria 女、Science=Emma 女、English=Andrew 男（最會說故事）、Social Studies=Christopher 男（紀錄片感）、Psychology=Brian 男（溫和）、PE/Health=Jenny 女（教練）、Electives=Aria。寫進 `tools/lesson-video/SKILL.md` 對照表，未來新 module Claude 自動套用。設計用意：每科不同聲音 = 像真學校有不同老師
+
+- ✅ **3 支「正式版」script + slides 完成**（Module 1 EASY 5min / Module 7 MED-HARD 9min / Module 14 HARDEST 12min）— 驗證難度縮放策略可行：簡單模組 ~12 sections，最難模組 ~21 sections 含三種解法 + 鑑別式 + 常見錯誤頁。每支結尾都有「How to actually master this module」slide，明確告訴學生影片只是 ~10-15% 學習量，剩下要做 OpenStax / Khan / assignment / advisor
+
+---
+
+## 🎬 YouTube 自動上傳 + Learn Portal 整合（Phase 1 透明度核心 commit ✅）
+
+> **為什麼這個是 Phase 1 的關鍵成就**：家長 / 潛在家長現在打開 Learn Portal 任何一個有 GIIS 影片的 module，看到的是內嵌 YouTube 播放器播自己學校老師講課 — 不再只有外部 Khan Academy 連結。「我看得到孩子在學什麼」這個承諾從文字變成可點擊。
+
+- ✅ **YouTube channel 上線** — Brand Account「Genesis of Ideas International」，校徽 logo，Florida-registered 描述，phone-verified（自訂縮圖權限解鎖）
+- ✅ **Google Cloud + OAuth 設定** — `giis-youtube-uploader` GCP project，YouTube Data API v3 啟用，Desktop OAuth client，`client_secret.json` + `token.json` 在 `tools/youtube-upload/` 並寫進 .gitignore
+- ✅ **`tools/youtube-upload/` 套組** — 4 支 Python：
+  - `upload_video.py`（底層）— 任何 MP4 + metadata 上傳
+  - `upload_lesson.py`（高層）— 吃 lesson folder，自動建 title / description / chapter timestamps（從 wav 算）/ 附 SRT / 縮圖 / **加進 course playlist**（不存在自動建）/ **寫 video ID 回 script.json** / **重 build manifest**
+  - `playlist.py` — list / show / create / add / remove / reorder / delete
+  - `build_manifest.py` — 走過所有 `teaching-videos/*/script.json`，聚合到 `public/data/lessons-manifest.json` 給 React 讀
+- ✅ **3 支 lesson 已上 YouTube + 在對的 playlist**：
+  - Algebra I — Module 4 (`AMF3Wj4cycs`) → Algebra I playlist
+  - Algebra I — Module 9 (`TovkiAsNLms`) → Algebra I playlist
+  - English I — Module 1 (`tt_hC7TqUPA`) → English I playlist
+  - 所有 unlisted（link 才能看，不出現在 channel 公開頁）
+- ✅ **`<LessonVideoEmbed />` React 元件** — `src/components/main/LessonVideoEmbed.js`。吃 `course` + `moduleNumber` props，fetch manifest 找對應 video，找到顯示 16:9 in-page YouTube embed + GIIS-branded header（紅色 maroon），找不到 render `null`（安全 — 還沒上的 module 自動隱藏）
+- ✅ **`ModulePage.js` 已接通** — Learn Portal 任何 module 頁都有 `<LessonVideoEmbed course={course.name} moduleNumber={mod.order} />` 在 Objectives 之後 / Study Resources 之前。零 schema 改動，未來新上傳的影片自動出現在對的 module 頁
+- ✅ **Pipeline 端到端 idempotent** — 從「Claude 寫 script」一路到「家長在 Learn Portal 看到影片」，過程中每一步都可以重跑、重組合、不會破壞前面的成果
+
+### 🔧 教學影片產線後續
+
+- [ ] **(needs feedback)** Alan 看完 3 支已上 YouTube 的 sample 後，對 tone / 配色 / pause 節奏 / 字幕字級 / 語速給 feedback → 微調 baseline。Quota 警告：今天已用 ~9,750 / 10,000，接近上限
+- [ ] **明天上 school intro** — 80 秒 walkthrough 影片 (`public/demo/giis-demo.mp4`) 用 `upload_video.py` 直傳，**privacy=public**（區別於 lesson 的 unlisted），不進任何 lesson playlist。指令在 `tools/youtube-upload/RUN_AFTER_VERIFICATION.md` Step 4
+- [ ] **批次第一批：Algebra I 剩下 11 個 modules**（Module 2, 3, 5, 6, 8, 10, 11, 12, 13；其中 1, 7, 14 的 script+slides 已寫好但還沒上）— 每支 ~5-12 min。每天上限 4 支（quota），預計分 3 天。
+- [ ] **slide_kit 模板化** — `tools/lesson-video/slide_kit.py`，抽出重複的 `title_slide() / pause_slide() / equation_slide() / graph_slide() / path_slide()` helpers。讓寫新 module 從 ~250 行 PIL 代碼降到 ~50 行純 data
+- [ ] **跨科目擴充** — Algebra I 完成後，依家長 demo 頻率排序：English I 全 14 module → Biology → Psychology Foundations → Chemistry → Economics → ...
+- [ ] **AI tutor / quiz 自動批改**（Phase 1 → Phase 2 過渡）— 影片只是 lecture，學生看完需要練 + 反饋。Khan Academy 模型成功的關鍵不是影片是 graded practice。我們現在 module 頁有 quiz section 但內容空，要規劃題庫怎麼產生（人工 vs AI），怎麼批改
+
+### 📁 Pilot 目錄索引
+
+```
+teaching-videos/algebra-i-module-4-sample/
+├── algebra_i_module_4_sample.mp4    # 最終影片（覆蓋舊版時跑 merge skill 即可）
+├── subtitles.srt                    # 英文字幕（可獨立丟 YouTube）
+├── script.json                      # 講課腳本（16 sections + 旁白 + 設定）
+├── slides/                          # 16 張 1920×1080 PNG（GIIS 配色）
+├── build_slides.py                  # 重新生 slides 用
+├── synth_audio_local.py             # Mac 端跑 edge-tts 出 Aria MP3
+└── audio/                           # 旁白音檔（mp3/wav）
+
+tools/lesson-video/                  # 共用 merge skill（所有未來 lesson 共用）
+├── SKILL.md                         # Claude 觸發說明
+├── merge_lesson.py                  # 主程式
+├── intro_music.wav                  # 3s 開場合成 chord
+└── outro_music.wav                  # 3s 結尾合成 chord
+```
+
+---
+
+## ✅ Phase 1 — 讓家長能「看到」孩子在學習（核心已完成）
 
 > 目標：家長打開手機就能知道孩子這週做了什麼。
 
-### ✅ 0. 公開可瀏覽的 Parent Dashboard demo（已完成 — 早期）
+- ✅ **1-0 公開 Parent Dashboard demo** — `/parent/demo`（`ParentDashboardDemo.js`）：Yunfan 真實 seed 數據、雙語、PREVIEW banner、Pricing 頁 CTA 連結過來
+- ✅ **1-1 Parent Dashboard 真版** — `ParentDashboard.js` 登入後顯示真實 API 數據（學分、GPA、進行中課程、活動紀錄）；`ParentLogin.js` cookie-based 登入；`src/api/authStorage.js` 加 parent session helpers
+- ✅ **1-2 Schema** — `ParentAccount`、`Application`、`Student.parentEmail`、`AssignmentSubmission.{score, gradedAt, gradedById}` 全加進 `schema.prisma`
+  - ⚠️ **待執行**：在 server 上跑 `npx prisma db push` 讓 schema 同步到 PostgreSQL
+- ✅ **1-3 API** — `POST /api/parent/login|logout|setup`、`GET /api/parent/me`（學分 + GPA + enrollments + 活動 feed）掛進 `server/src/index.js`
+- ✅ **1-5 作業批改 UI** — `AdminAssignmentQueue.js` at `/admin/assignments`：inline 評語 + 分數 + pending/graded filter；`server/src/routes/admin-assignments.js`（GET pending、GET all、PATCH grade）
+- ✅ **1-6 Demo embed 共用 component** — `DemoEmbed.js` single source；Homepage / Admission / Pricing 三頁共用；`HomepageDemo.js` 刪除
 
-`src/components/pages/Parent/ParentDashboardDemo.js` 上線於 `/parent/demo`。完整重現未來家長面板的視覺，含 Yunfan 真實 seed 數據（22/24 學分、3.85 GPA、3 進行中課程、advisor note 用 Shiyu Zhang Ph.D. 名義）。雙語、頂部黃色 PREVIEW banner 強調是示例資料、底部 CTA 引導 Apply / Pricing。Pricing 頁的 CTA 區塊也加了「Or preview the parent dashboard you'll get」連結指過來。
+### 🔧 Phase 1 剩餘（需要外部服務或 Alan 操作）
 
-未來 Phase 1 #1 真實 logged-in 版上線時，這頁保留作為 marketing 入口（不需要登入）。
+- [ ] **1-4 每週進度 Email 報告（Resend）** — 需要 `RESEND_API_KEY`（Alan 在 resend.com 拿，免費 3,000 封/月）
+  - 檔案：`server/src/jobs/weekly-digest.js`、`server/src/lib/resend.js`、`EmailLog` schema model
+  - Acceptance：`node server/src/jobs/weekly-digest.js --dry-run` 可列出；`--dry-run=false` 真寄
+  - 作業批改後通知家長的 email 也在這裡補上（`admin-assignments.js` 裡已有 `// TODO` 占位）
+
+- [ ] **Schema 同步** — server 上跑 `npx prisma db push` 讓 ParentAccount / Application / AssignmentSubmission 新欄位生效
+
+- [ ] **Admin 新增學生時填 parentEmail** — `AdminDashboard.js` 新增學生 form 加一個 optional `parentEmail` 欄位，寫進 `Student.parentEmail`；完成後 Admin 在建帳號同時就能綁家長信箱
 
 ---
 
@@ -191,18 +272,21 @@ Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 
 ---
 
-### 9. 文憑 / 成績單驗證 QR
+### ✅ 9. 文憑 / 成績單驗證 QR — 已完成
 
-**檔案**：
-- `src/components/pages/Diploma/DiplomaPage.js` 與 `Transcript/TranscriptContent.js` 加 QR code（`qrcode.react`）指向 `/verify/:studentCode`
-- 新建 `src/components/pages/Verify/VerifyPage.js` — 公開頁，輸入學號或掃 QR 顯示「此文件由 GIIS 官方發出，學生：XXX，發證日期：XXXX」
-- `server/src/routes/verify.js` — `GET /api/verify/:code` 回傳最小公開資料（姓名、發證日期、是否畢業）
+- ✅ `DiplomaPage.js` + `TranscriptContent.js` 加 QR code（`qrcode.react`）指向 `/verify/:studentCode`
+- ✅ `VerifyPage.js` at `/verify/:code` — 公開驗證頁，掃 QR 顯示「GIIS 官方發出、學生姓名、發證日期、是否畢業」
+- ✅ `server/src/routes/verify.js` — `GET /api/verify/:code`（只回最小公開資料）
 
-**Acceptance**：列印的成績單上掃 QR 就能驗證真偽，不需登入。
+Acceptance ✅：列印成績單掃 QR 不需登入可驗真偽。
 
 ---
 
 ## 🔁 Phase 3 — 留住付費用戶
+
+### ✅ 13. 考試冷卻倒計時 — 已完成
+
+- ✅ `ExamPage.js` — `nextAttemptAt` 轉成 "還要等 X 小時 Y 分鐘" 倒計時 UI，每分鐘自動 refresh
 
 ### 10. Advisor 筆記 + 學期建議
 
@@ -221,10 +305,6 @@ Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 - `src/components/pages/Auth/ResetPassword.js`
 - 學生 + 家長共用同一條 flow
 
-### 13. 考試冷卻倒計時
-
-- 既有的 exam attempt 有 `nextAttemptAt`，UI 把這欄轉成 "還要等 X 小時 Y 分鐘"
-- 改 `src/components/pages/Learn/ExamPage.js`
 
 ---
 
@@ -291,14 +371,17 @@ Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 ## 開發優先序總結
 
 ```
-Phase 1（讓家長看到）：
-  Demo 補放 Admission/Pricing → Parent Dashboard 真版 → Schema + API → 週報 email → 作業批改 UI
+✅ Phase 1（讓家長看到）— 核心已完成
+  剩：週報 email（等 RESEND_API_KEY）、Admin 建學生時填 parentEmail、npx prisma db push
 
-Phase 2（讓錢進來）：
-  Stripe → /apply → 文憑驗證 QR
+✅ Phase 2 部分完成
+  ✅ /apply + ApplicationsQueue
+  ✅ 文憑/成績單 QR 驗證
+  待：Stripe（等 STRIPE_SECRET_KEY）
 
 Phase 3（留住付費用戶）：
-  Advisor 筆記 → 學期報告 → 密碼重設 → 考試冷卻
+  Advisor 筆記 → 學期報告 → 密碼重設（需要 Resend）
+  ✅ 考試冷卻倒計時
 
 Phase 4（有規模再做）：
   Admin 課程 UI → 批量操作 → 討論區

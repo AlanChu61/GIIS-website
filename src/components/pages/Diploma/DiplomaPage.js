@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 import { Helmet } from 'react-helmet-async';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { getAdminSession, getStudentSession } from '../../../api/authStorage';
@@ -362,12 +363,31 @@ function DiplomaDocument({ student, eligibleDate }) {
             </div>
           </div>
 
-          {/* Eligible date footnote */}
-          {eligibleDate && (
-            <p style={{ fontSize: '8px', color: '#b8962e', marginTop: '8px', letterSpacing: '1.2px', textAlign: 'center', opacity: 0.8 }}>
-              DIPLOMA ELIGIBLE AS OF {eligibleDate.toUpperCase()}
-            </p>
-          )}
+          {/* Eligible date + verification QR */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginTop: '10px', paddingTop: '4px' }}>
+            <div style={{ flex: 1 }} />
+            <div style={{ textAlign: 'center', flex: 1 }}>
+              {eligibleDate && (
+                <p style={{ fontSize: '8px', color: '#b8962e', letterSpacing: '1.2px', margin: 0, opacity: 0.8 }}>
+                  DIPLOMA ELIGIBLE AS OF {eligibleDate.toUpperCase()}
+                </p>
+              )}
+            </div>
+            {student.studentCode && (
+              <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', alignItems: 'flex-end', gap: 6 }}>
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ fontSize: '6px', color: '#888', letterSpacing: '1px', textTransform: 'uppercase', margin: '0 0 3px', fontFamily: "'Cinzel', serif" }}>Verify authenticity</p>
+                  <QRCodeSVG
+                    value={`https://genesisideas.school/verify/${student.studentCode}`}
+                    size={52}
+                    bgColor="transparent"
+                    fgColor="#1a2d5a"
+                    level="M"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

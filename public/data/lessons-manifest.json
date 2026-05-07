@@ -1,0 +1,100 @@
+{
+  "generated_at": "2026-05-07T02:14:00+00:00",
+  "source": "youtube-channel",
+  "by_course": {
+    "Algebra I": [
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 1,
+        "module_title": "Variables and Algebraic Expressions",
+        "youtube_id": "OOntuWd3_o4",
+        "url": "https://youtu.be/OOntuWd3_o4",
+        "embed_url": "https://www.youtube.com/embed/OOntuWd3_o4",
+        "published_at": "2026-05-07T02:13:45Z",
+        "lesson_dir": "algebra-i-module-1-variables"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 4,
+        "module_title": "Solving One-Step and Two-Step Equations",
+        "youtube_id": "AMF3Wj4cycs",
+        "url": "https://youtu.be/AMF3Wj4cycs",
+        "embed_url": "https://www.youtube.com/embed/AMF3Wj4cycs",
+        "published_at": "2026-05-06T20:16:15Z",
+        "lesson_dir": "algebra-i-module-4-sample"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 9,
+        "module_title": "Slope and Rate of Change",
+        "youtube_id": "bmyK05H8fFU",
+        "url": "https://youtu.be/bmyK05H8fFU",
+        "embed_url": "https://www.youtube.com/embed/bmyK05H8fFU",
+        "published_at": "2026-05-06T20:21:55Z",
+        "lesson_dir": "algebra-i-module-9-slope"
+      }
+    ],
+    "English I": [
+      {
+        "course": "English I",
+        "course_slug": "english-i",
+        "module_number": 1,
+        "module_title": "Reading Comprehension Strategies",
+        "youtube_id": "tt_hC7TqUPA",
+        "url": "https://youtu.be/tt_hC7TqUPA",
+        "embed_url": "https://www.youtube.com/embed/tt_hC7TqUPA",
+        "published_at": "2026-05-06T20:33:37Z",
+        "lesson_dir": "english-i-module-1-reading"
+      }
+    ]
+  },
+  "lessons": [
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 1,
+      "module_title": "Variables and Algebraic Expressions",
+      "youtube_id": "OOntuWd3_o4",
+      "url": "https://youtu.be/OOntuWd3_o4",
+      "embed_url": "https://www.youtube.com/embed/OOntuWd3_o4",
+      "published_at": "2026-05-07T02:13:45Z",
+      "lesson_dir": "algebra-i-module-1-variables"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 4,
+      "module_title": "Solving One-Step and Two-Step Equations",
+      "youtube_id": "AMF3Wj4cycs",
+      "url": "https://youtu.be/AMF3Wj4cycs",
+      "embed_url": "https://www.youtube.com/embed/AMF3Wj4cycs",
+      "published_at": "2026-05-06T20:16:15Z",
+      "lesson_dir": "algebra-i-module-4-sample"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 9,
+      "module_title": "Slope and Rate of Change",
+      "youtube_id": "bmyK05H8fFU",
+      "url": "https://youtu.be/bmyK05H8fFU",
+      "embed_url": "https://www.youtube.com/embed/bmyK05H8fFU",
+      "published_at": "2026-05-06T20:21:55Z",
+      "lesson_dir": "algebra-i-module-9-slope"
+    },
+    {
+      "course": "English I",
+      "course_slug": "english-i",
+      "module_number": 1,
+      "module_title": "Reading Comprehension Strategies",
+      "youtube_id": "tt_hC7TqUPA",
+      "url": "https://youtu.be/tt_hC7TqUPA",
+      "embed_url": "https://www.youtube.com/embed/tt_hC7TqUPA",
+      "published_at": "2026-05-06T20:33:37Z",
+      "lesson_dir": "english-i-module-1-reading"
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { getStudentSession } from '../../../api/authStorage';
 import { getApiBase } from '../../../config/apiBase';
 import Nav from '../../main/Nav.js';
+import LessonVideoEmbed from '../../main/LessonVideoEmbed';
 import './learn-mobile.css';
 
 const API = getApiBase();
@@ -186,6 +187,14 @@ export default function ModulePage({ language }) {
             </p>
             <p style={{ margin: 0, fontSize: '14px', color: '#333', lineHeight: 1.7 }}>{mod.objectives}</p>
           </section>
+        )}
+
+        {/* GIIS-recorded lecture (renders only when this module has been
+            uploaded to YouTube — the manifest at /data/lessons-manifest.json
+            is the source of truth). Renders nothing for modules we haven't
+            produced yet, so this is safe to show across the whole curriculum. */}
+        {course?.name && mod?.order && (
+          <LessonVideoEmbed course={course.name} moduleNumber={mod.order} />
         )}
 
         {/* Resources */}
