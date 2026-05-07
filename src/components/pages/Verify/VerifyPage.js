@@ -84,7 +84,7 @@ export default function VerifyPage() {
                 ].map(([label, value]) => (
                   <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: 12, borderBottom: '1px solid #f0f2f8' }}>
                     <span style={{ fontSize: 12, color: '#9aa0ad', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.5px', flexShrink: 0, marginRight: 12 }}>{label}</span>
-                    <span style={{ fontSize: 13, color: '#1a1d24', fontWeight: data.graduated && label === 'Status' ? 700 : 400, textAlign: 'right', color: data.graduated && label === 'Status' ? '#2e7d32' : '#1a1d24' }}>{value}</span>
+                    <span style={{ fontSize: 13, fontWeight: data.graduated && label === 'Status' ? 700 : 400, textAlign: 'right', color: data.graduated && label === 'Status' ? '#2e7d32' : '#1a1d24' }}>{value}</span>
                   </div>
                 ))}
               </div>
