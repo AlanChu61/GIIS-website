@@ -180,7 +180,7 @@ tools/lesson-video/                  # 共用 merge skill（所有未來 lesson 
 
 - [ ] **Schema 同步** — server 上跑 `npx prisma db push` 讓 ParentAccount / Application / AssignmentSubmission 新欄位生效
 
-- [ ] **Admin 新增學生時填 parentEmail** — `AdminDashboard.js` 新增學生 form 加一個 optional `parentEmail` 欄位，寫進 `Student.parentEmail`；完成後 Admin 在建帳號同時就能綁家長信箱
+- ✅ **Admin 新增學生時填 parentEmail** — `AdminDashboard.js` 新增學生 modal 加 "Parent Portal Email" 欄位；`AdminTranscriptPage.js` 加 `ParentEmailSection` panel（inline edit + PATCH）；server `students.js` schema + allowed list + profileData 全部加了 `parentEmail`
 
 ---
 

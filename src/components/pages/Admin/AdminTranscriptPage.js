@@ -86,6 +86,80 @@ function LoginSection({ studentId, isEn }) {
   );
 }
 
+function ParentEmailSection({ studentId, isEn }) {
+  const [parentEmail, setParentEmail] = useState(null);
+  const [editing, setEditing] = useState(false);
+  const [draft, setDraft] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  useEffect(() => {
+    fetch(`${API}/api/students/${studentId}`, { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => { setParentEmail(d.student?.parentEmail ?? null); })
+      .catch(() => {});
+  }, [studentId]);
+
+  async function handleSave(e) {
+    e.preventDefault();
+    setMsg('');
+    const trimmed = draft.trim();
+    if (trimmed && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setMsg(isEn ? 'Invalid email address.' : '邮箱格式不正确。');
+      return;
+    }
+    setSaving(true);
+    try {
+      const r = await fetch(`${API}/api/students/${studentId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ parentEmail: trimmed || null }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Failed');
+      setParentEmail(trimmed || null);
+      setEditing(false);
+      setMsg(isEn ? '✓ Parent email saved.' : '✓ 家长邮箱已储存。');
+    } catch (err) {
+      setMsg(err.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  return (
+    <div className="border rounded p-3 mb-3 bg-white" style={{ maxWidth: '520px' }}>
+      <div className="d-flex justify-content-between align-items-center mb-1">
+        <span className="fw-semibold small">{isEn ? 'Parent Portal Email' : '家长 Portal 邮箱'}</span>
+        <button className="btn btn-sm btn-outline-secondary" onClick={() => { setEditing((v) => !v); setDraft(parentEmail || ''); setMsg(''); }}>
+          {editing ? (isEn ? 'Cancel' : '取消') : parentEmail ? (isEn ? 'Edit' : '编辑') : (isEn ? '+ Set email' : '＋ 设定邮箱')}
+        </button>
+      </div>
+      <p className="small text-muted mb-2">
+        {parentEmail
+          ? <><span className="badge bg-success me-1">✓</span>{parentEmail}</>
+          : <span className="text-warning fw-semibold">{isEn ? 'No parent email — parent cannot log in yet.' : '尚未设定家长邮箱，家长无法登入。'}</span>}
+      </p>
+      {msg && <div className={`alert py-1 px-2 small mb-2 ${msg.startsWith('✓') ? 'alert-success' : 'alert-danger'}`}>{msg}</div>}
+      {editing && (
+        <form onSubmit={handleSave} className="mt-2">
+          <div className="mb-2">
+            <label className="form-label small mb-1">{isEn ? 'Parent Email' : '家长邮箱'}</label>
+            <input type="email" className="form-control form-control-sm" value={draft}
+              onChange={(e) => setDraft(e.target.value)}
+              placeholder="parent@example.com" autoFocus />
+            <div className="form-text">{isEn ? 'Clear to remove.' : '清空以删除。'}</div>
+          </div>
+          <button type="submit" className="btn btn-primary btn-sm" disabled={saving}>
+            {saving ? (isEn ? 'Saving…' : '储存中…') : (isEn ? 'Save' : '储存')}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
 export default function AdminTranscriptPage({ language }) {
   const { studentId } = useParams();
   const session = getAdminSession();
@@ -137,6 +211,7 @@ export default function AdminTranscriptPage({ language }) {
         </div>
 
         <LoginSection studentId={studentId} isEn={isEn} />
+        <ParentEmailSection studentId={studentId} isEn={isEn} />
 
         <TranscriptContent
           language={language}

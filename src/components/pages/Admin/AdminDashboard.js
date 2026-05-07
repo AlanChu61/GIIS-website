@@ -17,7 +17,7 @@ const STATUS_BADGE = {
   withdrawn: { label: { en: 'Withdrawn', zh: '退学' },  bg: '#dc3545' },
 };
 
-const EMPTY_FORM = { name: '', email: '', password: '', birthDate: '', graduationDate: '', entryDate: '' };
+const EMPTY_FORM = { name: '', email: '', password: '', parentEmail: '', birthDate: '', graduationDate: '', entryDate: '' };
 
 export default function AdminDashboard({ language }) {
   const isEn = language === 'en';
@@ -80,6 +80,7 @@ export default function AdminDashboard({ language }) {
     try {
       const body = { name };
       if (email) { body.email = email; body.password = password; }
+      if (form.parentEmail.trim()) body.parentEmail = form.parentEmail.trim();
       if (form.birthDate) body.birthDate = form.birthDate;
       if (form.graduationDate) body.graduationDate = form.graduationDate;
       if (form.entryDate) body.entryDate = form.entryDate;
@@ -319,6 +320,27 @@ export default function AdminDashboard({ language }) {
                 {!form.email && (
                   <div className="form-text">{isEn ? 'Enter email first to enable password.' : '请先填 Email 再设密码。'}</div>
                 )}
+              </div>
+
+              <hr className="my-3" />
+              <p className="small fw-semibold mb-2" style={{ color: '#444' }}>
+                {isEn ? 'Parent Account (optional)' : '家长账号（选填）'}
+              </p>
+              <div className="mb-3">
+                <label className="form-label">{isEn ? 'Parent Email' : '家长 Email'}</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  value={form.parentEmail}
+                  onChange={(e) => setForm((f) => ({ ...f, parentEmail: e.target.value }))}
+                  placeholder="parent@example.com"
+                  autoComplete="off"
+                />
+                <div className="form-text">
+                  {isEn
+                    ? 'Used for parent portal login. Set the password via /api/parent/setup after creating.'
+                    : '家长登入 Portal 用。建立学生后，再用 /api/parent/setup 设定密码。'}
+                </div>
               </div>
 
               <hr className="my-3" />
