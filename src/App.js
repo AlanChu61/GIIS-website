@@ -98,7 +98,8 @@ function App() {
   const isAdmin = location.pathname.startsWith('/admin');
   const isLearn = location.pathname.startsWith('/learn');
   const isProfile = location.pathname === '/profile';
-  const hideChrome = isTranscript || isAdmin || isLearn || isProfile;
+  const isParent = location.pathname.startsWith('/parent');
+  const hideChrome = isTranscript || isAdmin || isLearn || isProfile || isParent;
 
   return (
      <>

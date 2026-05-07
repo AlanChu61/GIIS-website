@@ -1,6 +1,6 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-06（教學影片 pipeline 跑通 + Module 4/9 兩支真 Aria sample）
+> 最後更新：2026-05-06（QR 驗證上線 · 考試冷卻倒計時 · 雙層 nav bug 修復）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。

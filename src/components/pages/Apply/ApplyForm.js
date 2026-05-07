@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import Nav from '../../main/Nav.js';
 import { getApiBase } from '../../../config/apiBase';
 
 const API = getApiBase();
@@ -76,7 +75,6 @@ export default function ApplyForm({ language }) {
     return (
       <>
         <Helmet><title>{T('Apply', '申请入学')} | GIIS</title></Helmet>
-        <div className="row"><Nav language={language} /></div>
         <div style={{ minHeight: 'calc(100vh - 70px)', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f4f6fa', padding: '40px 20px', fontFamily: 'Inter, sans-serif' }}>
           <div style={{ maxWidth: 520, textAlign: 'center' }}>
             <div style={{ fontSize: 56, marginBottom: 20 }}>🎉</div>
@@ -111,8 +109,6 @@ export default function ApplyForm({ language }) {
           '申请入学 GIIS — 2 分钟完成申请。'
         )} />
       </Helmet>
-      <div className="row"><Nav language={language} /></div>
-
       <div style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #2b3d6d 100%)', padding: '64px 0 72px', textAlign: 'center', fontFamily: 'Inter, sans-serif' }}>
         <div style={{ maxWidth: 600, margin: '0 auto', padding: '0 24px' }}>
           <p style={{ color: 'rgba(213,168,54,1)', fontSize: 12, fontWeight: 700, letterSpacing: '2px', textTransform: 'uppercase', margin: '0 0 12px' }}>
