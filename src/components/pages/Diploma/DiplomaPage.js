@@ -5,6 +5,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { getAdminSession, getStudentSession } from '../../../api/authStorage';
 import { getApiBase } from '../../../config/apiBase';
 import logoUrl from '../../../img/logo_nobg.png';
+import sealUrl from '../../../img/transcript_seal.jpg';
 
 const API = getApiBase();
 
@@ -339,16 +340,19 @@ function DiplomaDocument({ student, eligibleDate }) {
               <div style={{ fontSize: '8px', color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '2px', fontFamily: "'Cinzel', serif" }}>President & Principal</div>
             </div>
 
-            {/* Center seal stamp placeholder */}
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', padding: '0 24px', paddingBottom: '2px' }}>
-              <div style={{
-                width: '52px', height: '52px', borderRadius: '50%',
-                border: '2px solid #b8962e',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                background: 'rgba(184,150,46,0.06)',
-              }}>
-                <span style={{ fontSize: '9px', fontFamily: "'Cinzel', serif", color: '#b8962e', letterSpacing: '0.5px', textAlign: 'center', lineHeight: 1.3 }}>SEAL</span>
-              </div>
+            {/* Official school seal */}
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', padding: '0 16px', paddingBottom: '0px' }}>
+              <img
+                src={sealUrl}
+                alt="Official School Seal"
+                style={{
+                  width: '88px',
+                  height: '88px',
+                  objectFit: 'contain',
+                  mixBlendMode: 'multiply',
+                  opacity: 0.88,
+                }}
+              />
             </div>
 
             {/* Sig 2: Graduate */}
