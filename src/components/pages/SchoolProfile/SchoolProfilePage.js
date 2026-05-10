@@ -8,6 +8,10 @@ import {
   formatDate,
 } from '../../../config/schoolCalendar';
 
+// Note: winterBreak / summerBreak in this file are read-only references to the
+// older field names. The config now uses winterRecess / summerRecess and the
+// SchoolProfile section reads those directly.
+
 function loadHtml2Pdf() {
   if (typeof window !== 'undefined' && window.html2pdf) return Promise.resolve();
   return new Promise((resolve, reject) => {
@@ -172,22 +176,37 @@ const s = {
 function CalendarSection() {
   const today = new Date().toISOString().slice(0, 10);
   const yr = getCurrentAcademicYear(today);
+
   return (
     <div style={s.section}>
-      <div style={s.sectionTitle}>Academic Calendar — {yr.label}</div>
+      <div style={s.sectionTitle}>Academic Calendar — {yr.label} (current year)</div>
+
       <div style={{ ...s.body, marginBottom: '8px' }}>
-        GIIS follows a two-semester academic year aligned with Florida private school
-        norms (Florida Statute 1002.42). Each semester is approximately 18 weeks.
-        Coursework is asynchronous — students worldwide can study in any time zone —
-        but final exams, transcripts, and the diploma issue date are fixed below.
+        GIIS operates as a fully online, asynchronous high school. The Learn Portal
+        is open <strong>24/7, year-round</strong> — students may submit coursework
+        and modules at any time. The dates below govern the four formal events that
+        require a fixed calendar:
       </div>
+      <ul style={{ ...s.body, margin: '0 0 8px 18px', padding: 0 }}>
+        <li><strong>Term start / end</strong> — defines which transcript a course counts toward.</li>
+        <li><strong>Final-exam window</strong> — fixed week when all students sit semester finals.</li>
+        <li><strong>Grade release</strong> — when graded finals + course grades appear in the Portal.</li>
+        <li><strong>Transcript / diploma issuance</strong> — when the official PDF transcript is emailed to parents and (for seniors) when the diploma becomes valid for college and employer verification.</li>
+      </ul>
+      <div style={{ ...s.body, marginBottom: '8px', fontStyle: 'italic', color: '#555' }}>
+        Between terms (winter recess Dec 22 → Jan 4, summer recess late May → mid-August)
+        the Portal remains open but no new modules are released and no advisor sync
+        sessions are held. Florida Statute 1002.42 requires ≥170 instructional days;
+        our two ~18-week semesters total ~180 days.
+      </div>
+
       <table style={{ ...s.table, fontSize: '8.5px' }}>
         <thead>
           <tr>
             <th style={s.th}>Period</th>
             <th style={s.th}>Starts</th>
             <th style={s.th}>Ends / Closes</th>
-            <th style={s.th}>Transcript / Diploma</th>
+            <th style={s.th}>Grades / Transcript</th>
           </tr>
         </thead>
         <tbody>
@@ -195,41 +214,81 @@ function CalendarSection() {
             <td style={s.td}><b>Fall Semester</b></td>
             <td style={s.td}>{formatDate(yr.fall.starts)}</td>
             <td style={s.td}>{formatDate(yr.fall.ends)}</td>
-            <td style={s.td}>Mid-year transcript: {formatDate(yr.fall.transcriptIssued)}</td>
+            <td style={s.td}>
+              Grades: {formatDate(yr.fall.gradesReleased)} ·{' '}
+              Transcript: {formatDate(yr.fall.transcriptIssued)}
+            </td>
           </tr>
           <tr>
-            <td style={s.td}>Winter Break</td>
-            <td style={s.td}>{formatDate(yr.winterBreak.starts)}</td>
-            <td style={s.td}>{formatDate(yr.winterBreak.ends)}</td>
-            <td style={s.td}>—</td>
+            <td style={{ ...s.td, color: '#888', fontStyle: 'italic' }}>Winter recess (admin pause)</td>
+            <td style={{ ...s.td, color: '#888' }}>{formatDate(yr.winterRecess.starts)}</td>
+            <td style={{ ...s.td, color: '#888' }}>{formatDate(yr.winterRecess.ends)}</td>
+            <td style={{ ...s.td, color: '#888' }}>Portal stays open · no new releases</td>
           </tr>
           <tr>
             <td style={s.td}><b>Spring Semester</b></td>
             <td style={s.td}>{formatDate(yr.spring.starts)}</td>
             <td style={s.td}>{formatDate(yr.spring.ends)}</td>
-            <td style={s.td}>Year-end transcript: {formatDate(yr.spring.transcriptIssued)}</td>
+            <td style={s.td}>
+              Grades: {formatDate(yr.spring.gradesReleased)} ·{' '}
+              Transcript: {formatDate(yr.spring.transcriptIssued)}
+            </td>
           </tr>
           <tr>
-            <td style={s.td}>Summer Break</td>
-            <td style={s.td}>{formatDate(yr.summerBreak.starts)}</td>
-            <td style={s.td}>{formatDate(yr.summerBreak.ends)}</td>
-            <td style={s.td}>—</td>
+            <td style={{ ...s.td, color: '#888', fontStyle: 'italic' }}>Summer recess (admin pause)</td>
+            <td style={{ ...s.td, color: '#888' }}>{formatDate(yr.summerRecess.starts)}</td>
+            <td style={{ ...s.td, color: '#888' }}>{formatDate(yr.summerRecess.ends)}</td>
+            <td style={{ ...s.td, color: '#888' }}>Portal stays open · no new releases</td>
           </tr>
-          <tr style={{ background: '#fcf6e3' }}>
-            <td style={s.td}><b>Graduation · {yr.graduation.classLabel}</b></td>
-            <td style={s.td}>{formatDate(yr.graduation.ceremonyDate)}</td>
-            <td style={s.td}>—</td>
-            <td style={s.td}>Diploma issued: {formatDate(yr.graduation.diplomaIssued)} · Physical mailed: {formatDate(yr.graduation.physicalMailed)}</td>
-          </tr>
+          {yr.graduation && (
+            <tr style={{ background: '#fcf6e3' }}>
+              <td style={s.td}><b>Graduation · {yr.graduation.classLabel}</b></td>
+              <td style={s.td}>{formatDate(yr.graduation.ceremonyDate)}</td>
+              <td style={s.td}>—</td>
+              <td style={s.td}>
+                Diploma valid from: <b>{formatDate(yr.graduation.diplomaIssued)}</b> ·{' '}
+                Physical mailed: {formatDate(yr.graduation.physicalMailed)}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
-      <div style={{ ...s.body, marginTop: '6px', fontSize: '8.5px', color: '#555' }}>
-        <em>Key dates this year:</em>{' '}
-        {[...yr.fall.keyDates, ...yr.spring.keyDates]
-          .filter((k) => k.date >= today)
-          .slice(0, 4)
-          .map((k) => `${formatDate(k.date)} — ${k.label}`)
-          .join(' · ') || 'No more key dates this academic year.'}
+
+      {/* All academic years since founding */}
+      <div style={{ ...s.body, marginTop: '12px', fontWeight: 700, fontSize: '9.5px' }}>
+        All academic years since GIIS founding (Class of 2026 began as Grade 9 in Fall 2022)
+      </div>
+      <table style={{ ...s.table, fontSize: '8.5px', marginTop: '4px' }}>
+        <thead>
+          <tr>
+            <th style={s.th}>Year</th>
+            <th style={s.th}>Fall Semester</th>
+            <th style={s.th}>Spring Semester</th>
+            <th style={s.th}>Diploma Issued</th>
+          </tr>
+        </thead>
+        <tbody>
+          {ACADEMIC_YEARS.map((y) => (
+            <tr key={y.label} style={y.label === yr.label ? { background: '#f0f5ff' } : null}>
+              <td style={s.td}>
+                <b>{y.label}</b>
+                {y.label === yr.label ? <span style={{ color: NAVY, marginLeft: '4px' }}>· current</span> : null}
+              </td>
+              <td style={s.td}>{formatDate(y.fall.starts)} → {formatDate(y.fall.ends)}</td>
+              <td style={s.td}>{formatDate(y.spring.starts)} → {formatDate(y.spring.ends)}</td>
+              <td style={s.td}>
+                {y.graduation
+                  ? <span><b>{formatDate(y.graduation.diplomaIssued)}</b> · {y.graduation.classLabel}</span>
+                  : <span style={{ color: '#888' }}>—</span>}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <div style={{ ...s.body, marginTop: '6px', fontSize: '8px', color: '#666', fontStyle: 'italic' }}>
+        Diploma issuance date = the date a graduate's diploma becomes officially valid
+        for college admissions, transcript verification, and employer background checks.
+        Each diploma carries a QR code linking to /verify/&lt;studentCode&gt; for public verification.
       </div>
     </div>
   );

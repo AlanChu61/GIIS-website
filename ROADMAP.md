@@ -28,6 +28,28 @@
 
 ---
 
+## ✅ YouTube 上傳 Scheduler（2026-05 新增）
+
+> 解決「影片做完了沒人記得上傳，等實際上線時 quota 又卡住」的痛點。每天 9am 自動上 4 支，剩下的隔天自動接著。
+
+- ✅ **`tools/youtube-upload/queue.py`** — `status` 子指令掃 `teaching-videos/`，分類成 uploaded / pending / no-mp4 / broken。By-course 條形圖、pending queue、最近上傳清單。`upload` 子指令一次跑 N 支（預設 4，留 quota headroom）
+- ✅ **`tools/youtube-upload/daily.sh`** — launchd 用的 wrapper，每次 run 先印 status 再 upload，全部 log 到 `~/Library/Logs/giis-youtube-daily.log`
+- ✅ **`tools/youtube-upload/com.giis.youtube-daily.plist`** — macOS launchd job，每天 09:00 自動觸發。`cp` 到 `~/Library/LaunchAgents/` + `launchctl load` 一次性裝完
+- ✅ **`npm run yt:status` / `npm run yt:upload`** package.json scripts，日常用最順
+- ✅ **Quota maths**：每支 ~2,100 units（upload 1600 + thumbnail 50 + captions 400 + playlist 50），4 支 8,400 / 10,000 daily 留 1,550 headroom
+- ✅ **Fail-fast 邏輯**：upload 失敗時 abort 整批，避免燒更多 quota 在同一錯誤
+- ✅ **README**：`tools/youtube-upload/QUEUE.md` 完整操作手冊（日常 flow + 一次性安裝 + 故障排除）
+
+**現況**（執行 `npm run yt:status` 結果）：
+- ✓ uploaded: 5（4 Algebra I + 1 English I）
+- ● pending:  17（含 16 AP Psych 中 15 支 + AP Calc M1 + Algebra I M5）
+- ○ no MP4:   4（1 個是 AP Psych M14，可能 make_lesson 沒跑完；3 個是 Algebra 沒做的 module）
+
+**家長可見的影響**：
+17 支已渲成的 lecture 每天 4 支上傳，4-5 天內**全部 AP Psychology + AP Calc + Algebra M5 進 Learn Portal**。學生打開 module 頁就看到 `<LessonVideoEmbed>` 拉的對應 YouTube 影片，「家長看得到孩子在學什麼」承諾直接兌現。
+
+---
+
 ## ✅ School Calendar 系統（2026-05 新增）
 
 > 為什麼重要：FL 私立學校（Statute 1002.42）的合規要求之一就是公開校曆。同時是家長最常問的三個問題：「什麼時候開學/放假？」「什麼時候出成績單？」「什麼時候發畢業證？」。
@@ -35,6 +57,8 @@
 - ✅ **`src/config/schoolCalendar.js`** — 單一資料源（兩個 academic year：2025-26 已配齊、2026-27 框架）。導出 `getCurrentAcademicYear()` / `getCurrentTerm()` / `getUpcomingEvents()` / `formatDate()`，今天會自動算進對應 term
 - ✅ **`/school-profile` 加 Academic Calendar section**（curriculum 之前）— 5-row table（Fall · Winter Break · Spring · Summer · Graduation 醒目黃底），跑出來會自動帶下方「未來 4 個 key dates」一行；下載成 PDF 時也會印出來給大學申請用
 - ✅ **`/parent/demo` 家長 Dashboard quick link 接好** — 「📅 School calendar」現在連到 `/school-profile`；右側欄新增 `UpcomingFromCalendar` 卡，顯示未來 4 個事件 + 「Full calendar →」連結
+- ✅ **校曆覆蓋 GIIS 創校以來全部 5 個學年**（2022-23 至 2026-27）：歷史年份 graduation = null（Class of 2026 是第一屆 senior）；SchoolProfile PDF 印出 current-year detail + all-years summary table；強調「online async, Portal 24/7」、把 winter/summer 改成 "recess (admin pause)" 風格、key dates 精簡到只剩 term-meaningful（final exam window + close date）
+
 - ✅ **2025-26 關鍵日期**（FL 私校標準）：
   - Fall: **2025-08-18 → 2025-12-19** · 期末考視窗 12/8 開
   - Winter Break: 12/22 → 1/4
