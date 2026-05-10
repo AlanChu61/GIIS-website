@@ -28,6 +28,34 @@
 
 ---
 
+## ✅ School Calendar 系統（2026-05 新增）
+
+> 為什麼重要：FL 私立學校（Statute 1002.42）的合規要求之一就是公開校曆。同時是家長最常問的三個問題：「什麼時候開學/放假？」「什麼時候出成績單？」「什麼時候發畢業證？」。
+
+- ✅ **`src/config/schoolCalendar.js`** — 單一資料源（兩個 academic year：2025-26 已配齊、2026-27 框架）。導出 `getCurrentAcademicYear()` / `getCurrentTerm()` / `getUpcomingEvents()` / `formatDate()`，今天會自動算進對應 term
+- ✅ **`/school-profile` 加 Academic Calendar section**（curriculum 之前）— 5-row table（Fall · Winter Break · Spring · Summer · Graduation 醒目黃底），跑出來會自動帶下方「未來 4 個 key dates」一行；下載成 PDF 時也會印出來給大學申請用
+- ✅ **`/parent/demo` 家長 Dashboard quick link 接好** — 「📅 School calendar」現在連到 `/school-profile`；右側欄新增 `UpcomingFromCalendar` 卡，顯示未來 4 個事件 + 「Full calendar →」連結
+- ✅ **2025-26 關鍵日期**（FL 私校標準）：
+  - Fall: **2025-08-18 → 2025-12-19** · 期末考視窗 12/8 開
+  - Winter Break: 12/22 → 1/4
+  - Spring: **2026-01-05 → 2026-05-22** · 期末考視窗 5/11 開
+  - **畢業典禮 + 數位文憑發放：2026-06-05（週五）**
+  - 紙本文憑寄出：2026-06-12
+  - 學年末成績單發出：2026-06-12
+
+### 📅 對 Class of 2026 四位學生的具體影響
+
+- ✅ **Fall 2025 (G12 Fall) 成績已在** seed.js（所有 4 人都已 graded）
+- ✅ **Spring 2026 (G12 Spring) 真實成績已寫進 seed.js** — 但用 `courseRowGated()` helper gate 在 **2026-05-25** release date。今天 5/10 re-seed 仍顯示空白（in-progress）；5/25 之後 re-seed 自動顯示真實成績。任何日期 re-seed 都「自己對」
+  - Ruwen (Business): Eng-Adv-Comp A-, Sociology A-, Business Law A, Corp Finance A → Spring 3.85 GPA, +4 cr
+  - Tao (Psychology): Eng-Adv-Comp A, **AP Human Geography A-**, Abnormal Psych A, Counseling A → Spring 4.17W / 3.92U GPA, +4 cr
+  - Baoyi (Info Studies): Eng-Adv-Comp/Media A, Sociology A-, Personal Finance A, Digital Media A → Spring 3.92 GPA, +4 cr
+  - Yunfan (Engineering/Sports): Eng-Media&Analytical A, Media Psych A, Sports Mgmt&Leadership A → Spring 4.00 GPA, +3 cr
+- 🎓 **全部 4 人都會在 2026-06-05 拿到文憑**（都遠超 24 學分門檻）
+- 🔧 **覆寫 release date 測試**：`GIIS_SEED_DATE=2026-05-25 npx prisma db seed` 立即看到 grades
+
+---
+
 ## ✅ Phase 0 — 上線前堵漏洞（已完成）
 
 > 修掉錯誤承諾與基本可用性問題。家長看到這些不一致就會立刻離開。
@@ -137,6 +165,112 @@
 - [ ] **slide_kit 模板化** — `tools/lesson-video/slide_kit.py`，抽出重複的 `title_slide() / pause_slide() / equation_slide() / graph_slide() / path_slide()` helpers。讓寫新 module 從 ~250 行 PIL 代碼降到 ~50 行純 data
 - [ ] **跨科目擴充** — Algebra I 完成後，依家長 demo 頻率排序：English I 全 14 module → Biology → Psychology Foundations → Chemistry → Economics → ...
 - [ ] **AI tutor / quiz 自動批改**（Phase 1 → Phase 2 過渡）— 影片只是 lecture，學生看完需要練 + 反饋。Khan Academy 模型成功的關鍵不是影片是 graded practice。我們現在 module 頁有 quiz section 但內容空，要規劃題庫怎麼產生（人工 vs AI），怎麼批改
+
+### 🆕 AP 課程擴充（2026-05 新增）
+
+> 解決「Walkthrough demo 提到的 AP Calc AB 與 AP CS A，seed 裡卻沒有」的不一致問題，順便補 pathway 缺口。
+
+- ✅ **AP Calculus AB**（14 modules，College Board CED 對齊）— `server/prisma/courses/math/ap-calculus-ab.json`，department "Mathematics"。服務 CS / Engineering / Math 三條 pathway
+- ✅ **AP Computer Science A**（14 modules，CSAwesome / CodingBat / Practice-It 連結）— `server/prisma/courses/electives/ap-computer-science-a.json`，department "Technology"。服務 CS pathway
+- ✅ **AP Calc AB Module 1 — Limits & Continuity** 教學影片 ready：14 sections，~6 min，AriaNeural 語音、math 主題（gold + cream），4 張視覺自製（halfway-to-the-wall hook、one-sided 數線、3 種 DNE mini-graphs、3 種 discontinuity mini-graphs、speedometer real-world）
+  - 位置：`teaching-videos/ap-calculus-ab-module-1-limits/`
+  - 還缺：audio + MP4。Alan Mac 跑 `python3 tools/lesson-video/make_lesson.py teaching-videos/ap-calculus-ab-module-1-limits/` 即可
+- ✅ **AP Psychology Module 2 — Research Methods** script + slides ready：14 sections，~8.7 min（1311 詞 / 150wpm），BrianNeural 語音、psychology 主題（lavender + cream），3 張視覺自製（5-rung methods ladder、−1↔+1 r-coefficient ruler、ice cream / drowning / hot-weather spurious-correlation diagram）。Hook 用 TikTok "coffee makes you live longer" claim 切入 correlation-vs-causation
+  - 位置：`teaching-videos/ap-psych-module-2-research-methods/`
+  - 還缺：audio + MP4。Alan Mac 跑 `python3 tools/lesson-video/make_lesson.py teaching-videos/ap-psych-module-2-research-methods/` 即可
+- ✅ **AP Psychology Module 3 — Biological Bases of Behavior** script + slides ready：14 sections，~8.9 min（1335 詞 / 150wpm），BrianNeural 語音、psychology 主題（lavender + cream），4 張視覺自製（2am-scrolling dopamine/caffeine hook、labeled neuron diagram dendrites→soma→axon→myelin→terminals、6-NT effects table、4-lobe brain diagram with color-coded regions）。Hook 用 2am scrolling + dopamine hits + caffeine blocking adenosine 切入 chemistry-driving-behavior。Pause-answer = GABA inhibitory + glutamate-as-gas/GABA-as-brake mnemonic
+  - 位置：`teaching-videos/ap-psych-module-3-biological-bases/`
+  - 還缺：audio + MP4。Alan Mac 跑 `python3 tools/lesson-video/make_lesson.py teaching-videos/ap-psych-module-3-biological-bases/` 即可
+
+### 🎯 AP 缺口分析（pathway support）
+
+目前共 **6 支 AP** 在 seed（4 既有 + 2 新增）：
+- Statistics (Math) · Psychology · Biology (Science) · Human Geography (Social Studies) · **Calculus AB (Math/Eng/CS)** · **Computer Science A (Tech)**
+
+仍缺（依 pathway 重要性排序）：
+- [ ] **AP Microeconomics** + **AP Macroeconomics** — 服務 Business + Economics 兩條 pathway
+- [ ] **AP English Language & Composition** — 服務 Communications pathway
+- [ ] **AP Physics 1** — 服務 Engineering pathway
+- [ ] **AP Calculus BC**（進階）— 服務 Math & Data Science pathway 有志大學數學的學生
+- [ ] **AP Art History** 或 **AP 2-D Art and Design** — 服務 Arts & Design pathway
+
+加完後 8 條 pathway 都有至少 1 支 AP 撐場。
+
+### 🎬 下個教學影片建議
+
+- [ ] **AP CS A Module 1 — Primitive Types & Variables**（不同科目 = 不同聲音 = 不同老師感）
+  - 建議聲音：`en-US-GuyNeural`（"academic authority" — 跟 walkthrough demo 的 Pathway 場景同個聲音，建立連續感；跟 Math 的 Aria 區分）
+  - 需要在 `tools/lesson-video/SKILL.md` 加一行：「Technology / CS → en-US-GuyNeural」
+
+### ✅ AP Psychology 完整一整支課（16 支 modules · 全部 ready 等 Mac TTS）
+
+> 用 parallel agents 把整支 AP Psych 從零做完——這是**第一支完整 GIIS 自製 AP 課程**。
+> Total: **16 modules · 224 slides · ~166 分鐘 (2.75 小時) lecture content** · 全部 BrianNeural 配音，lavender 主題。
+
+| # | Module | Slides | ~Min | Hook · 重點 visual |
+|---|---|---|---|---|
+| M1 | History & Approaches | 13 | 5.9 | 6 心理學家看一個青少年 |
+| M2 | Research Methods | 14 | 8.7 | TikTok 咖啡/壽命 · correlation ruler, IV/DV diagram, ice-cream/drowning spurious |
+| M3 | Biological Bases | 14 | 8.9 | 2am 滑手機 dopamine · neuron diagram, NT table, 4-lobe brain |
+| M4 | Sensation & Perception | 14 | 12.2 | 隱形大猩猩 · Weber's Law, signal detection 2×2, Gestalt 6-cell |
+| M5 | States of Consciousness | 15 | 10.7 | all-nighter-feeling-broken · sleep hypnogram, drug categories, 3 dream theories |
+| M6 | Learning & Conditioning | 14 | 10.0 | phone buzz/Discord · classical chain, **operant 2×2 (neg-reinforce TRAP)**, schedules quad, Bobo doll |
+| M7 | Memory | 14 | 10.3 | 1st-day-of-HS-clothes vs Tuesday-lunch · 3-store flow, Baddeley working memory, levels-of-processing depth, LTM types tree |
+| M8 | Cognition & Language | 14 | 12.5 | 飛機新聞→怕飛行 (availability) · heuristics card-row, biases gallery, language timeline, Whorf hypothesis |
+| M9 | Motivation & Emotion | 14 | 11.4 | Spotify playlist (intrinsic) · **Yerkes-Dodson inverted-U**, Maslow pyramid, 4-emotion-theories side-by-side |
+| M10 | Developmental | 14 | 11.3 | Erikson "you are here" · Piaget timeline, Erikson 8-stage ladder, attachment 4-quadrant, Kohlberg+Gilligan |
+| M11 | Personality | 14 | 11.8 | shy-at-school-vs-loud-at-home · Freud iceberg, defense mechanisms 3×2, **Big Five OCEAN spectrum**, reciprocal determinism triangle |
+| M12 | Testing & Intelligence | 14 | 11.7 | 浴室秤4次4不同數字 · **dartboard 2×2 (R vs V)**, IQ bell curve ±SD, 3 theories cards, Flynn line chart |
+| M13 | Abnormal | 14 | 9.0 | 1-in-5 classroom · 4 D's grid, schizophrenia +/- columns, **3-cluster personality disorders** |
+| M14 | Treatment overview | 14 | 10.5 | hopeful pivot from M13 · **Beck cognitive triad triangle**, CBT 3-tools, drug categories table |
+| M15 | Treatment Advanced | 14 | 10.3 | 治療要選對工具 · **disorder→treatment matrix**, 3 case vignettes (Maya/Jordan/Alex), group/family/individual compare |
+| M16 | Synthesis & AP exam prep | 14 | 10.8 | exam strategy · **M13→M14→M15 flow diagram**, biopsychosocial Venn, **MCQ pattern decoder table**, FRQ rules |
+
+設計重點：
+- **每支都有 pause-and-try + 答案**（除 M1 用較舊 layout 13 sections，其餘統一 14）
+- **Recap = 5-6 takeaways**
+- **Path slide 統一 4 步**：Myers reading + AP Classroom MCQ + dashboard assignment + advisor check-in；M16 例外（exam-prep tone：practice exam + weakest-module review + AP Classroom past FRQs + advisor readiness）
+- **校長簽名/政策**：全部誠實（Florida-registered，無 Cognia，無 US-accredited）
+- **Treatment trilogy 不重複**（M14 overview / M15 applied cases / M16 exam strategy）
+
+### 🚀 批次 TTS + MP4 指令（Alan 在 Mac 上跑）
+
+整支 AP Psych + AP Calc AB Module 1 一行 for-loop 全部產出 17 支 MP4（**~166 分鐘 lecture + AP Calc 6 分鐘 = 172 分鐘 content**）：
+
+```bash
+cd /Users/alanhdchu/GIIS/giis-website
+
+# 一次性裝置（之前若沒裝過）
+pip install edge-tts imageio-ffmpeg
+
+# AP Psych 全 16 + AP Calc AB M1 一氣呵成
+for d in teaching-videos/ap-psych-module-1-history \
+         teaching-videos/ap-psych-module-2-research-methods \
+         teaching-videos/ap-psych-module-3-biological-bases \
+         teaching-videos/ap-psych-module-4-sensation-perception \
+         teaching-videos/ap-psych-module-5-consciousness \
+         teaching-videos/ap-psych-module-6-learning \
+         teaching-videos/ap-psych-module-7-memory \
+         teaching-videos/ap-psych-module-8-cognition \
+         teaching-videos/ap-psych-module-9-motivation-emotion \
+         teaching-videos/ap-psych-module-10-developmental \
+         teaching-videos/ap-psych-module-11-personality \
+         teaching-videos/ap-psych-module-12-testing-intelligence \
+         teaching-videos/ap-psych-module-13-abnormal \
+         teaching-videos/ap-psych-module-14-treatment \
+         teaching-videos/ap-psych-module-15-treatment-advanced \
+         teaching-videos/ap-psych-module-16-treatment-synthesis \
+         teaching-videos/ap-calculus-ab-module-1-limits; do
+  echo "=== $d ==="
+  python3 tools/lesson-video/make_lesson.py "$d/"
+done
+```
+
+**估時**：edge-tts 每支 ~2 min synth → ffmpeg 每支 ~5-10 min encode → **整批 17 支跑完約 2-3 小時**（背景跑、不卡 terminal）。每支輸出 MP4 在自己資料夾。
+
+**跑完之後 YouTube 上傳**：用既有的 `tools/youtube-upload/upload_video.py`。建議建一個 "AP Psychology" playlist 把 16 支按順序排好，然後在 Learn Portal 對應 module 頁面自動會用 LessonVideoEmbed 顯示。
+
+跑完之後 YouTube 上傳就用既有的 `tools/youtube-upload/upload_video.py`。
 
 ### 📁 Pilot 目錄索引
 

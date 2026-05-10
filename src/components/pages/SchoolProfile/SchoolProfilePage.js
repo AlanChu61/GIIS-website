@@ -2,6 +2,12 @@ import React, { useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import logoUrl from '../../../img/logo_nobg.png';
 
+import {
+  ACADEMIC_YEARS,
+  getCurrentAcademicYear,
+  formatDate,
+} from '../../../config/schoolCalendar';
+
 function loadHtml2Pdf() {
   if (typeof window !== 'undefined' && window.html2pdf) return Promise.resolve();
   return new Promise((resolve, reject) => {
@@ -163,6 +169,72 @@ const s = {
   sigLabel: { fontSize: '8px', color: '#555' },
 };
 
+function CalendarSection() {
+  const today = new Date().toISOString().slice(0, 10);
+  const yr = getCurrentAcademicYear(today);
+  return (
+    <div style={s.section}>
+      <div style={s.sectionTitle}>Academic Calendar — {yr.label}</div>
+      <div style={{ ...s.body, marginBottom: '8px' }}>
+        GIIS follows a two-semester academic year aligned with Florida private school
+        norms (Florida Statute 1002.42). Each semester is approximately 18 weeks.
+        Coursework is asynchronous — students worldwide can study in any time zone —
+        but final exams, transcripts, and the diploma issue date are fixed below.
+      </div>
+      <table style={{ ...s.table, fontSize: '8.5px' }}>
+        <thead>
+          <tr>
+            <th style={s.th}>Period</th>
+            <th style={s.th}>Starts</th>
+            <th style={s.th}>Ends / Closes</th>
+            <th style={s.th}>Transcript / Diploma</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={s.td}><b>Fall Semester</b></td>
+            <td style={s.td}>{formatDate(yr.fall.starts)}</td>
+            <td style={s.td}>{formatDate(yr.fall.ends)}</td>
+            <td style={s.td}>Mid-year transcript: {formatDate(yr.fall.transcriptIssued)}</td>
+          </tr>
+          <tr>
+            <td style={s.td}>Winter Break</td>
+            <td style={s.td}>{formatDate(yr.winterBreak.starts)}</td>
+            <td style={s.td}>{formatDate(yr.winterBreak.ends)}</td>
+            <td style={s.td}>—</td>
+          </tr>
+          <tr>
+            <td style={s.td}><b>Spring Semester</b></td>
+            <td style={s.td}>{formatDate(yr.spring.starts)}</td>
+            <td style={s.td}>{formatDate(yr.spring.ends)}</td>
+            <td style={s.td}>Year-end transcript: {formatDate(yr.spring.transcriptIssued)}</td>
+          </tr>
+          <tr>
+            <td style={s.td}>Summer Break</td>
+            <td style={s.td}>{formatDate(yr.summerBreak.starts)}</td>
+            <td style={s.td}>{formatDate(yr.summerBreak.ends)}</td>
+            <td style={s.td}>—</td>
+          </tr>
+          <tr style={{ background: '#fcf6e3' }}>
+            <td style={s.td}><b>Graduation · {yr.graduation.classLabel}</b></td>
+            <td style={s.td}>{formatDate(yr.graduation.ceremonyDate)}</td>
+            <td style={s.td}>—</td>
+            <td style={s.td}>Diploma issued: {formatDate(yr.graduation.diplomaIssued)} · Physical mailed: {formatDate(yr.graduation.physicalMailed)}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style={{ ...s.body, marginTop: '6px', fontSize: '8.5px', color: '#555' }}>
+        <em>Key dates this year:</em>{' '}
+        {[...yr.fall.keyDates, ...yr.spring.keyDates]
+          .filter((k) => k.date >= today)
+          .slice(0, 4)
+          .map((k) => `${formatDate(k.date)} — ${k.label}`)
+          .join(' · ') || 'No more key dates this academic year.'}
+      </div>
+    </div>
+  );
+}
+
 function ProfileDocument() {
   const currentYear = new Date().getFullYear();
 
@@ -230,6 +302,9 @@ function ProfileDocument() {
           </table>
         </div>
       </div>
+
+      {/* Academic Calendar */}
+      <CalendarSection />
 
       {/* Curriculum */}
       <div style={s.section}>

@@ -21,6 +21,24 @@ function courseRow(sortOrder, courseName, courseType, credits, letterGrade) {
   };
 }
 
+/**
+ * Date-gated course row. Spring 2026 final grades aren't visible until 2026-05-25
+ * (3 days after the term closes on 5/22 — see src/config/schoolCalendar.js).
+ * Re-seeding before that date produces blank grades (in-progress); on or after
+ * that date produces the final letter grade.
+ *
+ * Override via env var for testing:
+ *   GIIS_SEED_DATE=2026-05-25 npx prisma db seed
+ */
+function courseRowGated(sortOrder, courseName, courseType, credits, letterGrade, releaseDate) {
+  const today = process.env.GIIS_SEED_DATE || new Date().toISOString().slice(0, 10);
+  const effectiveGrade = (releaseDate && today < releaseDate) ? '' : letterGrade;
+  return courseRow(sortOrder, courseName, courseType, credits, effectiveGrade);
+}
+
+// All Class-of-2026 Spring grades release together, 3 days after term closes.
+const SPRING_2026_RELEASE = '2026-05-25';
+
 function makeSemesters(coursesBySemester) {
   return coursesBySemester.map(({ key, sortOrder, courses }) => ({
     key,
@@ -98,10 +116,10 @@ const ruwenLiSemesters = makeSemesters([
   },
   {
     key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
-      courseRow(0, 'English IV - Advanced Composition',   'Core',     '1',   ''),
-      courseRow(1, 'Sociology',                           'Core',     '1',   ''),
-      courseRow(2, 'Business Law',                        'Elective', '1',   ''),
-      courseRow(3, 'Corporate Finance',                   'Elective', '1',   ''),
+      courseRowGated(0, 'English IV - Advanced Composition',   'Core',     '1',   'A-', SPRING_2026_RELEASE),
+      courseRowGated(1, 'Sociology',                           'Core',     '1',   'A-', SPRING_2026_RELEASE),
+      courseRowGated(2, 'Business Law',                        'Elective', '1',   'A',  SPRING_2026_RELEASE),
+      courseRowGated(3, 'Corporate Finance',                   'Elective', '1',   'A',  SPRING_2026_RELEASE),
     ],
   },
 ]);
@@ -173,10 +191,10 @@ const taoZhangSemesters = makeSemesters([
   },
   {
     key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
-      courseRow(0, 'English IV - Advanced Composition',   'Core',     '1',   ''),
-      courseRow(1, 'AP Human Geography',                  'Core (AP)', '1',  ''),
-      courseRow(2, 'Abnormal Psychology',                 'Elective', '1',   ''),
-      courseRow(3, 'Counseling & Mental Health Studies',  'Elective', '1',   ''),
+      courseRowGated(0, 'English IV - Advanced Composition',   'Core',     '1',   'A',  SPRING_2026_RELEASE),
+      courseRowGated(1, 'AP Human Geography',                  'Core (AP)', '1',  'A-', SPRING_2026_RELEASE),
+      courseRowGated(2, 'Abnormal Psychology',                 'Elective', '1',   'A',  SPRING_2026_RELEASE),
+      courseRowGated(3, 'Counseling & Mental Health Studies',  'Elective', '1',   'A',  SPRING_2026_RELEASE),
     ],
   },
 ]);
@@ -250,10 +268,10 @@ const baoyiLuSemesters = makeSemesters([
   },
   {
     key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
-      courseRow(0, 'English IV - Advanced Composition / Media Writing', 'Core', '1', ''),
-      courseRow(1, 'Sociology',                           'Core',     '1',   ''),
-      courseRow(2, 'Personal Finance / Applied Economics', 'Elective', '1',  ''),
-      courseRow(3, 'Digital Media & Society',             'Elective', '1',   ''),
+      courseRowGated(0, 'English IV - Advanced Composition / Media Writing', 'Core', '1', 'A',  SPRING_2026_RELEASE),
+      courseRowGated(1, 'Sociology',                           'Core',     '1',   'A-', SPRING_2026_RELEASE),
+      courseRowGated(2, 'Personal Finance / Applied Economics', 'Elective', '1',  'A',  SPRING_2026_RELEASE),
+      courseRowGated(3, 'Digital Media & Society',             'Elective', '1',   'A',  SPRING_2026_RELEASE),
     ],
   },
 ]);
@@ -325,9 +343,9 @@ const yunfanYangSemesters = makeSemesters([
   },
   {
     key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
-      courseRow(0, 'English IV - Media & Analytical Writing', 'Core', '1',  ''),
-      courseRow(1, 'Media Psychology',                    'Elective', '1',   ''),
-      courseRow(2, 'Sports Management & Leadership',      'Elective', '1',   ''),
+      courseRowGated(0, 'English IV - Media & Analytical Writing', 'Core', '1',  'A', SPRING_2026_RELEASE),
+      courseRowGated(1, 'Media Psychology',                    'Elective', '1',   'A', SPRING_2026_RELEASE),
+      courseRowGated(2, 'Sports Management & Leadership',      'Elective', '1',   'A', SPRING_2026_RELEASE),
     ],
   },
 ]);

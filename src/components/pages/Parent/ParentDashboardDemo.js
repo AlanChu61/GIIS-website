@@ -2,6 +2,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Nav from '../../main/Nav.js';
+import { getUpcomingEvents, formatDate } from '../../../config/schoolCalendar';
 
 /**
  * Parent Dashboard — public preview / demo page.
@@ -255,18 +256,29 @@ export default function ParentDashboardDemo({ language }) {
               <div style={sideCard}>
                 <Eyebrow en="Quick Links" zh="快速操作" isEn={isEn} />
                 {[
-                  { icon: '📧', en: 'Message advisor',   zh: '联系顾问' },
-                  { icon: '📄', en: 'Download transcript', zh: '下载成绩单' },
-                  { icon: '💳', en: 'Billing & payment',  zh: '账单与付款' },
-                  { icon: '📅', en: 'School calendar',    zh: '校历' },
+                  { icon: '📧', en: 'Message advisor',   zh: '联系顾问', to: null },
+                  { icon: '📄', en: 'Download transcript', zh: '下载成绩单', to: null },
+                  { icon: '💳', en: 'Billing & payment',  zh: '账单与付款', to: null },
+                  { icon: '📅', en: 'School calendar',    zh: '校历',      to: '/school-profile' },
                 ].map((q) => (
-                  <div key={q.en} style={quickLink}>
-                    <span style={{ fontSize: '18px' }}>{q.icon}</span>
-                    {isEn ? q.en : q.zh}
-                    <span style={{ marginLeft: 'auto', color: '#5c6578' }}>→</span>
-                  </div>
+                  q.to ? (
+                    <Link key={q.en} to={q.to} style={{ ...quickLink, color: '#1a1d24', textDecoration: 'none' }}>
+                      <span style={{ fontSize: '18px' }}>{q.icon}</span>
+                      {isEn ? q.en : q.zh}
+                      <span style={{ marginLeft: 'auto', color: '#5c6578' }}>→</span>
+                    </Link>
+                  ) : (
+                    <div key={q.en} style={quickLink}>
+                      <span style={{ fontSize: '18px' }}>{q.icon}</span>
+                      {isEn ? q.en : q.zh}
+                      <span style={{ marginLeft: 'auto', color: '#5c6578' }}>→</span>
+                    </div>
+                  )
                 ))}
               </div>
+
+              {/* Upcoming key dates pulled from school calendar */}
+              <UpcomingFromCalendar isEn={isEn} />
 
               {/* Weekly digest */}
               <div style={{ ...sideCard, background: '#f0f4ff', borderColor: '#c5d0f0' }}>
@@ -343,6 +355,40 @@ export default function ParentDashboardDemo({ language }) {
 }
 
 /* ─── small helper components ─── */
+
+function UpcomingFromCalendar({ isEn }) {
+  const events = getUpcomingEvents(undefined, 4);
+  if (events.length === 0) return null;
+  return (
+    <div style={{
+      background: '#fff', border: '1px solid #e0e6f0',
+      borderRadius: '12px', padding: '18px 20px',
+      marginBottom: '16px', boxShadow: '0 1px 3px rgba(26,26,46,0.06)',
+    }}>
+      <p style={{
+        fontSize: '11px', fontWeight: 700, color: '#2b3d6d',
+        letterSpacing: '1.5px', textTransform: 'uppercase', margin: '0 0 8px',
+      }}>
+        {isEn ? 'School Calendar · Upcoming' : '校历 · 近期日程'}
+      </p>
+      {events.map((e, i) => (
+        <div key={i} style={{
+          fontSize: '12px', padding: '6px 0',
+          borderTop: i === 0 ? 'none' : '1px solid #f0f2f8',
+          display: 'flex', justifyContent: 'space-between', gap: '10px',
+        }}>
+          <span style={{ color: '#1a1d24', flex: 1 }}>{e.label}</span>
+          <span style={{ color: '#5c6578', whiteSpace: 'nowrap' }}>{formatDate(e.date)}</span>
+        </div>
+      ))}
+      <div style={{ marginTop: '10px', textAlign: 'right' }}>
+        <Link to="/school-profile" style={{ fontSize: '12px', color: '#2b3d6d', fontWeight: 700, textDecoration: 'none' }}>
+          {isEn ? 'Full calendar →' : '完整校历 →'}
+        </Link>
+      </div>
+    </div>
+  );
+}
 
 function Stat({ label, value, sub }) {
   return (
