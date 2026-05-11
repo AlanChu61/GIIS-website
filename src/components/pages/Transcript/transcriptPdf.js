@@ -272,30 +272,38 @@ function buildHtml(p, leftHtml, rightHtml, cumulative, exportToday, transcriptDa
   </tr></tbody>
 </table>
 
-<!-- SEAL + SIGNATURE -->
-<table style="width:100%;border-collapse:collapse;margin-top:3mm;margin-bottom:1mm;">
+<!-- SEAL + SIGNATURE (right half only) -->
+<table style="width:100%;border-collapse:collapse;margin-top:4mm;margin-bottom:1mm;">
   <tbody><tr>
-    <td style="width:18%;text-align:center;vertical-align:middle;border:none;padding:0 2mm 0 0;">
-      <img src="${sealImg}" alt="Official Seal" crossorigin="anonymous"
-           style="width:62px;height:62px;object-fit:contain;display:block;margin:0 auto;" />
-    </td>
-    <td style="width:82%;vertical-align:top;border:none;padding:0;">
-      <div style="${TD_BASE}font-size:8pt;margin-bottom:1px;">Official(s) Certifying Transcript:</div>
-      <div style="border-bottom:1px solid #333;margin-bottom:1mm;">&nbsp;</div>
-      <div style="${TD_BASE}font-size:7pt;color:#333;margin-bottom:3mm;text-align:right;">Signature</div>
+    <td style="width:50%;border:none;"></td>
+    <td style="width:50%;border:none;padding:0;vertical-align:top;">
       <table style="width:100%;border-collapse:collapse;">
-        <tbody>
-          <tr>
-            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">Shiyu Zhang, Ph.D.</td>
-            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">President &amp; Principal</td>
-            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">${escapeHtml(exportToday)}</td>
-          </tr>
-          <tr>
-            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Printed Name</td>
-            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Title</td>
-            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Date</td>
-          </tr>
-        </tbody>
+        <tbody><tr>
+          <td style="width:24%;text-align:center;vertical-align:middle;border:none;padding:0 3mm 0 0;">
+            <img src="${sealImg}" alt="Official Seal" crossorigin="anonymous"
+                 style="width:60px;height:60px;object-fit:contain;display:block;margin:0 auto;
+                        filter:grayscale(100%) opacity(0.22) contrast(600%) brightness(350%);" />
+          </td>
+          <td style="width:76%;vertical-align:top;border:none;padding:0;">
+            <div style="${TD_BASE}font-size:8pt;margin-bottom:1px;">Official(s) Certifying Transcript:</div>
+            <div style="border-bottom:1px solid #333;margin-bottom:1mm;">&nbsp;</div>
+            <div style="${TD_BASE}font-size:7pt;color:#333;margin-bottom:3mm;text-align:right;">Signature</div>
+            <table style="width:100%;border-collapse:collapse;">
+              <tbody>
+                <tr>
+                  <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">Shiyu Zhang, Ph.D.</td>
+                  <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">President &amp; Principal</td>
+                  <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">${escapeHtml(exportToday)}</td>
+                </tr>
+                <tr>
+                  <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Printed Name</td>
+                  <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Title</td>
+                  <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Date</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr></tbody>
       </table>
     </td>
   </tr></tbody>
