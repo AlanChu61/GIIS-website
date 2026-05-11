@@ -205,7 +205,10 @@ function GraduationSection({ studentId }) {
     </div>
   );
 
-  const credits = student.creditsEarned ?? 0;
+  // Credits from transcript CourseRows (authoritative source — used for college apps)
+  const credits = (student.semesters || []).reduce((total, sem) =>
+    total + (sem.courseRows || []).reduce((s, row) =>
+      row.letterGrade && row.letterGrade.trim() ? s + Number(row.credits || 0) : s, 0), 0);
   const isEligible = credits >= CREDITS_REQUIRED;
   const isGraduated = !!student.graduationDate;
   const pct = Math.min(100, (credits / CREDITS_REQUIRED) * 100);
