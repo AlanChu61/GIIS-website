@@ -314,7 +314,7 @@ function DiplomaDocument({ student, eligibleDate }) {
             {/* Sig 1: President */}
             <div style={{ textAlign: 'center', flex: 1, maxWidth: '2.2in', padding: '0 16px' }}>
               <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: '44px', marginBottom: '0' }}>
-                <span style={{ fontFamily: "'Pinyon Script', cursive", fontSize: '38px', color: '#1a2d5a', lineHeight: 1, letterSpacing: '1px' }}>
+                <span style={{ fontFamily: "'Pinyon Script', cursive", fontSize: '32px', color: '#1a2d5a', lineHeight: 1, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
                   Shiyu Zhang
                 </span>
               </div>
@@ -344,7 +344,7 @@ function DiplomaDocument({ student, eligibleDate }) {
             {/* Sig 2: Graduate */}
             <div style={{ textAlign: 'center', flex: 1, maxWidth: '2.2in', padding: '0 16px' }}>
               <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: '44px', marginBottom: '0' }}>
-                <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: '36px', color: '#1a2d5a', lineHeight: 1, letterSpacing: '1px' }}>
+                <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: '32px', color: '#1a2d5a', lineHeight: 1, letterSpacing: '1px', whiteSpace: 'nowrap' }}>
                   {student.name}
                 </span>
               </div>
