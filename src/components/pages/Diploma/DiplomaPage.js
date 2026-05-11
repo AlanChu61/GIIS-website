@@ -301,23 +301,6 @@ function DiplomaDocument({ student, eligibleDate }) {
             </p>
           </div>
 
-          {/* Right vertical divider */}
-          <div style={{
-            width: '2px',
-            background: 'linear-gradient(to bottom, transparent, #b8962e 15%, #b8962e 85%, transparent)',
-            alignSelf: 'stretch', margin: '0 0.28in', flexShrink: 0,
-          }} />
-
-          {/* Right column: vertical accents */}
-          <div style={{ width: '1.2in', flexShrink: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '10px' }}>
-            <div style={{ width: '1px', height: '0.4in', background: 'linear-gradient(to bottom, transparent, #b8962e)' }} />
-            <span style={{ color: '#b8962e', fontSize: '22px' }}>☙</span>
-            <span style={{ color: '#1a2d5a', fontSize: '10px', fontFamily: "'Cinzel Decorative', 'Cinzel', serif", letterSpacing: '1.5px', textAlign: 'center', lineHeight: 1.5 }}>
-              WITH<br />HONORS
-            </span>
-            <span style={{ color: '#b8962e', fontSize: '22px', transform: 'scaleY(-1)', display: 'inline-block' }}>☙</span>
-            <div style={{ width: '1px', height: '0.4in', background: 'linear-gradient(to top, transparent, #b8962e)' }} />
-          </div>
         </div>
 
         {/* Bottom: signature lines */}
@@ -330,10 +313,16 @@ function DiplomaDocument({ student, eligibleDate }) {
           <div style={{ display: 'flex', gap: '0', justifyContent: 'center', width: '100%' }}>
             {/* Sig 1: President */}
             <div style={{ textAlign: 'center', flex: 1, maxWidth: '2.2in', padding: '0 16px' }}>
-              <div style={{ borderBottom: '1.5px solid #1a2d5a', height: '28px', marginBottom: '4px', position: 'relative' }}>
-                {/* Signature flourish */}
-                <svg viewBox="0 0 150 28" width="100%" height="28" style={{ position: 'absolute', bottom: 0, left: 0 }}>
-                  <path d="M10 22 Q30 8 50 18 Q70 28 90 14 Q110 2 140 20" fill="none" stroke="#1a2d5a" strokeWidth="1.2" opacity="0.35" />
+              <div style={{ borderBottom: '1.5px solid #1a2d5a', height: '36px', marginBottom: '4px', position: 'relative' }}>
+                <svg viewBox="0 0 150 36" width="100%" height="36" style={{ position: 'absolute', bottom: 0, left: 0 }}>
+                  {/* S of Shiyu */}
+                  <path d="M10 28 C8 20 14 12 22 16 C28 19 26 26 20 27 C14 28 17 33 24 30" fill="none" stroke="#1a2d5a" strokeWidth="1.6" strokeLinecap="round" opacity="0.88"/>
+                  {/* hiyu loop */}
+                  <path d="M28 28 C32 18 36 16 40 22 L41 28 M41 16 L41 28 C43 22 46 18 50 22 C52 25 51 30 52 28" fill="none" stroke="#1a2d5a" strokeWidth="1.4" strokeLinecap="round" opacity="0.85"/>
+                  {/* space then Z of Zhang */}
+                  <path d="M60 14 L80 14 L63 30 L84 30" fill="none" stroke="#1a2d5a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.88"/>
+                  {/* hang trail */}
+                  <path d="M84 30 C92 26 100 22 110 28 C118 32 126 26 136 22 L144 20" fill="none" stroke="#1a2d5a" strokeWidth="0.9" strokeLinecap="round" opacity="0.55"/>
                 </svg>
               </div>
               <div style={{ fontSize: '12px', fontFamily: "'Cormorant Garamond', serif", color: '#1a2d5a', fontWeight: 600, fontStyle: 'italic' }}>Shiyu Zhang, Ph.D.</div>
@@ -342,24 +331,31 @@ function DiplomaDocument({ student, eligibleDate }) {
 
             {/* Official school seal */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end', padding: '0 16px', paddingBottom: '0px' }}>
-              <img
-                src={sealUrl}
-                alt="Official School Seal"
-                style={{
-                  width: '88px',
-                  height: '88px',
-                  objectFit: 'contain',
-                  mixBlendMode: 'multiply',
-                  opacity: 0.88,
-                }}
-              />
+              <div style={{
+                width: '90px', height: '90px', borderRadius: '50%', overflow: 'hidden',
+                border: '2.5px solid #b8962e',
+                boxShadow: '0 0 0 1px rgba(184,150,46,0.25), inset 0 0 8px rgba(184,150,46,0.08)',
+                background: '#faf6ed',
+                flexShrink: 0,
+              }}>
+                <img
+                  src={sealUrl}
+                  alt="Official School Seal"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', mixBlendMode: 'multiply', display: 'block' }}
+                />
+              </div>
             </div>
 
             {/* Sig 2: Graduate */}
             <div style={{ textAlign: 'center', flex: 1, maxWidth: '2.2in', padding: '0 16px' }}>
-              <div style={{ borderBottom: '1.5px solid #1a2d5a', height: '28px', marginBottom: '4px', position: 'relative' }}>
-                <svg viewBox="0 0 150 28" width="100%" height="28" style={{ position: 'absolute', bottom: 0, left: 0 }}>
-                  <path d="M10 24 Q40 6 60 20 Q80 34 110 16 Q125 8 140 22" fill="none" stroke="#1a2d5a" strokeWidth="1.2" opacity="0.35" />
+              <div style={{ borderBottom: '1.5px solid #1a2d5a', height: '36px', marginBottom: '4px', position: 'relative' }}>
+                <svg viewBox="0 0 150 36" width="100%" height="36" style={{ position: 'absolute', bottom: 0, left: 0 }}>
+                  {/* First name loop */}
+                  <path d="M10 30 C12 18 20 10 30 18 C35 22 32 30 26 28 C22 26 25 20 32 22 C38 24 42 18 46 24 L47 30" fill="none" stroke="#1a2d5a" strokeWidth="1.5" strokeLinecap="round" opacity="0.88"/>
+                  {/* Last name strokes */}
+                  <path d="M52 24 C56 14 62 12 66 20 C68 24 66 30 70 26 C74 22 78 14 86 20 C90 24 88 30 94 26 C100 22 108 18 118 24" fill="none" stroke="#1a2d5a" strokeWidth="1.4" strokeLinecap="round" opacity="0.82"/>
+                  {/* End flourish */}
+                  <path d="M120 22 C128 18 134 20 140 26 L144 28 C146 30 148 26 148 24" fill="none" stroke="#1a2d5a" strokeWidth="0.9" strokeLinecap="round" opacity="0.5"/>
                 </svg>
               </div>
               <div style={{ fontSize: '12px', fontFamily: "'Cormorant Garamond', serif", color: '#1a2d5a', fontWeight: 600, fontStyle: 'italic' }}>{student.name}</div>
