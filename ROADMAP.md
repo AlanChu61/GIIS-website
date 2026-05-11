@@ -1,6 +1,6 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-10（成績單/文憑視覺整修 · 公開校曆頁 · 畢業資格判定 · Nav Login 整合）
+> 最後更新：2026-05-10（成績單/文憑視覺整修 · 公開校曆頁 · 畢業資格判定 · Nav Login 整合 · **Trust Sprint audit added**）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
@@ -71,7 +71,9 @@
 
 > 解決「影片做完了沒人記得上傳，等實際上線時 quota 又卡住」的痛點。每天 9am 自動上 4 支，剩下的隔天自動接著。
 
-- ✅ **`tools/youtube-upload/queue.py`** — `status` 子指令掃 `teaching-videos/`，分類成 uploaded / pending / no-mp4 / broken。By-course 條形圖、pending queue、最近上傳清單。`upload` 子指令一次跑 N 支（預設 4，留 quota headroom）
+- ✅ **`tools/youtube-upload/yt_queue.py`** — `status` 子指令掃 `teaching-videos/`，分類成 uploaded / pending / no-mp4 / broken。By-course 條形圖、pending queue、最近上傳清單。`upload` 子指令一次跑 N 支（預設 4，留 quota headroom）
+  - ⚠️ **不能叫 `queue.py`**：會 shadow Python stdlib 的 `queue` module，讓 subprocess 跑 `upload_video.py` 時 urllib3 / google-auth 整串 import 炸掉（`AttributeError: module 'queue' has no attribute 'Queue'`）。2026-05-10 從 `queue.py` 改名修掉
+  - ⚠️ **succeeded 計數 bug 已修**（2026-05-10）：原本用 `len(queue) - len(failures)`，abort 後沒嘗試的 lesson 被誤算成已上傳。改成累加實際 returncode==0 的數量
 - ✅ **`tools/youtube-upload/daily.sh`** — launchd 用的 wrapper，每次 run 先印 status 再 upload，全部 log 到 `~/Library/Logs/giis-youtube-daily.log`
 - ✅ **`tools/youtube-upload/com.giis.youtube-daily.plist`** — macOS launchd job，每天 09:00 自動觸發。`cp` 到 `~/Library/LaunchAgents/` + `launchctl load` 一次性裝完
 - ✅ **`npm run yt:status` / `npm run yt:upload`** package.json scripts，日常用最順

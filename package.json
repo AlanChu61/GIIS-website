@@ -30,8 +30,8 @@
     "make-demo:force": "node scripts/make-demo.mjs --force",
     "make-demo:audio": "node scripts/make-demo.mjs --audio-only",
     "make-demo:merge": "node scripts/make-demo.mjs --merge-only",
-    "yt:status": "python3 tools/youtube-upload/queue.py status",
-    "yt:upload": "python3 tools/youtube-upload/queue.py upload",
+    "yt:status": "python3 tools/youtube-upload/yt_queue.py status",
+    "yt:upload": "python3 tools/youtube-upload/yt_queue.py upload",
     "postinstall": "node -e \"const fs=require('fs'),f='node_modules/dompurify/dist/purify.es.mjs';try{let c=fs.readFileSync(f,'utf8');fs.writeFileSync(f,c.replace(/\\/\\/#\\s*sourceMappingURL=purify\\.es\\.mjs\\.map/,''));}catch(e){}\""
   },
   "eslintConfig": {
