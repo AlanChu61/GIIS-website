@@ -313,20 +313,15 @@ function DiplomaDocument({ student, eligibleDate }) {
           <div style={{ display: 'flex', gap: '0', justifyContent: 'center', width: '100%' }}>
             {/* Sig 1: President */}
             <div style={{ textAlign: 'center', flex: 1, maxWidth: '2.2in', padding: '0 16px' }}>
-              <div style={{ borderBottom: '1.5px solid #1a2d5a', height: '36px', marginBottom: '4px', position: 'relative' }}>
-                <svg viewBox="0 0 150 36" width="100%" height="36" style={{ position: 'absolute', bottom: 0, left: 0 }}>
-                  {/* S of Shiyu */}
-                  <path d="M10 28 C8 20 14 12 22 16 C28 19 26 26 20 27 C14 28 17 33 24 30" fill="none" stroke="#1a2d5a" strokeWidth="1.6" strokeLinecap="round" opacity="0.88"/>
-                  {/* hiyu loop */}
-                  <path d="M28 28 C32 18 36 16 40 22 L41 28 M41 16 L41 28 C43 22 46 18 50 22 C52 25 51 30 52 28" fill="none" stroke="#1a2d5a" strokeWidth="1.4" strokeLinecap="round" opacity="0.85"/>
-                  {/* space then Z of Zhang */}
-                  <path d="M60 14 L80 14 L63 30 L84 30" fill="none" stroke="#1a2d5a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" opacity="0.88"/>
-                  {/* hang trail */}
-                  <path d="M84 30 C92 26 100 22 110 28 C118 32 126 26 136 22 L144 20" fill="none" stroke="#1a2d5a" strokeWidth="0.9" strokeLinecap="round" opacity="0.55"/>
-                </svg>
+              <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: '44px', marginBottom: '0' }}>
+                <span style={{ fontFamily: "'Pinyon Script', cursive", fontSize: '38px', color: '#1a2d5a', lineHeight: 1, letterSpacing: '1px' }}>
+                  Shiyu Zhang
+                </span>
               </div>
-              <div style={{ fontSize: '12px', fontFamily: "'Cormorant Garamond', serif", color: '#1a2d5a', fontWeight: 600, fontStyle: 'italic' }}>Shiyu Zhang, Ph.D.</div>
-              <div style={{ fontSize: '8px', color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '2px', fontFamily: "'Cinzel', serif" }}>President & Principal</div>
+              <div style={{ borderTop: '1.5px solid #1a2d5a', paddingTop: '4px', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', fontFamily: "'Cormorant Garamond', serif", color: '#1a2d5a', fontWeight: 600, fontStyle: 'italic' }}>Shiyu Zhang, Ph.D.</div>
+                <div style={{ fontSize: '8px', color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '2px', fontFamily: "'Cinzel', serif" }}>President & Principal</div>
+              </div>
             </div>
 
             {/* Official school seal */}
@@ -348,18 +343,15 @@ function DiplomaDocument({ student, eligibleDate }) {
 
             {/* Sig 2: Graduate */}
             <div style={{ textAlign: 'center', flex: 1, maxWidth: '2.2in', padding: '0 16px' }}>
-              <div style={{ borderBottom: '1.5px solid #1a2d5a', height: '36px', marginBottom: '4px', position: 'relative' }}>
-                <svg viewBox="0 0 150 36" width="100%" height="36" style={{ position: 'absolute', bottom: 0, left: 0 }}>
-                  {/* First name loop */}
-                  <path d="M10 30 C12 18 20 10 30 18 C35 22 32 30 26 28 C22 26 25 20 32 22 C38 24 42 18 46 24 L47 30" fill="none" stroke="#1a2d5a" strokeWidth="1.5" strokeLinecap="round" opacity="0.88"/>
-                  {/* Last name strokes */}
-                  <path d="M52 24 C56 14 62 12 66 20 C68 24 66 30 70 26 C74 22 78 14 86 20 C90 24 88 30 94 26 C100 22 108 18 118 24" fill="none" stroke="#1a2d5a" strokeWidth="1.4" strokeLinecap="round" opacity="0.82"/>
-                  {/* End flourish */}
-                  <path d="M120 22 C128 18 134 20 140 26 L144 28 C146 30 148 26 148 24" fill="none" stroke="#1a2d5a" strokeWidth="0.9" strokeLinecap="round" opacity="0.5"/>
-                </svg>
+              <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', height: '44px', marginBottom: '0' }}>
+                <span style={{ fontFamily: "'Great Vibes', cursive", fontSize: '36px', color: '#1a2d5a', lineHeight: 1, letterSpacing: '1px' }}>
+                  {student.name}
+                </span>
               </div>
-              <div style={{ fontSize: '12px', fontFamily: "'Cormorant Garamond', serif", color: '#1a2d5a', fontWeight: 600, fontStyle: 'italic' }}>{student.name}</div>
-              <div style={{ fontSize: '8px', color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '2px', fontFamily: "'Cinzel', serif" }}>Graduate</div>
+              <div style={{ borderTop: '1.5px solid #1a2d5a', paddingTop: '4px', marginTop: '2px' }}>
+                <div style={{ fontSize: '11px', fontFamily: "'Cormorant Garamond', serif", color: '#1a2d5a', fontWeight: 600, fontStyle: 'italic' }}>{student.name}</div>
+                <div style={{ fontSize: '8px', color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', marginTop: '2px', fontFamily: "'Cinzel', serif" }}>Graduate</div>
+              </div>
             </div>
           </div>
 
