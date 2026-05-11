@@ -24,6 +24,7 @@ export function getNavStrings(language) {
     dropdownAcademics: en
       ? [
           { label: 'Course Catalog',           to: '/academics' },
+          { label: 'Academic Calendar',        to: '/calendar' },
           { label: 'Psychology Pathway',       to: '/pathways/psychology' },
           { label: 'CS & Engineering',         to: '/pathways/cs' },
           { label: 'Business & Marketing',     to: '/pathways/business' },
@@ -31,6 +32,7 @@ export function getNavStrings(language) {
         ]
       : [
           { label: '课程目录',       to: '/academics' },
+          { label: '学校日历',       to: '/calendar' },
           { label: '心理学路径',     to: '/pathways/psychology' },
           { label: '计算机科学路径', to: '/pathways/cs' },
           { label: '商业与市场营销', to: '/pathways/business' },

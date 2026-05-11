@@ -301,7 +301,16 @@ router.get('/:id', authenticate, requireStudentOrAdminForStudentParam, async (re
     });
   }
   const serialized = serializeStudent(student);
-  if (isAdmin) serialized.loginEmail = student.account?.email ?? null;
+  if (isAdmin) {
+    serialized.loginEmail = student.account?.email ?? null;
+    const enrollments = await prisma.enrollment.findMany({
+      where: { studentId: req.params.id },
+      select: { creditEarned: true, course: { select: { credits: true } } },
+    });
+    serialized.creditsEarned = enrollments
+      .filter((e) => e.creditEarned)
+      .reduce((sum, e) => sum + Number(e.course.credits), 0);
+  }
   res.json({ student: serialized });
 });
 

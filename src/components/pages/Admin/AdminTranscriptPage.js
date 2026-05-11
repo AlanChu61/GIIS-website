@@ -4,9 +4,13 @@ import { Link, Navigate, useParams } from 'react-router-dom';
 import TranscriptContent from '../Transcript/TranscriptContent.js';
 import { getAdminSession } from '../../../api/authStorage';
 import { getApiBase } from '../../../config/apiBase';
+import { getCurrentAcademicYear } from '../../../config/schoolCalendar.js';
 
 const API = getApiBase();
-const CEREMONY_DATE = '2026-06-05';
+const CREDITS_REQUIRED = 24;
+const currentYear = getCurrentAcademicYear();
+const CEREMONY_DATE = currentYear.graduation?.ceremonyDate ?? null;
+const SPRING_END = currentYear.spring?.ends ?? null;
 
 function LoginSection({ studentId, isEn }) {
   const [loginEmail, setLoginEmail] = useState(null);
@@ -162,15 +166,15 @@ function ParentEmailSection({ studentId, isEn }) {
 }
 
 function GraduationSection({ studentId }) {
-  const [gradDate, setGradDate] = useState(null);
+  const [student, setStudent] = useState(null);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
     fetch(`${API}/api/students/${studentId}`, { credentials: 'include' })
       .then((r) => r.json())
-      .then((d) => setGradDate(d.student?.graduationDate ?? ''))
-      .catch(() => setGradDate(''));
+      .then((d) => setStudent(d.student ?? null))
+      .catch(() => setStudent({}));
   }, [studentId]);
 
   async function patch(graduationDate) {
@@ -184,7 +188,7 @@ function GraduationSection({ studentId }) {
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok) throw new Error(d.error || 'Failed');
-      setGradDate(graduationDate ?? '');
+      setStudent((s) => ({ ...s, graduationDate: graduationDate ?? null }));
       setMsg(graduationDate ? '✓ Marked as graduated.' : '✓ Graduation date cleared.');
     } catch (err) {
       setMsg(err.message);
@@ -193,34 +197,76 @@ function GraduationSection({ studentId }) {
     }
   }
 
-  const fmt = (d) => d ? new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
-  const isGraduated = !!gradDate;
+  const fmtDate = (d) => d ? new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '—';
+
+  if (!student) return (
+    <div className="border rounded p-3 mb-3 bg-white" style={{ maxWidth: '520px' }}>
+      <p className="small text-muted mb-0">Loading graduation info…</p>
+    </div>
+  );
+
+  const credits = student.creditsEarned ?? 0;
+  const isEligible = credits >= CREDITS_REQUIRED;
+  const isGraduated = !!student.graduationDate;
+  const pct = Math.min(100, (credits / CREDITS_REQUIRED) * 100);
 
   return (
     <div className="border rounded p-3 mb-3 bg-white" style={{ maxWidth: '520px' }}>
-      <div className="d-flex justify-content-between align-items-center mb-1">
-        <span className="fw-semibold small">Graduation Status</span>
+      <div className="d-flex justify-content-between align-items-center mb-2">
+        <span className="fw-semibold small">Graduation Eligibility</span>
         {isGraduated && (
           <button className="btn btn-sm btn-outline-danger" onClick={() => patch(null)} disabled={saving}>
             Clear date
           </button>
         )}
       </div>
-      {gradDate === null ? (
-        <p className="small text-muted mb-2">Loading…</p>
-      ) : isGraduated ? (
+
+      {/* Credits progress */}
+      <div className="mb-2">
+        <div className="d-flex justify-content-between mb-1">
+          <span className="small text-muted">Credits earned</span>
+          <span className="small fw-bold" style={{ color: isEligible ? '#1b5e20' : '#b71c1c' }}>
+            {credits % 1 === 0 ? credits : credits.toFixed(1)} / {CREDITS_REQUIRED}
+            {isEligible ? '  ✓ Eligible' : `  — need ${(CREDITS_REQUIRED - credits).toFixed(1)} more`}
+          </span>
+        </div>
+        <div style={{ background: '#e8ecf5', borderRadius: '4px', height: '6px' }}>
+          <div style={{ width: `${pct}%`, background: isEligible ? '#2e7d32' : '#1a2d5a', borderRadius: '4px', height: '100%', transition: 'width 0.3s' }} />
+        </div>
+      </div>
+
+      {/* Calendar dates */}
+      {(SPRING_END || CEREMONY_DATE) && (
+        <div className="mb-2 p-2 rounded" style={{ background: '#f4f6fa', fontSize: '12px', color: '#555' }}>
+          {SPRING_END && <div>Credits must be completed by <strong>{fmtDate(SPRING_END)}</strong> (spring term end)</div>}
+          {CEREMONY_DATE && <div>Graduation ceremony: <strong>{fmtDate(CEREMONY_DATE)}</strong></div>}
+        </div>
+      )}
+
+      {/* Graduation status */}
+      {isGraduated ? (
         <p className="small mb-2">
           <span className="badge bg-success me-1">✓ Graduated</span>
-          <span className="text-muted">{fmt(gradDate)}</span>
+          <span className="text-muted">{fmtDate(student.graduationDate)}</span>
         </p>
       ) : (
-        <p className="small text-warning fw-semibold mb-2">Not yet graduated</p>
+        <p className="small text-muted mb-2">Not yet marked as graduated.</p>
       )}
+
       {msg && <div className={`alert py-1 px-2 small mb-2 ${msg.startsWith('✓') ? 'alert-success' : 'alert-danger'}`}>{msg}</div>}
-      {!isGraduated && (
-        <button className="btn btn-success btn-sm" onClick={() => patch(CEREMONY_DATE)} disabled={saving}>
-          {saving ? 'Saving…' : `✓ Mark as Graduated — Jun 5, 2026`}
+
+      {!isGraduated && CEREMONY_DATE && (
+        <button
+          className={`btn btn-sm ${isEligible ? 'btn-success' : 'btn-outline-secondary'}`}
+          onClick={() => patch(CEREMONY_DATE)}
+          disabled={saving || !isEligible}
+          title={!isEligible ? `Student needs ${(CREDITS_REQUIRED - credits).toFixed(1)} more credits` : ''}
+        >
+          {saving ? 'Saving…' : `✓ Mark as Graduated — ${fmtDate(CEREMONY_DATE)}`}
         </button>
+      )}
+      {!isEligible && !isGraduated && (
+        <p className="small text-muted mt-1 mb-0">Button unlocks when student reaches {CREDITS_REQUIRED} credits.</p>
       )}
     </div>
   );
