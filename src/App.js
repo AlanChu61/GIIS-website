@@ -17,6 +17,7 @@ const AdminLogin = lazy(() => import('./components/pages/Admin/AdminLogin'));
 const AdminDashboard = lazy(() => import('./components/pages/Admin/AdminDashboard'));
 const AdminTranscriptPage = lazy(() => import('./components/pages/Admin/AdminTranscriptPage'));
 const AdminProgressPage = lazy(() => import('./components/pages/Admin/AdminProgressPage'));
+const AdminCalendarPage = lazy(() => import('./components/pages/Admin/AdminCalendarPage'));
 const DiplomaPage = lazy(() => import('./components/pages/Diploma/DiplomaPage'));
 const SchoolProfilePage = lazy(() => import('./components/pages/SchoolProfile/SchoolProfilePage'));
 const NotFound = lazy(() => import('./components/pages/NotFound'));
@@ -122,6 +123,7 @@ function App() {
          <Route path="/admin" element={<AdminDashboard language={language} />} />
          <Route path="/admin/transcript/:studentId" element={<AdminTranscriptPage language={language} />} />
          <Route path="/admin/progress" element={<AdminProgressPage />} />
+         <Route path="/admin/calendar" element={<AdminCalendarPage />} />
          {/* Pathways hub */}
          <Route path="/pathways" element={<PathwaysHub language={language} toggleLanguage={toggleLanguage} />} />
          {/* Individual pathways */}

@@ -6,6 +6,7 @@ import { getAdminSession } from '../../../api/authStorage';
 import { getApiBase } from '../../../config/apiBase';
 
 const API = getApiBase();
+const CEREMONY_DATE = '2026-06-05';
 
 function LoginSection({ studentId, isEn }) {
   const [loginEmail, setLoginEmail] = useState(null);
@@ -160,6 +161,71 @@ function ParentEmailSection({ studentId, isEn }) {
   );
 }
 
+function GraduationSection({ studentId }) {
+  const [gradDate, setGradDate] = useState(null);
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState('');
+
+  useEffect(() => {
+    fetch(`${API}/api/students/${studentId}`, { credentials: 'include' })
+      .then((r) => r.json())
+      .then((d) => setGradDate(d.student?.graduationDate ?? ''))
+      .catch(() => setGradDate(''));
+  }, [studentId]);
+
+  async function patch(graduationDate) {
+    setSaving(true); setMsg('');
+    try {
+      const r = await fetch(`${API}/api/students/${studentId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ graduationDate }),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Failed');
+      setGradDate(graduationDate ?? '');
+      setMsg(graduationDate ? '✓ Marked as graduated.' : '✓ Graduation date cleared.');
+    } catch (err) {
+      setMsg(err.message);
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  const fmt = (d) => d ? new Date(d + 'T00:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '';
+  const isGraduated = !!gradDate;
+
+  return (
+    <div className="border rounded p-3 mb-3 bg-white" style={{ maxWidth: '520px' }}>
+      <div className="d-flex justify-content-between align-items-center mb-1">
+        <span className="fw-semibold small">Graduation Status</span>
+        {isGraduated && (
+          <button className="btn btn-sm btn-outline-danger" onClick={() => patch(null)} disabled={saving}>
+            Clear date
+          </button>
+        )}
+      </div>
+      {gradDate === null ? (
+        <p className="small text-muted mb-2">Loading…</p>
+      ) : isGraduated ? (
+        <p className="small mb-2">
+          <span className="badge bg-success me-1">✓ Graduated</span>
+          <span className="text-muted">{fmt(gradDate)}</span>
+        </p>
+      ) : (
+        <p className="small text-warning fw-semibold mb-2">Not yet graduated</p>
+      )}
+      {msg && <div className={`alert py-1 px-2 small mb-2 ${msg.startsWith('✓') ? 'alert-success' : 'alert-danger'}`}>{msg}</div>}
+      {!isGraduated && (
+        <button className="btn btn-success btn-sm" onClick={() => patch(CEREMONY_DATE)} disabled={saving}>
+          {saving ? 'Saving…' : `✓ Mark as Graduated — Jun 5, 2026`}
+        </button>
+      )}
+    </div>
+  );
+}
+
 export default function AdminTranscriptPage({ language }) {
   const { studentId } = useParams();
   const session = getAdminSession();
@@ -212,6 +278,7 @@ export default function AdminTranscriptPage({ language }) {
 
         <LoginSection studentId={studentId} isEn={isEn} />
         <ParentEmailSection studentId={studentId} isEn={isEn} />
+        <GraduationSection studentId={studentId} />
 
         <TranscriptContent
           language={language}
