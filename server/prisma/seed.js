@@ -22,27 +22,21 @@ function courseRow(sortOrder, courseName, courseType, credits, letterGrade) {
 }
 
 /**
- * Date-gated course row. Spring 2026 final grades aren't visible until 2026-05-25
- * (3 days after the term closes on 5/22 — see src/config/schoolCalendar.js).
- * Re-seeding before that date produces blank grades (in-progress); on or after
- * that date produces the final letter grade.
- *
- * Override via env var for testing:
- *   GIIS_SEED_DATE=2026-05-25 npx prisma db seed
+ * Grades are always stored immediately in the DB.
+ * Display is gated by the semester's releaseDate field (enforced at API read time).
  */
-function courseRowGated(sortOrder, courseName, courseType, credits, letterGrade, releaseDate) {
-  const today = process.env.GIIS_SEED_DATE || new Date().toISOString().slice(0, 10);
-  const effectiveGrade = (releaseDate && today < releaseDate) ? '' : letterGrade;
-  return courseRow(sortOrder, courseName, courseType, credits, effectiveGrade);
+function courseRowGated(sortOrder, courseName, courseType, credits, letterGrade, _releaseDate) {
+  return courseRow(sortOrder, courseName, courseType, credits, letterGrade);
 }
 
-// All Class-of-2026 Spring grades release together, 3 days after term closes.
-const SPRING_2026_RELEASE = '2026-05-25';
+// Spring 2026 grades become visible to students on this date (semester end day).
+const SPRING_2026_RELEASE = '2026-05-22';
 
 function makeSemesters(coursesBySemester) {
-  return coursesBySemester.map(({ key, sortOrder, courses }) => ({
+  return coursesBySemester.map(({ key, sortOrder, releaseDate, courses }) => ({
     key,
     sortOrder,
+    ...(releaseDate ? { releaseDate: new Date(releaseDate) } : {}),
     courseRows: { create: courses },
   }));
 }
@@ -115,7 +109,7 @@ const ruwenLiSemesters = makeSemesters([
     ],
   },
   {
-    key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
+    key: 'Grade 12 - Spring Semester', sortOrder: 7, releaseDate: SPRING_2026_RELEASE, courses: [
       courseRowGated(0, 'English IV - Advanced Composition',   'Core',     '1',   'A-', SPRING_2026_RELEASE),
       courseRowGated(1, 'Sociology',                           'Core',     '1',   'A-', SPRING_2026_RELEASE),
       courseRowGated(2, 'Business Law',                        'Elective', '1',   'A',  SPRING_2026_RELEASE),
@@ -190,7 +184,7 @@ const taoZhangSemesters = makeSemesters([
     ],
   },
   {
-    key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
+    key: 'Grade 12 - Spring Semester', sortOrder: 7, releaseDate: SPRING_2026_RELEASE, courses: [
       courseRowGated(0, 'English IV - Advanced Composition',   'Core',     '1',   'A',  SPRING_2026_RELEASE),
       courseRowGated(1, 'AP Human Geography',                  'Core (AP)', '1',  'A-', SPRING_2026_RELEASE),
       courseRowGated(2, 'Abnormal Psychology',                 'Elective', '1',   'A',  SPRING_2026_RELEASE),
@@ -267,7 +261,7 @@ const baoyiLuSemesters = makeSemesters([
     ],
   },
   {
-    key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
+    key: 'Grade 12 - Spring Semester', sortOrder: 7, releaseDate: SPRING_2026_RELEASE, courses: [
       courseRowGated(0, 'English IV - Advanced Composition / Media Writing', 'Core', '1', 'A',  SPRING_2026_RELEASE),
       courseRowGated(1, 'Sociology',                           'Core',     '1',   'A-', SPRING_2026_RELEASE),
       courseRowGated(2, 'Personal Finance / Applied Economics', 'Elective', '1',  'A',  SPRING_2026_RELEASE),
@@ -342,7 +336,7 @@ const yunfanYangSemesters = makeSemesters([
     ],
   },
   {
-    key: 'Grade 12 - Spring Semester', sortOrder: 7, courses: [
+    key: 'Grade 12 - Spring Semester', sortOrder: 7, releaseDate: SPRING_2026_RELEASE, courses: [
       courseRowGated(0, 'English IV - Media & Analytical Writing', 'Core', '1',  'A', SPRING_2026_RELEASE),
       courseRowGated(1, 'Media Psychology',                    'Elective', '1',   'A', SPRING_2026_RELEASE),
       courseRowGated(2, 'Sports Management & Leadership',      'Elective', '1',   'A', SPRING_2026_RELEASE),

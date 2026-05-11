@@ -292,6 +292,14 @@ router.get('/:id', authenticate, requireStudentOrAdminForStudentParam, async (re
     },
   });
   if (!student) return res.status(404).json({ error: 'Student not found' });
+  if (!isAdmin) {
+    const now = new Date();
+    (student.semesters || []).forEach(sem => {
+      if (sem.releaseDate && new Date(sem.releaseDate) > now) {
+        sem.courseRows.forEach(row => { row.letterGrade = ''; });
+      }
+    });
+  }
   const serialized = serializeStudent(student);
   if (isAdmin) serialized.loginEmail = student.account?.email ?? null;
   res.json({ student: serialized });

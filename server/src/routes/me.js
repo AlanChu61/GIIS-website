@@ -30,6 +30,7 @@ router.get('/', authenticate, async (req, res) => {
             semesters: {
               select: {
                 key: true,
+                releaseDate: true,
                 courseRows: { select: { courseName: true, credits: true, letterGrade: true } },
               },
             },
@@ -39,6 +40,12 @@ router.get('/', authenticate, async (req, res) => {
     });
 
     if (!account) return res.status(404).json({ error: 'Profile not found' });
+    const now = new Date();
+    (account.student.semesters || []).forEach(sem => {
+      if (sem.releaseDate && new Date(sem.releaseDate) > now) {
+        sem.courseRows.forEach(row => { row.letterGrade = ''; });
+      }
+    });
     res.json({ email: account.email, ...account.student });
   } catch (e) {
     console.error('[GET /api/me]', e);
