@@ -466,6 +466,33 @@ Acceptance ✅：列印成績單掃 QR 不需登入可驗真偽。
 
 ---
 
+## 🏗️ 架構決定（已確認，未來新學生照此實作）
+
+### 學分 → 成績單的單向資料流（已確認，2026-05-10）
+
+> **目標**：Learn Portal 是唯一的數據入口，成績單是衍生輸出，畢業資格由成績單學分決定。
+
+**確認的流向：**
+```
+學生在 Learn Portal 完成課程
+  → Admin 審核 / 系統自動更新 CourseRow（letterGrade + credits）
+    → 成績單 PDF 從 CourseRow 生成（已完成）
+      → 畢業資格從 CourseRow 學分計算（已完成）
+```
+
+**現狀（Class of 2026 四位學生）：**
+- CourseRow 是手動維護的，和 Enrollment 系統是兩套獨立數據
+- 畢業資格已改成從 CourseRow 計算（`AdminTranscriptPage.js GraduationSection`）
+- Enrollment 的 `creditEarned` 不參與畢業計算
+
+**未來新學生需要做的（Phase 3/4 再實作）：**
+1. **Learn Portal 完成 → 自動寫 CourseRow**：當學生 `creditEarned = true`（通過期末考），後端自動在對應 Semester 的 CourseRow 插入一行（`courseName`, `credits`, `letterGrade` 從考試分數換算）
+2. **Admin 審核流程**：CourseRow 自動生成後標記 `status: 'pending'`，admin 確認或修改後才變 `confirmed`，才會出現在 PDF 成績單
+3. **grade release 邏輯保持不變**：`Semester.releaseDate` 控制學生/家長看到成績的時間
+- 相關檔案：`server/src/routes/students.js`（PATCH enrollments 觸發 CourseRow）、`server/prisma/schema.prisma`（CourseRow 加 `status` 欄位）
+
+---
+
 ## 📈 Phase 4 — 規模化
 
 > 等有穩定付費用戶後才考慮，列項即可。
