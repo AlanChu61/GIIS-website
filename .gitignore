@@ -30,3 +30,7 @@ demo-output/
 
 # Teaching video assets — large binaries, keep locally only
 teaching-videos/
+
+# Python bytecode (tools/youtube-upload/, tools/lesson-video/)
+__pycache__/
+*.pyc
