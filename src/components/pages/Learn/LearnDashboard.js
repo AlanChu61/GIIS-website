@@ -532,17 +532,64 @@ export default function LearnDashboard({ language }) {
             </div>
           ) : (
             <>
-              {/* In Progress */}
-              {inProgress.length > 0 && (
-                <div style={{ marginBottom: '32px' }}>
-                  <p style={{ fontSize: '11px', fontWeight: 700, color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', margin: '0 0 10px' }}>
-                    {isEn ? `In Progress — ${inProgress.length}` : `进行中 — ${inProgress.length}`}
-                  </p>
-                  <div data-m="course-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px' }}>
-                    {inProgress.map((enr) => <CourseCard key={enr.id} enr={enr} isEn={isEn} />)}
+              {/* In Progress — grouped by semester, current expanded / older collapsible */}
+              {inProgress.length > 0 && (() => {
+                const ipSemMap = {};
+                inProgress.forEach(enr => {
+                  const label = enr.semesterLabel || 'In Progress';
+                  if (!ipSemMap[label]) ipSemMap[label] = [];
+                  ipSemMap[label].push(enr);
+                });
+                const sortKey = (label) => {
+                  const g = label.match(/Grade (\d+)/); const grade = g ? parseInt(g[1]) : 99;
+                  return grade * 2 + (label.toLowerCase().includes('fall') ? 0 : 1);
+                };
+                const ipSemsAsc = Object.keys(ipSemMap).sort((a, b) => sortKey(a) - sortKey(b));
+                const ipCurrentSem = ipSemsAsc[ipSemsAsc.length - 1];
+                const ipSems = [...ipSemsAsc].reverse();
+                return (
+                  <div style={{ marginBottom: '32px' }}>
+                    <p style={{ fontSize: '11px', fontWeight: 700, color: '#888', letterSpacing: '1.5px', textTransform: 'uppercase', margin: '0 0 10px' }}>
+                      {isEn ? `In Progress — ${inProgress.length}` : `进行中 — ${inProgress.length}`}
+                    </p>
+                    {ipSems.map((sem) => {
+                      const semEnrs = ipSemMap[sem];
+                      const isCurrent = sem === ipCurrentSem;
+                      const semKey = `ip-${sem}`;
+                      const isOpen = isCurrent || expandedSems.has(semKey);
+                      return (
+                        <div key={sem} style={{ marginBottom: '12px', border: '1px solid #e8edf8', borderRadius: '10px', overflow: 'hidden' }}>
+                          <div
+                            onClick={!isCurrent ? () => toggleSem(semKey) : undefined}
+                            style={{
+                              display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px',
+                              background: isCurrent ? '#f0f4ff' : '#f8f9fd',
+                              cursor: isCurrent ? 'default' : 'pointer',
+                              borderBottom: isOpen ? '1px solid #e8edf8' : 'none',
+                            }}
+                          >
+                            <p style={{ fontSize: '11px', fontWeight: 700, color: '#2b3d6d', letterSpacing: '1.5px', textTransform: 'uppercase', margin: 0 }}>
+                              {!isCurrent && <span style={{ marginRight: '6px' }}>{isOpen ? '▾' : '▸'}</span>}
+                              {sem}
+                              {isCurrent && <span style={{ marginLeft: '8px', fontSize: '9px', background: '#2b3d6d', color: '#fff', padding: '1px 6px', borderRadius: '10px', verticalAlign: 'middle' }}>
+                                {isEn ? 'CURRENT' : '本学期'}
+                              </span>}
+                            </p>
+                            <span style={{ fontSize: '11px', color: '#aaa' }}>
+                              {semEnrs.length} {isEn ? 'courses' : '门课'}
+                            </span>
+                          </div>
+                          {isOpen && (
+                            <div data-m="course-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '12px', padding: '14px 16px' }}>
+                              {semEnrs.map((enr) => <CourseCard key={enr.id} enr={enr} isEn={isEn} />)}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
-                </div>
-              )}
+                );
+              })()}
 
               {/* Completed — grouped by semester, current expanded / past collapsible */}
               {completed.length > 0 && (() => {
