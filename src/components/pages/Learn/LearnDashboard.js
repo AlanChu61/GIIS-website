@@ -218,6 +218,17 @@ function useEnrollments() {
   return { enrollments, reload };
 }
 
+function useProfile() {
+  const [profile, setProfile] = useState(null);
+  useEffect(() => {
+    fetch(`${API}/api/me`, { credentials: 'include' })
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => setProfile(d))
+      .catch(() => {});
+  }, []);
+  return profile;
+}
+
 function useCourses() {
   const [courses, setCourses] = useState(null);
   useEffect(() => {
@@ -235,6 +246,7 @@ export default function LearnDashboard({ language }) {
   const session = getStudentSession();
   const { enrollments, reload } = useEnrollments();
   const allCourses = useCourses();
+  const profile = useProfile();
   const [enrolling, setEnrolling] = useState(null);
   const [enrollErr, setEnrollErr] = useState('');
   const [pathwayFilter, setPathwayFilter] = useState(null); // null = auto-detect
@@ -281,8 +293,21 @@ export default function LearnDashboard({ language }) {
   const inProgress = myEnrollments.filter((e) => !e.creditEarned);
   const completed = myEnrollments.filter((e) => e.creditEarned);
 
-  // Stats
-  const creditsEarned = completed.reduce((s, e) => s + Number(e.course.credits), 0);
+  // Stats — credits use CourseRow (transcript) when available, fall back to Course table
+  const courseRowCreditMap = {};
+  (profile?.semesters || []).forEach(sem => {
+    sem.courseRows.forEach(row => {
+      if (row.letterGrade && row.letterGrade.trim()) {
+        const key = row.courseName.trim().toLowerCase();
+        courseRowCreditMap[key] = Number(row.credits || 0);
+      }
+    });
+  });
+  const creditsEarned = completed.reduce((s, e) => {
+    const key = e.course.name.trim().toLowerCase();
+    const cr = courseRowCreditMap[key] ?? Number(e.course.credits);
+    return s + cr;
+  }, 0);
   const overallGPAs = computeSemGPAs(myEnrollments);
 
   // Graduation

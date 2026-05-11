@@ -27,6 +27,12 @@ router.get('/', authenticate, async (req, res) => {
                 examAttempts: { where: { submittedAt: { not: null } } },
               },
             },
+            semesters: {
+              select: {
+                key: true,
+                courseRows: { select: { courseName: true, credits: true, letterGrade: true } },
+              },
+            },
           },
         },
       },
