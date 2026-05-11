@@ -272,38 +272,37 @@ function buildHtml(p, leftHtml, rightHtml, cumulative, exportToday, transcriptDa
   </tr></tbody>
 </table>
 
-<!-- SEAL + SIGNATURE (right half only) -->
+<!-- SEAL + SIGNATURE -->
 <table style="width:100%;border-collapse:collapse;margin-top:4mm;margin-bottom:1mm;">
   <tbody><tr>
-    <td style="width:50%;border:none;"></td>
-    <td style="width:50%;border:none;padding:0;vertical-align:top;">
+    <!-- Seal: 25% -->
+    <td style="width:25%;text-align:center;vertical-align:middle;border:none;padding:0;">
+      <img src="${sealImg}" alt="Official Seal" crossorigin="anonymous"
+           style="width:72px;height:72px;object-fit:contain;display:block;margin:0 auto;
+                  filter:grayscale(100%) opacity(0.42) contrast(110%) brightness(130%)
+                         drop-shadow(1.5px 1.5px 0px rgba(255,255,255,0.85))
+                         drop-shadow(-1px -1px 1px rgba(60,60,90,0.55));" />
+    </td>
+    <!-- Gap: 15% -->
+    <td style="width:15%;border:none;"></td>
+    <!-- Signature block: 60% -->
+    <td style="width:60%;vertical-align:top;border:none;padding:0;">
+      <div style="${TD_BASE}font-size:8pt;margin-bottom:1px;">Official(s) Certifying Transcript:</div>
+      <div style="border-bottom:1px solid #333;margin-bottom:1mm;">&nbsp;</div>
+      <div style="${TD_BASE}font-size:7pt;color:#333;margin-bottom:3mm;text-align:right;">Signature</div>
       <table style="width:100%;border-collapse:collapse;">
-        <tbody><tr>
-          <td style="width:24%;text-align:center;vertical-align:middle;border:none;padding:0 3mm 0 0;">
-            <img src="${sealImg}" alt="Official Seal" crossorigin="anonymous"
-                 style="width:60px;height:60px;object-fit:contain;display:block;margin:0 auto;
-                        filter:grayscale(100%) opacity(0.22) contrast(600%) brightness(350%);" />
-          </td>
-          <td style="width:76%;vertical-align:top;border:none;padding:0;">
-            <div style="${TD_BASE}font-size:8pt;margin-bottom:1px;">Official(s) Certifying Transcript:</div>
-            <div style="border-bottom:1px solid #333;margin-bottom:1mm;">&nbsp;</div>
-            <div style="${TD_BASE}font-size:7pt;color:#333;margin-bottom:3mm;text-align:right;">Signature</div>
-            <table style="width:100%;border-collapse:collapse;">
-              <tbody>
-                <tr>
-                  <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">Shiyu Zhang, Ph.D.</td>
-                  <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">President &amp; Principal</td>
-                  <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">${escapeHtml(exportToday)}</td>
-                </tr>
-                <tr>
-                  <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Printed Name</td>
-                  <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Title</td>
-                  <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Date</td>
-                </tr>
-              </tbody>
-            </table>
-          </td>
-        </tr></tbody>
+        <tbody>
+          <tr>
+            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">Shiyu Zhang, Ph.D.</td>
+            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">President &amp; Principal</td>
+            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">${escapeHtml(exportToday)}</td>
+          </tr>
+          <tr>
+            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Printed Name</td>
+            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Title</td>
+            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Date</td>
+          </tr>
+        </tbody>
       </table>
     </td>
   </tr></tbody>
