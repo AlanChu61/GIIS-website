@@ -104,10 +104,9 @@ function Nav({ language, toggleLanguage }) {
                                     </Link>
                                 </>
                             ) : (
-                                <a href="https://moodles.genesisideas.school" target="_blank" rel="noopener noreferrer"
-                                    className={`btn btn-link px-2 ${styles.topButton}`}>
-                                    Moodle
-                                </a>
+                                <Link to="/login" className={`btn btn-link px-2 ${styles.topButton}`}>
+                                    {language === 'en' ? 'Sign In' : '登录'}
+                                </Link>
                             )}
                             {toggleLanguage && (
                                 <button type="button" className={`btn btn-link px-2 ${styles.topButton}`}
@@ -209,13 +208,6 @@ function Nav({ language, toggleLanguage }) {
                             <li className={styles.navItem} style={{ padding: '0 4px' }}>
                                 <Link to="/profile" className={`${styles.navLink} ${styles.topButton}`}>
                                     {language === 'en' ? 'Profile' : '我的档案'}
-                                </Link>
-                            </li>
-                        )}
-                        {!isMobile && !studentSession && (
-                            <li className={styles.navItem} style={{ padding: '0 4px' }}>
-                                <Link to="/login" className={`${styles.navLink} ${styles.topButton}`}>
-                                    {language === 'en' ? 'Sign In' : '登录'}
                                 </Link>
                             </li>
                         )}
