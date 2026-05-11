@@ -52,18 +52,6 @@ const GRADE_COLOR = {
   'D+': '#b71c1c', 'D': '#c62828', 'F': '#c62828',
 };
 
-function computeGPA(enrollments) {
-  let wSum = 0, cSum = 0;
-  for (const enr of enrollments) {
-    if (!enr.creditEarned || !enr.grade?.letter) continue;
-    const gpa = LETTER_TO_GPA[enr.grade.letter] ?? null;
-    if (gpa === null) continue;
-    const cr = Number(enr.course.credits) || 1;
-    wSum += gpa * cr;
-    cSum += cr;
-  }
-  return cSum > 0 ? (wSum / cSum).toFixed(2) : null;
-}
 
 function computeSemGPAs(enrollments) {
   let wS = 0, wC = 0, uS = 0, uC = 0;
