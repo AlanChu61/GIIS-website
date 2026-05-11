@@ -280,12 +280,8 @@ function buildHtml(p, leftHtml, rightHtml, cumulative, exportToday, transcriptDa
            style="width:62px;height:62px;object-fit:contain;display:block;margin:0 auto;" />
     </td>
     <td style="width:82%;vertical-align:top;border:none;padding:0;">
-      <table style="width:100%;border-collapse:collapse;margin-bottom:1mm;">
-        <tbody><tr>
-          <td style="${TD_BASE}white-space:nowrap;font-size:8pt;padding-right:4px;vertical-align:bottom;border:none;">Official(s) Certifying Transcript:</td>
-          <td style="${TD_BASE}border-bottom:1px solid #333;border-top:none;border-left:none;border-right:none;vertical-align:bottom;">&nbsp;</td>
-        </tr></tbody>
-      </table>
+      <div style="${TD_BASE}font-size:8pt;margin-bottom:1px;">Official(s) Certifying Transcript:</div>
+      <div style="border-bottom:1px solid #333;margin-bottom:1mm;">&nbsp;</div>
       <div style="${TD_BASE}font-size:7pt;color:#333;margin-bottom:3mm;text-align:right;">Signature</div>
       <table style="width:100%;border-collapse:collapse;">
         <tbody>
