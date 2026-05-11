@@ -2,6 +2,7 @@ import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 import logoSlogan from '../../../img/logo_slogan.png';
 import logo from '../../../img/logo_nobg.png';
+import sealImg from '../../../img/transcript_seal.jpg';
 import { TRANSCRIPT_SEMESTER_KEYS } from './transcriptMappers.js';
 import { getAllSemesterStatuses, SEMESTER_STATUS } from './semesterStatus.js';
 
@@ -271,31 +272,38 @@ function buildHtml(p, leftHtml, rightHtml, cumulative, exportToday, transcriptDa
   </tr></tbody>
 </table>
 
-<!-- SIGNATURE -->
-<table style="width:50%;margin-left:auto;border-collapse:collapse;margin-top:2mm;margin-bottom:1mm;">
+<!-- SEAL + SIGNATURE -->
+<table style="width:100%;border-collapse:collapse;margin-top:3mm;margin-bottom:1mm;">
   <tbody><tr>
-    <td style="${TD_BASE}white-space:nowrap;font-size:8pt;padding-right:4px;vertical-align:bottom;border:none;">Official(s) Certifying Transcript:</td>
-    <td style="${TD_BASE}border-bottom:1px solid #333;border-top:none;border-left:none;border-right:none;vertical-align:bottom;">&nbsp;</td>
+    <td style="width:18%;text-align:center;vertical-align:middle;border:none;padding:0 2mm 0 0;">
+      <img src="${sealImg}" alt="Official Seal" crossorigin="anonymous"
+           style="width:62px;height:62px;object-fit:contain;display:block;margin:0 auto;" />
+    </td>
+    <td style="width:82%;vertical-align:top;border:none;padding:0;">
+      <table style="width:100%;border-collapse:collapse;margin-bottom:1mm;">
+        <tbody><tr>
+          <td style="${TD_BASE}white-space:nowrap;font-size:8pt;padding-right:4px;vertical-align:bottom;border:none;">Official(s) Certifying Transcript:</td>
+          <td style="${TD_BASE}border-bottom:1px solid #333;border-top:none;border-left:none;border-right:none;vertical-align:bottom;">&nbsp;</td>
+        </tr></tbody>
+      </table>
+      <div style="${TD_BASE}font-size:7pt;color:#333;margin-bottom:3mm;text-align:right;">Signature</div>
+      <table style="width:100%;border-collapse:collapse;">
+        <tbody>
+          <tr>
+            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">Shiyu Zhang, Ph.D.</td>
+            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">President &amp; Principal</td>
+            <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">${escapeHtml(exportToday)}</td>
+          </tr>
+          <tr>
+            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Printed Name</td>
+            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Title</td>
+            <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Date</td>
+          </tr>
+        </tbody>
+      </table>
+    </td>
   </tr></tbody>
 </table>
-<div style="${TD_BASE}text-align:right;font-size:7pt;color:#333;margin-bottom:3mm;">Signature</div>
-<table style="width:50%;margin-left:auto;border-collapse:collapse;">
-  <tbody>
-    <tr>
-      <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">Shiyu Zhang, Ph.D.</td>
-      <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">President</td>
-      <td style="${TD_BASE}text-align:center;font-size:8pt;font-weight:600;padding:1px 4px;border:none;">${escapeHtml(exportToday)}</td>
-    </tr>
-    <tr>
-      <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Printed Name</td>
-      <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Title</td>
-      <td style="${TD_BASE}text-align:center;font-size:7pt;color:#555;padding:1px 4px;border:none;border-top:1px solid #333;">Date</td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- NOT VALID WITHOUT OFFICIAL SEAL -->
-<div style="${TD_BASE}text-align:center;font-weight:bold;font-size:8pt;color:#b00020;letter-spacing:1px;margin:3mm 0 2mm;">NOT VALID WITHOUT OFFICIAL SEAL</div>
 
 <!-- FOOTER -->
 <table style="width:100%;border-collapse:collapse;border-top:0.5px solid #ccc;margin-top:1mm;">
