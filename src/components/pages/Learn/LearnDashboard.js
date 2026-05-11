@@ -283,7 +283,7 @@ export default function LearnDashboard({ language }) {
 
   // Stats
   const creditsEarned = completed.reduce((s, e) => s + Number(e.course.credits), 0);
-  const gpa = computeGPA(myEnrollments);
+  const overallGPAs = computeSemGPAs(myEnrollments);
 
   // Graduation
   const isGradEligible = creditsEarned >= GRAD_CREDITS;
@@ -387,7 +387,14 @@ export default function LearnDashboard({ language }) {
           <div data-m="stat-grid" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '24px' }}>
             <StatCard label={isEn ? 'Credits Earned' : '已获学分'} value={creditsEarned % 1 === 0 ? creditsEarned : creditsEarned.toFixed(1)} sub={`/ ${GRAD_CREDITS} ${isEn ? 'to graduate' : '毕业学分'}`} />
             <StatCard label={isEn ? 'Completed' : '已完成'} value={completed.length} sub={isEn ? `of ${myEnrollments.length} courses` : `共 ${myEnrollments.length} 门`} />
-            <StatCard label="GPA (UW)" value={fmt2(gpa) ?? '—'} sub={isEn ? '4.0 scale' : '4.0 制'} />
+            <StatCard label="GPA"
+              value={
+                <span style={{ display: 'flex', alignItems: 'baseline', gap: '10px', flexWrap: 'wrap' }}>
+                  <span>{fmt2(overallGPAs.weighted) ?? '—'}<span style={{ fontSize: '11px', fontWeight: 600, color: '#888', marginLeft: '3px' }}>W</span></span>
+                  <span style={{ fontSize: '18px', fontWeight: 700, color: '#555' }}>{fmt2(overallGPAs.unweighted) ?? '—'}<span style={{ fontSize: '11px', fontWeight: 600, color: '#aaa', marginLeft: '3px' }}>UW</span></span>
+                </span>
+              }
+              sub={isEn ? '4.0 scale' : '4.0 制'} />
             <StatCard label={isEn ? 'In Progress' : '进行中'} value={inProgress.length} sub={isEn ? 'active courses' : '门进行中'} />
           </div>
         )}
