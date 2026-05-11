@@ -1,6 +1,6 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-10（成績單/文憑視覺整修 · 公開校曆頁 · 畢業資格判定 · Nav Login 整合 · **Trust Sprint audit added**）
+> 最後更新：2026-05-10（成績單/文憑視覺整修 · 公開校曆頁 · 畢業資格判定 · Nav Login 整合 · **Trust Sprint audit added** · **Repo cleanup**）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
@@ -25,6 +25,21 @@
 1. **信任** — 這是一間真正的學校嗎？我的孩子拿到的文憑有意義嗎？
 2. **透明** — 我看得到孩子在學什麼、學得怎麼樣嗎？
 3. **結果** — 孩子有在進步嗎？這筆錢花得值得嗎？
+
+---
+
+## ✅ Repo cleanup（2026-05-10）
+
+> 純整理，不動程式碼邏輯。Git history 變乾淨，未來 agent 不會被過時資產誤導。
+
+- ✅ **刪掉根目錄重複的 `transcript_seal.jpg`**（2.4MB）— 與 `src/img/transcript_seal.jpg` md5 相同，程式只 import src/img 那份
+- ✅ **刪掉 `src/img/Homepage/homepage[1-5,7,8].png`**（~3.9MB）— `CLAUDE.md` 已明令「Don't bring back homepage[1-8].png」，grep 確認 0 reference
+- ✅ **刪掉 `src/img/cognia.png` + `src/img/Homepage/cognia_logo.jpg`** — 我們不是 Cognia accredited，這些圖檔是錯誤資產，0 reference
+- ✅ **`.gitignore` 加 `__pycache__/` + `*.pyc`** — 之前 `tools/youtube-upload/__pycache__/` 一直在 untracked 列裡吵
+- ✅ **掃掉所有 `.DS_Store` 殘檔**（root + src + src/img + src/img/Homepage + public + teaching-videos）— 已 gitignore 但檔案還躺在 disk
+- ✅ **Commit 一直沒 push 的工作**：`tools/youtube-upload/` 的 `yt_queue.py`、`daily.sh`、`com.giis.youtube-daily.plist`、`QUEUE.md`，加上 `REVIEW-2026-05-10.md`
+- ✅ **package.json `yt:status` / `yt:upload` 對齊新檔名**（`queue.py` → `yt_queue.py`），不然 npm script 會找不到檔
+- 淨結果：`src/img/` 從 14M → 9.4M，git status 完全乾淨，未來 agent 直接知道哪些是現役資產
 
 ---
 
