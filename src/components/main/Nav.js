@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './Nav.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { getNavStrings } from '../../i18n/siteStrings';
-import { getStudentSession } from '../../api/authStorage';
+import { getStudentSession, getParentSession } from '../../api/authStorage';
 
 const PATHWAY_CATEGORIES = [
   {
@@ -36,6 +36,7 @@ const PATHWAY_CATEGORIES = [
 function Nav({ language, toggleLanguage }) {
     const t = getNavStrings(language);
     const studentSession = getStudentSession();
+    const parentSession = getParentSession();
     const isEn = language !== 'zh';
     const [isNavSticky, setIsNavSticky] = useState(false);
     const [isCollapsed, setIsCollapsed] = useState(true);
@@ -97,17 +98,17 @@ function Nav({ language, toggleLanguage }) {
                             {studentSession ? (
                                 <>
                                     <Link to="/learn" className={`btn btn-link px-2 ${styles.topButton}`}>
-                                        {language === 'en' ? 'Dashboard' : '学习中心'}
+                                        {isEn ? 'My Courses' : '我的课程'}
                                     </Link>
                                     <Link to="/profile" className={`btn btn-link px-2 ${styles.topButton}`}>
-                                        {language === 'en' ? 'Profile' : '我的档案'}
+                                        {isEn ? 'Profile' : '我的档案'}
                                     </Link>
                                 </>
-                            ) : (
-                                <Link to="/login" className={`btn btn-link px-2 ${styles.topButton}`}>
-                                    {language === 'en' ? 'Sign In' : '登录'}
+                            ) : parentSession ? (
+                                <Link to="/parent/dashboard" className={`btn btn-link px-2 ${styles.topButton}`}>
+                                    {isEn ? 'Parent Portal' : '家长中心'}
                                 </Link>
-                            )}
+                            ) : null}
                             {toggleLanguage && (
                                 <button type="button" className={`btn btn-link px-2 ${styles.topButton}`}
                                     onClick={toggleLanguage} aria-label={t.langToggleAria}>
@@ -186,7 +187,7 @@ function Nav({ language, toggleLanguage }) {
                             </ul>
                         </li>
 
-                        {/* Language toggle + Login */}
+                        {/* Language toggle */}
                         {!isMobile && toggleLanguage && (
                             <li className={styles.navItem} style={{ padding: '0 8px' }}>
                                 <button type="button"
@@ -197,17 +198,26 @@ function Nav({ language, toggleLanguage }) {
                                 </button>
                             </li>
                         )}
+                        {/* Logged-in: student */}
                         {!isMobile && studentSession && (
                             <li className={styles.navItem} style={{ padding: '0 4px' }}>
                                 <Link to="/learn" className={`${styles.navLink} ${styles.topButton}`}>
-                                    {language === 'en' ? 'My Courses' : '我的课程'}
+                                    {isEn ? 'My Courses' : '我的课程'}
                                 </Link>
                             </li>
                         )}
                         {!isMobile && studentSession && (
                             <li className={styles.navItem} style={{ padding: '0 4px' }}>
                                 <Link to="/profile" className={`${styles.navLink} ${styles.topButton}`}>
-                                    {language === 'en' ? 'Profile' : '我的档案'}
+                                    {isEn ? 'Profile' : '我的档案'}
+                                </Link>
+                            </li>
+                        )}
+                        {/* Logged-in: parent */}
+                        {!isMobile && parentSession && !studentSession && (
+                            <li className={styles.navItem} style={{ padding: '0 4px' }}>
+                                <Link to="/parent/dashboard" className={`${styles.navLink} ${styles.topButton}`}>
+                                    {isEn ? 'Parent Portal' : '家长中心'}
                                 </Link>
                             </li>
                         )}

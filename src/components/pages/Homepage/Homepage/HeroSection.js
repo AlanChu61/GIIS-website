@@ -83,7 +83,7 @@ function HeroSection({ language }) {
               : 'Florida 注册私立学校。24 学分毕业框架。与美国私立高中相同的标准，被美国大学认可。'}
           </p>
 
-          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '32px' }}>
+          <div style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', marginBottom: '14px' }}>
             <Link to="/admission" style={ctaPrimary}>
               {isEn ? 'Start Your Application →' : '开始申请 →'}
             </Link>
@@ -91,6 +91,17 @@ function HeroSection({ language }) {
               {isEn ? 'Watch the 80-sec tour' : '观看 80 秒导览'}
             </a>
           </div>
+          <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.45)', margin: '0 0 24px' }}>
+            {isEn ? (
+              <>Already enrolled?{' '}
+                <Link to="/login" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'underline', textUnderlineOffset: '2px' }}>Sign in →</Link>
+              </>
+            ) : (
+              <>已登记？{' '}
+                <Link to="/login" style={{ color: 'rgba(255,255,255,0.7)', textDecoration: 'underline', textUnderlineOffset: '2px' }}>登入 →</Link>
+              </>
+            )}
+          </p>
 
           {/* Founders pricing — strikethrough regular, highlight founders rate */}
           <p style={{

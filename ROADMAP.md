@@ -1,6 +1,6 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-06（QR 驗證上線 · 考試冷卻倒計時 · 雙層 nav bug 修復）
+> 最後更新：2026-05-10（成績單/文憑視覺整修 · 公開校曆頁 · 畢業資格判定 · Nav Login 整合）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
@@ -25,6 +25,45 @@
 1. **信任** — 這是一間真正的學校嗎？我的孩子拿到的文憑有意義嗎？
 2. **透明** — 我看得到孩子在學什麼、學得怎麼樣嗎？
 3. **結果** — 孩子有在進步嗎？這筆錢花得值得嗎？
+
+---
+
+## ✅ UI/UX 整修（2026-05-10）
+
+> 本輪改善「信任感」三個層面：文件視覺（成績單 + 文憑）、導覽體驗（Login 入口）、管理功能（畢業資格）。
+
+### 成績單 PDF（`transcriptPdf.js`）
+- ✅ **顏色統一**：`NAVY = '#1a2d5a'`、`GOLD = '#b8962e'`，Header 底色、badge 邊框、分隔線全部對齊
+- ✅ **"OFFICIAL TRANSCRIPT" badge**：金色邊框 + `letterSpacing: 1.5px`，增加正式感
+- ✅ **印章鋼印效果**：`grayscale(100%) opacity(0.42) contrast(110%) brightness(130%)` + 雙層 drop-shadow（白色高光 + 深藍陰影），視覺上像金屬壓印
+- ✅ **簽名區佈局**：25%（印章）| 15%（空白）| 60%（校長簽名），不再擠在一起
+- ✅ **"Official(s) Certifying Transcript:" 佔全寬**，下方底線也全寬對齊
+- ✅ **校長資訊修正**：`President & Principal`（之前寫錯）
+
+### 文憑（`DiplomaPage.js`）
+- ✅ **印章白色背景修復**：`border-radius:50%; overflow:hidden` clip 掉 JPG 白角 + cream 底色容器
+- ✅ **校長簽名**：Pinyon Script 32px `whiteSpace: nowrap`（單行，像真筆跡）
+- ✅ **畢業生簽名**：Great Vibes 32px `whiteSpace: nowrap`
+- ✅ **移除 "WITH HONORS"**：學校尚未建立 Honors 判定政策，暫不顯示
+
+### 導覽列 Login（`Header.js` + `Nav.js` + `HeroSection.js`）
+- ✅ **Header 簡化**：只留 LOGO，移除 Login 按鈕
+- ✅ **Nav 完全不放 Login**：Nav 只負責「瀏覽」，不讓 Login 干擾行銷動線
+- ✅ **Login 入口移至 Hero**：「Already enrolled? Sign in →」小字，低調放在兩個 CTA 按鈕下方（SaaS 標準做法）
+- ✅ **已登入狀態**：Nav 右側仍顯示 My Courses + Profile（學生）或 Parent Portal（家長），session 判定統一用 `studentSession || parentSession`
+- ✅ **手機/桌面一致**：三種狀態（未登入 / 學生 / 家長）在手機和桌面顯示相同邏輯
+
+### 公開校曆（`CalendarPage.js`）
+- ✅ **`/calendar` 公開頁**：顯示全 5 個學年（2022-23 → 2026-27），雙語（language prop）
+- ✅ **從 Nav 可達**：ACADEMICS 下拉 → "Academic Calendar" / "学校日历"
+- ✅ **視覺標記**：當前年份標 "CURRENT YEAR"，未來 30 天內的日期綠色標記，過去日期灰色
+
+### 畢業資格判定（`AdminTranscriptPage.js GraduationSection`）
+- ✅ **從成績單 CourseRow 計算學分**（`letterGrade` 非空才計入），不從 Enrollment 抓
+- ✅ **進度條**：即時顯示 X / 24 學分，及格線 24 學分
+- ✅ **校曆整合**：自動顯示 `SPRING_END`（學分截止）和 `CEREMONY_DATE`（典禮日）
+- ✅ **"Mark as Graduated" 按鈕**：學分 ≥ 24 才解鎖，點擊後 PATCH `graduationDate = ceremonyDate`
+- ✅ **CI/CD 修復**：`netlify.toml CI="false"`（防止 ESLint warning 當 error）、GitHub Actions 升 Node 24
 
 ---
 
