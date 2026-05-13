@@ -1789,6 +1789,99 @@ async function main() {
     console.log(`  Enrolled ${email.split('@')[0]} in ${slugs.length} G12 Spring courses`);
   }
 
+  // G12 Spring semester learning progress (May 2026 — near end of semester)
+  // completedModules reflect realistic progress given module count and letter grade target.
+  // quizScore: A=93, A-=89  |  midtermScore: A=92, A-=88
+  const g12Progress = [
+    {
+      email: 'ruwen.li@genesisideas.school',
+      courses: [
+        { slug: 'english-iv-advanced-composition', completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
+        { slug: 'sociology',                        completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
+        { slug: 'business-law',                     completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+        { slug: 'corporate-finance',                completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+      ],
+    },
+    {
+      email: 'tao.zhang@genesisideas.school',
+      courses: [
+        { slug: 'english-iv-advanced-composition', completedModules: [1,2,3,4,5,6,7,8,9,10,11],          quizScore: 93, midtermScore: 92 },
+        { slug: 'ap-human-geography',              completedModules: [1,2,3,4,5,6,7,8,9,10,11,12,13],    quizScore: 89, midtermScore: 88 },
+        { slug: 'abnormal-psychology',             completedModules: [1,2,3,4,5,6,7,8,9],                quizScore: 93, midtermScore: 92 },
+        { slug: 'counseling-mental-health',        completedModules: [1,2,3,4,5,6,7,8,9],                quizScore: 93, midtermScore: 92 },
+      ],
+    },
+    {
+      email: 'baoyi.lu@genesisideas.school',
+      courses: [
+        { slug: 'english-iv-media-writing',             completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 93, midtermScore: 92 },
+        { slug: 'sociology',                             completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
+        { slug: 'personal-finance-applied-economics',   completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+        { slug: 'digital-media-society',                completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+      ],
+    },
+    {
+      email: 'yunfan.yang@genesisideas.school',
+      courses: [
+        { slug: 'english-iv-media-analytical-writing', completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 93, midtermScore: 92 },
+        { slug: 'media-psychology',                    completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+        { slug: 'sports-management-leadership',        completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+      ],
+    },
+    {
+      email: 'hanxi.xiao@genesisideas.school',
+      courses: [
+        { slug: 'english-iv-advanced-composition', completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 93, midtermScore: 92 },
+        { slug: 'sociology',                        completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
+        { slug: 'behavioral-science',               completedModules: [1,2,3,4,5,6,7],           quizScore: 93, midtermScore: 92 },
+        { slug: 'social-psychology',                completedModules: [1,2,3,4,5,6,7],           quizScore: 93, midtermScore: 92 },
+      ],
+    },
+  ];
+
+  console.log('=== Setting G12 Spring learning progress ===');
+  for (const { email, courses } of g12Progress) {
+    const acct = await prisma.studentAccount.findUnique({ where: { email }, include: { student: true } });
+    if (!acct) { console.log(`  [warn] account not found: ${email}`); continue; }
+    for (const { slug, completedModules, quizScore, midtermScore } of courses) {
+      const course = await prisma.course.findUnique({ where: { slug } });
+      if (!course) { console.log(`  [warn] course not found: ${slug}`); continue; }
+      const enrollment = await prisma.enrollment.findUnique({
+        where: { studentId_courseId: { studentId: acct.student.id, courseId: course.id } },
+      });
+      if (!enrollment) { console.log(`  [warn] enrollment not found: ${email} / ${slug}`); continue; }
+
+      await prisma.enrollment.update({
+        where: { id: enrollment.id },
+        data: { completedModules },
+      });
+
+      for (const moduleOrder of completedModules) {
+        await prisma.moduleQuizAttempt.upsert({
+          where: { enrollmentId_moduleOrder: { enrollmentId: enrollment.id, moduleOrder } },
+          update: { score: quizScore, passed: true },
+          create: { enrollmentId: enrollment.id, moduleOrder, score: quizScore, passed: true },
+        });
+      }
+
+      const midtermExists = await prisma.examAttempt.findFirst({
+        where: { enrollmentId: enrollment.id, examType: 'midterm' },
+      });
+      if (!midtermExists) {
+        await prisma.examAttempt.create({
+          data: {
+            enrollmentId: enrollment.id,
+            examType: 'midterm',
+            score: midtermScore,
+            passed: true,
+            submittedAt: new Date('2026-03-20'),
+          },
+        });
+      }
+    }
+    console.log(`  Progress set for ${email.split('@')[0]}`);
+  }
+
   console.log('');
   console.log('=== Student accounts (password: Student2024!!) ===');
   console.log('  26-001  ruwen.li@genesisideas.school');

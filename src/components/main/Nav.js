@@ -114,8 +114,11 @@ function Nav({ language, toggleLanguage }) {
                                     <Link to="/learn" className={`btn btn-link px-2 ${styles.topButton}`}>
                                         {isEn ? 'My Courses' : '我的课程'}
                                     </Link>
+                                    <Link to="/profile" className={`btn btn-link px-2 ${styles.topButton}`}>
+                                        {isEn ? 'Profile' : '我的档案'}
+                                    </Link>
                                     <button type="button" onClick={handleLogout} className={`btn btn-link px-2 ${styles.topButton}`}
-                                        style={{ color: '#888' }}>
+                                        style={{ color: 'rgba(255,255,255,0.55)' }}>
                                         {isEn ? 'Log Out' : '登出'}
                                     </button>
                                 </>
@@ -125,7 +128,7 @@ function Nav({ language, toggleLanguage }) {
                                         {isEn ? 'Parent Portal' : '家长中心'}
                                     </Link>
                                     <button type="button" onClick={handleLogout} className={`btn btn-link px-2 ${styles.topButton}`}
-                                        style={{ color: '#888' }}>
+                                        style={{ color: 'rgba(255,255,255,0.55)' }}>
                                         {isEn ? 'Log Out' : '登出'}
                                     </button>
                                 </>
@@ -137,7 +140,8 @@ function Nav({ language, toggleLanguage }) {
                             )}
                             {toggleLanguage && (
                                 <button type="button" onClick={toggleLanguage} aria-label={t.langToggleAria}
-                                    style={{ background: 'none', border: '1px solid #ddd', borderRadius: 20, padding: '3px 10px', cursor: 'pointer', fontSize: 13, color: '#555', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                    className={styles.topButton}
+                                    style={{ background: 'none', border: '1px solid rgba(255,255,255,0.35)', borderRadius: 20, padding: '3px 10px', cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}>
                                     🌐 {language === 'en' ? '中文' : 'EN'}
                                 </button>
                             )}
@@ -217,7 +221,8 @@ function Nav({ language, toggleLanguage }) {
                         {!isMobile && toggleLanguage && (
                             <li className={styles.navItem} style={{ padding: '0 8px' }}>
                                 <button type="button" onClick={toggleLanguage} aria-label={t.langToggleAria}
-                                    style={{ background: 'none', border: '1px solid #ddd', borderRadius: 20, padding: '3px 10px', cursor: 'pointer', fontSize: 13, color: '#555', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                    className={styles.topButton}
+                                    style={{ background: 'none', border: '1px solid rgba(255,255,255,0.35)', borderRadius: 20, padding: '3px 10px', cursor: 'pointer', fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}>
                                     🌐 {language === 'en' ? '中文' : 'EN'}
                                 </button>
                             </li>
@@ -232,9 +237,16 @@ function Nav({ language, toggleLanguage }) {
                         )}
                         {!isMobile && studentSession && (
                             <li className={styles.navItem} style={{ padding: '0 4px' }}>
+                                <Link to="/profile" className={`${styles.navLink} ${styles.topButton}`}>
+                                    {isEn ? 'Profile' : '我的档案'}
+                                </Link>
+                            </li>
+                        )}
+                        {!isMobile && studentSession && (
+                            <li className={styles.navItem} style={{ padding: '0 4px' }}>
                                 <button type="button" onClick={handleLogout}
                                     className={`${styles.navLink} ${styles.topButton}`}
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.55)' }}>
                                     {isEn ? 'Log Out' : '登出'}
                                 </button>
                             </li>
@@ -251,7 +263,7 @@ function Nav({ language, toggleLanguage }) {
                             <li className={styles.navItem} style={{ padding: '0 4px' }}>
                                 <button type="button" onClick={handleLogout}
                                     className={`${styles.navLink} ${styles.topButton}`}
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.55)' }}>
                                     {isEn ? 'Log Out' : '登出'}
                                 </button>
                             </li>
