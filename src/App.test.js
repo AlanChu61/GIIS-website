@@ -3,7 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Header from './components/Header/Header';
 
-test('header shows login link', () => {
+test('header renders logo link to home', () => {
   render(
     <HelmetProvider>
       <MemoryRouter>
@@ -11,5 +11,5 @@ test('header shows login link', () => {
       </MemoryRouter>
     </HelmetProvider>
   );
-  expect(screen.getByRole('link', { name: /^login$/i })).toBeInTheDocument();
+  expect(screen.getByRole('link')).toHaveAttribute('href', '/');
 });

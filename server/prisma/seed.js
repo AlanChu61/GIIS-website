@@ -1768,6 +1768,27 @@ async function main() {
     console.log('  Enrolled hanxi.xiao in 4 G12 Spring courses');
   }
 
+  // G12 Spring enrollments for all other students
+  const g12Enrollments = [
+    { email: 'ruwen.li@genesisideas.school', slugs: ['english-iv-advanced-composition', 'sociology', 'business-law', 'corporate-finance'] },
+    { email: 'tao.zhang@genesisideas.school', slugs: ['english-iv-advanced-composition', 'ap-human-geography', 'abnormal-psychology', 'counseling-mental-health'] },
+    { email: 'baoyi.lu@genesisideas.school', slugs: ['english-iv-media-writing', 'sociology', 'personal-finance-applied-economics', 'digital-media-society'] },
+    { email: 'yunfan.yang@genesisideas.school', slugs: ['english-iv-media-analytical-writing', 'media-psychology', 'sports-management-leadership'] },
+  ];
+  for (const { email, slugs } of g12Enrollments) {
+    const acct = await prisma.studentAccount.findUnique({ where: { email }, include: { student: true } });
+    for (const slug of slugs) {
+      const course = await prisma.course.findUnique({ where: { slug } });
+      if (!course) { console.log(`  [warn] course not found: ${slug}`); continue; }
+      await prisma.enrollment.upsert({
+        where: { studentId_courseId: { studentId: acct.student.id, courseId: course.id } },
+        update: {},
+        create: { studentId: acct.student.id, courseId: course.id, semesterLabel: 'Grade 12 - Spring Semester' },
+      });
+    }
+    console.log(`  Enrolled ${email.split('@')[0]} in ${slugs.length} G12 Spring courses`);
+  }
+
   console.log('');
   console.log('=== Student accounts (password: Student2024!!) ===');
   console.log('  26-001  ruwen.li@genesisideas.school');
