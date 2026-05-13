@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styles from './Nav.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { getNavStrings } from '../../i18n/siteStrings';
-import { getStudentSession, getParentSession } from '../../api/authStorage';
+import { getStudentSession, getParentSession, clearStudentSession, clearParentSession } from '../../api/authStorage';
+import { getApiBase } from '../../config/apiBase';
 
 const PATHWAY_CATEGORIES = [
   {
@@ -59,6 +60,19 @@ function Nav({ language, toggleLanguage }) {
         setIsCollapsed(true);
     }
 
+    async function handleLogout() {
+        const API = getApiBase();
+        if (studentSession) {
+            clearStudentSession();
+            if (API) await fetch(`${API}/api/auth/logout`, { method: 'POST', credentials: 'include' }).catch(() => {});
+        } else if (parentSession) {
+            clearParentSession();
+            if (API) await fetch(`${API}/api/parent/logout`, { method: 'POST', credentials: 'include' }).catch(() => {});
+        }
+        navigate('/');
+        setIsCollapsed(true);
+    }
+
     return (
         <nav className={`navbar navbar-expand-lg ${isNavSticky ? 'fixed-top' : ''} ${styles.customBackground}`}>
             <div className="container-fluid">
@@ -100,19 +114,31 @@ function Nav({ language, toggleLanguage }) {
                                     <Link to="/learn" className={`btn btn-link px-2 ${styles.topButton}`}>
                                         {isEn ? 'My Courses' : '我的课程'}
                                     </Link>
-                                    <Link to="/profile" className={`btn btn-link px-2 ${styles.topButton}`}>
-                                        {isEn ? 'Profile' : '我的档案'}
-                                    </Link>
+                                    <button type="button" onClick={handleLogout} className={`btn btn-link px-2 ${styles.topButton}`}
+                                        style={{ color: '#888' }}>
+                                        {isEn ? 'Log Out' : '登出'}
+                                    </button>
                                 </>
                             ) : parentSession ? (
-                                <Link to="/parent/dashboard" className={`btn btn-link px-2 ${styles.topButton}`}>
-                                    {isEn ? 'Parent Portal' : '家长中心'}
+                                <>
+                                    <Link to="/parent/dashboard" className={`btn btn-link px-2 ${styles.topButton}`}>
+                                        {isEn ? 'Parent Portal' : '家长中心'}
+                                    </Link>
+                                    <button type="button" onClick={handleLogout} className={`btn btn-link px-2 ${styles.topButton}`}
+                                        style={{ color: '#888' }}>
+                                        {isEn ? 'Log Out' : '登出'}
+                                    </button>
+                                </>
+                            ) : (
+                                <Link to="/login" className={`btn btn-sm px-3 ${styles.topButton}`}
+                                    style={{ background: '#1a73e8', color: '#fff', borderRadius: 6, fontWeight: 600 }}>
+                                    {isEn ? 'Log In' : '登入'}
                                 </Link>
-                            ) : null}
+                            )}
                             {toggleLanguage && (
-                                <button type="button" className={`btn btn-link px-2 ${styles.topButton}`}
-                                    onClick={toggleLanguage} aria-label={t.langToggleAria}>
-                                    {language === 'en' ? '中文' : 'English'}
+                                <button type="button" onClick={toggleLanguage} aria-label={t.langToggleAria}
+                                    style={{ background: 'none', border: '1px solid #ddd', borderRadius: 20, padding: '3px 10px', cursor: 'pointer', fontSize: 13, color: '#555', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                    🌐 {language === 'en' ? '中文' : 'EN'}
                                 </button>
                             )}
                         </div>
@@ -190,11 +216,9 @@ function Nav({ language, toggleLanguage }) {
                         {/* Language toggle */}
                         {!isMobile && toggleLanguage && (
                             <li className={styles.navItem} style={{ padding: '0 8px' }}>
-                                <button type="button"
-                                    className={`btn btn-link ${styles.navLink} ${styles.topButton}`}
-                                    onClick={toggleLanguage} aria-label={t.langToggleAria}
-                                    style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                                    {language === 'en' ? '中文' : 'English'}
+                                <button type="button" onClick={toggleLanguage} aria-label={t.langToggleAria}
+                                    style={{ background: 'none', border: '1px solid #ddd', borderRadius: 20, padding: '3px 10px', cursor: 'pointer', fontSize: 13, color: '#555', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                    🌐 {language === 'en' ? '中文' : 'EN'}
                                 </button>
                             </li>
                         )}
@@ -208,9 +232,11 @@ function Nav({ language, toggleLanguage }) {
                         )}
                         {!isMobile && studentSession && (
                             <li className={styles.navItem} style={{ padding: '0 4px' }}>
-                                <Link to="/profile" className={`${styles.navLink} ${styles.topButton}`}>
-                                    {isEn ? 'Profile' : '我的档案'}
-                                </Link>
+                                <button type="button" onClick={handleLogout}
+                                    className={`${styles.navLink} ${styles.topButton}`}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
+                                    {isEn ? 'Log Out' : '登出'}
+                                </button>
                             </li>
                         )}
                         {/* Logged-in: parent */}
@@ -218,6 +244,25 @@ function Nav({ language, toggleLanguage }) {
                             <li className={styles.navItem} style={{ padding: '0 4px' }}>
                                 <Link to="/parent/dashboard" className={`${styles.navLink} ${styles.topButton}`}>
                                     {isEn ? 'Parent Portal' : '家长中心'}
+                                </Link>
+                            </li>
+                        )}
+                        {!isMobile && parentSession && !studentSession && (
+                            <li className={styles.navItem} style={{ padding: '0 4px' }}>
+                                <button type="button" onClick={handleLogout}
+                                    className={`${styles.navLink} ${styles.topButton}`}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#888' }}>
+                                    {isEn ? 'Log Out' : '登出'}
+                                </button>
+                            </li>
+                        )}
+                        {/* Not logged in */}
+                        {!isMobile && !studentSession && !parentSession && (
+                            <li className={styles.navItem} style={{ padding: '0 4px' }}>
+                                <Link to="/login"
+                                    className={styles.topButton}
+                                    style={{ background: '#1a73e8', color: '#fff', borderRadius: 6, fontWeight: 600, padding: '6px 16px', textDecoration: 'none', display: 'inline-block' }}>
+                                    {isEn ? 'Log In' : '登入'}
                                 </Link>
                             </li>
                         )}
