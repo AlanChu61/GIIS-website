@@ -486,8 +486,21 @@ async function seedCourses() {
     const data = JSON.parse(fs.readFileSync(file, 'utf8'));
     const { modules, questions, quizQuestions, ...meta } = data;
     const cleanQuizQuestions = (quizQuestions || []).map(({ type: _t, ...q }) => q);
-    const existing = await prisma.course.findUnique({ where: { slug: meta.slug } });
-    if (existing) await prisma.course.delete({ where: { slug: meta.slug } });
+    const existing = await prisma.course.findUnique({
+      where: { slug: meta.slug },
+      include: { _count: { select: { enrollments: true } } },
+    });
+    if (existing) {
+      if (existing._count.enrollments > 0) {
+        // Course has active enrollments — update metadata + questions in place to avoid FK violation
+        await prisma.course.update({ where: { slug: meta.slug }, data: meta });
+        await prisma.moduleQuizQuestion.deleteMany({ where: { courseId: existing.id } });
+        await prisma.moduleQuizQuestion.createMany({ data: cleanQuizQuestions.map(q => ({ ...q, courseId: existing.id })) });
+        console.log(`Updated (enrolled): ${meta.name} (${modules.length} modules, ${(questions || []).length} exam q, ${cleanQuizQuestions.length} quiz q)`);
+        continue;
+      }
+      await prisma.course.delete({ where: { slug: meta.slug } });
+    }
     await prisma.course.create({
       data: {
         ...meta,
