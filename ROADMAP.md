@@ -1,6 +1,6 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-10（成績單/文憑視覺整修 · 公開校曆頁 · 畢業資格判定 · Nav Login 整合 · **Trust Sprint audit added** · **Repo cleanup**）
+> 最後更新：2026-05-12（Nav 登入/登出 UX · 語言切換按鈕視覺 · 5 位學生 G12 Spring 全課程完成進度 · seedCourses 修 FK 衝突）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
@@ -25,6 +25,27 @@
 1. **信任** — 這是一間真正的學校嗎？我的孩子拿到的文憑有意義嗎？
 2. **透明** — 我看得到孩子在學什麼、學得怎麼樣嗎？
 3. **結果** — 孩子有在進步嗎？這筆錢花得值得嗎？
+
+---
+
+## ✅ Nav UX + G12 Spring 學習進度（2026-05-12）
+
+- ✅ **Nav 登入/登出**：Login 按鈕（未登入）、My Courses + Profile + Log Out（學生）、Parent Portal + Log Out（家長），桌面 + 手機兩端完整
+- ✅ **語言切換按鈕**：改成 🌐 pill（`topButton` class，白色文字 + rgba border），深色 nav 背景下清晰可見；原本 `color: '#555'` 被背景吃掉
+- ✅ **G12 Spring 5 位學生學習進度**：`completedModules` 全滿、`creditEarned: true`、midterm（3/20）+ final（5/8）都提交。quiz scores 對齊成績（A=94, A-=90）。成績本身仍在 gate 下，5/22 才 release
+- ✅ **`seedCourses()` 修 FK 衝突**：有 enrollment 的課程不再嘗試 delete，改成 update metadata + quiz questions in-place。每次 re-seed 都能跑完不報錯
+
+---
+
+## ✅ 第 5 位 senior — Hanxi Xiao 入庫（2026-05-12）
+
+- ✅ **新增 `26-005 Hanxi Xiao`** 到 `server/prisma/seed.js`：Psychology & Social Sciences 路線（Class of 2026 第 5 位）
+- 來源：`TransScript_Hanxi Xiao.pdf`（school-signed transcript dated 2025-11-21）
+- 8 學期完整入庫：G9 Fall → G12 Spring。G9 Fall–G12 Fall 為轉錄自正式成績單；G12 Spring 為當前學期選課（English IV – Advanced Composition / Sociology / Adolescent Psychology / Positive Psychology & Wellbeing），grade 沿用 release-gated pattern（`SPRING_2026_RELEASE = 2026-05-22`）— 與其他 4 人一致
+- Bio: Female, born 2007-03-21, 家長 Shuying Zhao, Shanghai 朱家角, entry 2022-08-15, graduation 2026-06-30
+- 帳號 `hanxi.xiao@genesisideas.school` / `Student2024!!`（與其他 senior 共用 dev seed password）
+- Cumulative GPA 約 3.74（official PDF）— 與 system 推算 3.77 在合理誤差內
+- 同步更新 ROADMAP 測試帳號表
 
 ---
 
@@ -91,6 +112,15 @@
   - ⚠️ **succeeded 計數 bug 已修**（2026-05-10）：原本用 `len(queue) - len(failures)`，abort 後沒嘗試的 lesson 被誤算成已上傳。改成累加實際 returncode==0 的數量
 - ✅ **`tools/youtube-upload/daily.sh`** — launchd 用的 wrapper，每次 run 先印 status 再 upload，全部 log 到 `~/Library/Logs/giis-youtube-daily.log`
 - ✅ **`tools/youtube-upload/com.giis.youtube-daily.plist`** — macOS launchd job，每天 09:00 自動觸發。`cp` 到 `~/Library/LaunchAgents/` + `launchctl load` 一次性裝完
+- ✅ **`tools/youtube-upload/cleanup_lesson.py`** （2026-05-11）— 上傳成功後自動清掉本地 slides/audio/mp4/wav（per-lesson 省 15-210MB）。三層 safety：(1) script.json.youtube 必填欄位完整 (2) YouTube API 確認影片 `uploadStatus=processed` (3) 真的刪。任何一層 fail 就拒絕、不留爛攤子。寫 `.cleaned` breadcrumb 給 `make_lesson.py` 看，防止 force-rebuild 被誤觸發。Partial-failure 不寫 breadcrumb，下次重跑會 retry
+- ✅ **`make_lesson.py --force-rebuild`** （2026-05-11）— 預設拒絕對「已上傳 + .cleaned」folder 重 build（避免燒 TTS quota / disk）。需要時加 `--force-rebuild` flag 同時手動清 youtube block
+- ✅ **`.gitignore` 重設計**（2026-05-11）— `teaching-videos/` 從整資料夾 ignore，改成 ignore-artifacts-only。`script.json` + `build_slides.py` 進 git（source of truth backup），mp4/wav/slides/audio 不進。Repo 體積維持小，但失去 Mac 也不會丟內容
+- ✅ **Word-level subtitle alignment**（2026-05-11）— 修「字幕跟聲音對不上」bug。原本 `merge_lesson.py` 用 `chunk_duration = section_dur × chunk_words / total_words` 假設 section 內均速，但 TTS 句點 / 冒號 / 破折號的自然停頓會讓字幕逐句漂移（Brian / Christopher 這類戲劇性聲音最有感，AP Psychology 被回報過）。
+  - ⚠️ **edge-tts WordBoundary 死了**：第一版實作試圖讀 edge-tts 的 `WordBoundary` events 但 Microsoft 上游 service 2024 後就不再 emit（用任何 voice 跑都 0 events）。改成下面這條路
+  - ✅ **`tools/lesson-video/align_audio.py`** — 用 `faster-whisper` 反向對齊。讀現有 MP3 + script.json text，吐 `audio/<id>.words.json`。`initial_prompt=section.text` 把已知 narration 餵進去當 hint 提升準度。Base.en 模型 ~140MB，CPU 一個 section ~2-5s
+  - ✅ **`make_lesson.py`** pipeline 變成三段：TTS → 對齊 (`align_audio.py`) → merge。`--no-align` 可跳過、`--align-model tiny.en|base.en|small.en` 選模型
+  - ✅ **`merge_lesson.py` `build_subtitles()`** 有 words.json 就用真實字級時間切 cue，沒有就 fallback 到舊 proportional 演算法（向後相容）
+  - 影響範圍：**已上傳 + burn-in 字幕**的影片不能用 captions API 修，必須 re-render + 重傳 + 砍舊片。M1 History + M10 Developmental 兩支需要 redo
 - ✅ **`npm run yt:status` / `npm run yt:upload`** package.json scripts，日常用最順
 - ✅ **Quota maths**：每支 ~2,100 units（upload 1600 + thumbnail 50 + captions 400 + playlist 50），4 支 8,400 / 10,000 daily 留 1,550 headroom
 - ✅ **Fail-fast 邏輯**：upload 失敗時 abort 整批，避免燒更多 quota 在同一錯誤
@@ -278,9 +308,78 @@
 
 ### 🎬 下個教學影片建議
 
-- [ ] **AP CS A Module 1 — Primitive Types & Variables**（不同科目 = 不同聲音 = 不同老師感）
-  - 建議聲音：`en-US-GuyNeural`（"academic authority" — 跟 walkthrough demo 的 Pathway 場景同個聲音，建立連續感；跟 Math 的 Aria 區分）
-  - 需要在 `tools/lesson-video/SKILL.md` 加一行：「Technology / CS → en-US-GuyNeural」
+（先前列的 AP CS A 建議已全部執行完畢 — 見下一節「Algebra I 補齊 + AP CS A 完整一整支」）
+
+### ✅ Algebra I 補齊 + AP CS A 完整一整支（16 支 modules · 2026-05-10 parallel agents batch）
+
+> 一輪 parallel agent batch 把 **Algebra I 缺的 6 個 module 全補齊**（M6/M8/M10/M11/M12/M13）+ **AP Computer Science A 整套 10 個 College Board units 從零做完**。Algebra I 從此**14 個 module 全有自製影片**；AP CS A 是繼 AP Psych 之後**第二支完整 GIIS 自製 AP 課程**。
+
+- ✅ **CS theme 加進 `slide_kit.py`** — `STEEL = (52, 90, 142)` 鋼藍 + `STEEL_LIGHT`；自動 prefix 比對 `"Computer Science" / "AP Computer Science" / "Programming"`。SKILL.md voice table 加 CS → `en-US-GuyNeural`（與 walkthrough demo Pathway 場景同聲，建立連續感）
+- ✅ **Algebra I 6 支補齊**（Aria 女聲、math 金主題）：
+
+| # | Module | Sections | 重點 |
+|---|---|---|---|
+| M6  | Linear Inequalities         | 14 | 餅乾店 word problem · flip-rule 鑰匙頁 · 數線 open/filled 圓圈 |
+| M8  | Graphing Linear Equations    | 15 | Uber 計價 hook · slope-intercept + table + intercepts 三種方法 · 平行/垂直 |
+| M10 | Writing Linear Equations     | 16 | 健身房預測 6/12/全年 · point-slope · 兩點求方程 · 平行/垂直/水平/垂直線 |
+| M11 | Systems of Linear Equations  | 17 | 電影票 word problem · 三種方法（graph/sub/elim）· 三種結局（one/none/infinite） |
+| M12 | Exponents & Polynomials      | 16 | 對折紙 50 次 ≈ 太陽距離 hook · 5 條指數律 · 多項式 vocab + add/sub/mult |
+| M13 | Factoring Polynomials        | 17 | `12 = 2²·3` 對映 `x²+5x+6 = (x+2)(x+3)` · GCF/trinomial/diff-squares/grouping · 矩形面積視覺 · 接 M14 quadratics |
+
+- ✅ **AP Computer Science A 全 10 支**（GuyNeural 男聲、CS steel-blue 主題、Java code via mono font `deck.equation`）：
+
+| # | Module | Sections | 重點 |
+|---|---|---|---|
+| M1  | Primitive Types               | 14 | `Hello, GIIS!` hook · `.java → .class → JVM` · int/double/boolean/char · `(int)` truncation 陷阱 |
+| M2  | Using Objects                 | 14 | 手機 = 物件 analogy · String/Math methods · `new` keyword · `==` vs `.equals()` 陷阱 |
+| M3  | Boolean Expressions & if      | 16 | 地鐵閘門 IF/ELSE hook · 6 relational ops · short-circuit · De Morgan · String equality 陷阱 |
+| M4  | Iteration                     | 16 | 電腦每秒 10 億次運算 hook · while/for/enhanced-for · Gauss sum 1-100 · 4 個 pattern · off-by-one + 無窮迴圈 |
+| M5  | Writing Classes               | 18 | cookie-cutter analogy · instance vars + constructor + accessor/mutator · `this` · `toString` · static · BankAccount assignment |
+| M6  | Array                         | 15 | 30 變數 vs 1 array · zero-indexed · `.length` field · for vs enhanced-for · ArrayIndexOutOfBoundsException |
+| M7  | ArrayList                     | 15 | array 固定 vs ArrayList grow/shrink · 6 core methods · `.size()` vs `.length` · 自動裝箱 |
+| M8  | 2D Array                      | 15 | 西洋棋/圖片/spreadsheet hook · `[row][col]` · row-major vs col-major · row/col 顛倒陷阱 |
+| M9  | Inheritance                   | 17 | Cat IS-A Animal hook · extends/super/override · polymorphism + late binding · abstract + instanceof · 蓋vs超載 |
+| M10 | Recursion                     | 18 | 俄羅斯娃娃 hook · base + recursive case · factorial 調用棧 trace · Fibonacci/sumOfDigits/reverse/binary-search · StackOverflowError 陷阱 · O(log n) |
+
+- ✅ **Audio + MP4 全部 render 完成**（2026-05-11）— 16 支 MP4 全部 1920×1080 H.264 + AAC，總時長 **107.4 分鐘（1.8 小時）lecture content**、167.9 MB。Mac 跑 edge-tts 生 audio，沙盒 parallel ffmpeg 在 ~40 秒內 merge 14 支，剩 M6 Inequalities + M6 Array 個別補（用 preset=ultrafast 避開 bash 45s timeout）
+- 📊 **Stats**: 16 modules · 253 slides · **107.4 分鐘 lecture content**
+- 📁 **位置**: `teaching-videos/algebra-i-module-{6,8,10,11,12,13}-*` + `teaching-videos/ap-cs-a-module-{1..10}-*`，每支都有完整 `script.json` + `build_slides.py` + `slides/*.png` + `audio/*.mp3` + `*.mp4`
+- ⚠️ **沙盒 merge 注意事項**：bash 單次 timeout 45s。Parallel batch（>1 個 job）可以撐到 ~40s 內完成 H.264 medium preset（4-8 cores 同跑）。但**單獨補 merge 一支**要改用 `preset=ultrafast` （~30s 完成）才能在 timeout 前寫完整 MP4。檔案稍大（M6 ~16MB vs 其他 ~10MB）但畫質仍然足夠
+- 📌 **此節原本的 audio 渲染指令備檔**（如果要重生）：
+
+```bash
+cd /Users/alanhdchu/GIIS/giis-website
+# 一次性安裝（如已裝可略）
+pip install edge-tts imageio-ffmpeg
+
+# 16 支一行 render
+for d in teaching-videos/algebra-i-module-6-inequalities \
+         teaching-videos/algebra-i-module-8-graphing \
+         teaching-videos/algebra-i-module-10-writing-linear \
+         teaching-videos/algebra-i-module-11-systems \
+         teaching-videos/algebra-i-module-12-exponents-polynomials \
+         teaching-videos/algebra-i-module-13-factoring \
+         teaching-videos/ap-cs-a-module-1-primitives \
+         teaching-videos/ap-cs-a-module-2-using-objects \
+         teaching-videos/ap-cs-a-module-3-booleans-if \
+         teaching-videos/ap-cs-a-module-4-iteration \
+         teaching-videos/ap-cs-a-module-5-writing-classes \
+         teaching-videos/ap-cs-a-module-6-array \
+         teaching-videos/ap-cs-a-module-7-arraylist \
+         teaching-videos/ap-cs-a-module-8-2d-array \
+         teaching-videos/ap-cs-a-module-9-inheritance \
+         teaching-videos/ap-cs-a-module-10-recursion; do
+  echo "=== $d ==="
+  python3 tools/lesson-video/make_lesson.py "$d/"
+done
+```
+
+- ⏳ **YouTube 上傳**：16 支 MP4 全部 ready，用 `tools/youtube-upload/upload_lesson.py` 一行 for-loop 批次上傳，會自動建 "AP Computer Science A" playlist + 把 Algebra I 新影片加到既有 "Algebra I" playlist。會自動 rebuild `public/data/lessons-manifest.json`，`<LessonVideoEmbed>` 就會在 Learn Portal 對應 module 頁自動顯示影片。建議分兩天每天 8 支避開 YouTube quota
+- 🎁 **附加成果**：寫了 `tools/lesson-video/AGENT_RECIPE.md` — 之後 sub-agent 要做新 module 直接讀這份配方文件，不用再從零教 slide_kit API + 命名規範。下次擴大批次直接複製這次的 prompt pattern
+- ⚠️ **教訓三條**：
+  1. 16 agents 一次 spawn 會有一支撞 rate limit（M10 Recursion）。下次 batch 拆 8+8 或更小批次比較穩
+  2. Mac 跑 `make_lesson.py` 可能中途斷（M6 Array 只跑了 3/15 mp3）。Idempotent 設計重跑可以無痛補；如果跑長批次建議分 module 跑而不是 for-loop 全部串
+  3. 沙盒 merge：parallel batch (>1 jobs) 可以撐到 ~40s 內完成 medium preset；單獨補 merge 一支要用 `preset=ultrafast`（30s 內完成）避開 bash 45s timeout
 
 ### ✅ AP Psychology 完整一整支課（16 支 modules · 全部 ready 等 Mac TTS）
 
@@ -461,6 +560,284 @@ Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 
 ---
 
+## 🎯 Trust Sprint — 2026-05-10 audit（next batch）
+
+> **為什麼這批工作獨立成段**：Phase 0/1 把「真實學校」的底子做完了（Florida-registered 定位、真實 Learn Portal、真實教學影片、QR 驗證、真實成績單/文憑、Parent Dashboard 真版）。Trust Sprint 不寫新功能，**把已經有的東西從產品深處搬到行銷首屏**，讓 $19.90/月觸發的「太便宜不可能是真的」警報得以被消除。
+>
+> 核心洞察：降價沒用（降到 $4.99 也會有人懷疑），**只有消除不信任有用**。
+>
+> 完整論證（含家長視角拆解）見：[`REVIEW-2026-05-10.md`](./REVIEW-2026-05-10.md)
+
+### TS-P0-1. 校長 `/about/principal` 公開 bio 頁
+
+> **為什麼第一優先**：中國家長必 Google 第一個搜的人就是校長。目前全站零公開資訊 — Shiyu Zhang Ph.D. 只在文憑簽名線出現。這是整個信任體系最大的單一缺口。
+
+**檔案**：
+- 新建 `src/components/pages/About/PrincipalPage.js` — 雙語，分為 hero（照片 + 名字 + 職稱）/ bio（500–800 字）/ credentials（Ph.D. 學校、之前任教學校）/ contact（LinkedIn icon 連結）四段
+- 路由 `/about/principal` 加進 `src/App.js`
+- Nav 的 `About GIIS` dropdown 加入口（如沒有 dropdown，至少 Footer 加連結）
+- Footer 校長簽名行附 hyperlink 過去
+
+**Acceptance**：
+- 直接訪問 `/about/principal` 顯示完整 bio + 至少一張正面照
+- LinkedIn 連結點得開
+- 雙語切換正常
+- Google 搜 "Shiyu Zhang Genesis of Ideas" 結果第一頁能命中本頁（要等 SEO 收錄）
+
+**依賴**：Alan 提供照片 + LinkedIn URL + bio 文字（或請校長親寫）
+
+---
+
+### ✅ TS-P0-2. 首頁「Watch a real lesson」嵌入真實教學影片（2026-05-10 完成）
+
+- ✅ 新建 `src/components/main/LessonPreview.js`：通用 component（接受 `youtubeId` / `course` / `moduleNumber` / `moduleTitle` / `description` props，全部有預設值），雙語框架 + 16:9 YouTube iframe + 「英文授課」誠實標示
+- ✅ 預設嵌 **Algebra I — Module 4（One-Step & Two-Step Equations，YouTube ID `AMF3Wj4cycs`）** — 珍奶 hook 強、數學是家長最熟學科、已驗證 pilot
+- ✅ 嵌進 `HomepageMain.js`：放在 `DemoEmbed`（80 秒導覽）與 `HomepagePathways` 之間。淺灰底（`#f4f6fb`）銜接 DemoEmbed 白底與 Pathways 深底，視覺節奏不打架
+- ✅ 雙 CTA：「Browse all 40+ courses →」（連 `/academics`）+「See more lessons on YouTube →」（連 channel）
+- ✅ 框架文字雙語，但明確標示「Lessons are taught in English with English captions」，避免家長以為影片有中文配音
+- 🔧 **可選後續**：上 AP Psych 全 16 支後，可以把 LessonPreview 改成隨機展示一支不同 module / 不同科目（A/B 測哪支轉化率高）
+
+---
+
+### TS-P0-3. Footer 信任資訊補完
+
+> **為什麼**：中國家長會用 Florida DOE Private School Directory 驗證學校是否真實存在。Footer 補上 registration number 跟 directory 連結，這一個動作可以解掉 30% 不信任。
+
+**檔案**：`src/components/Footer/Footer.js`
+
+**Acceptance**：Footer 增加一個「Credentials & Verification」區塊，包含：
+- Florida DOE Private School Registration Number（Alan 提供）
+- 直接連到 `https://www.fldoe.org/schools/school-choice/private-schools/` 或對應 directory 頁面，文字寫「Verify on Florida DOE registry →」
+- 註冊地址（FL 商業註冊地址即可）
+- EIN（如有公開意願）
+- 法律依據引用：「Operating under Florida Statute 1002.42」（已有，確認還在）
+
+**依賴**：Alan 提供 registration number + 地址 + EIN
+
+---
+
+### TS-P0-4. Pricing 加 30 天無條件退款 + Sample weekly digest 訂閱表單
+
+> **為什麼**：$199/年產品給 30 天保證沒成本，但消滅 50% 購買摩擦。Sample digest 表單讓家長付錢前先收到一封真實 email，從垃圾箱角度判斷是否真實。
+>
+> 拆成兩段：**4a 退款條款不卡依賴**已做，**4b sample digest** 卡 `RESEND_API_KEY`。
+
+#### ✅ TS-P0-4a. Pricing FAQ 加 30 天無條件退款條款（2026-05-10 完成）
+
+- ✅ `PricingPage.js` 的 `FAQS` array 首位插入「What if my child doesn't engage? Can we get a refund?」明確寫 30 天全額退款、無條件、email 一聲即辦
+- ✅ 雙語版本：英文 / 簡中對齊
+- ✅ 放在 FAQ 第一條（不是末尾）— 最高購買摩擦的疑慮要最早看到
+- ✅ 語氣：「We'd rather have you spend $0 and walk away than have an unhappy family on the platform.」誠實到自我框定立場
+- 🔧 **後續同步**：當 ToS 頁更新時，要把 30 天退款條款同步寫進 ToS（目前只在 FAQ 答覆裡）
+
+#### TS-P0-4b. Sample weekly digest 訂閱表單 + email 範本
+
+**檔案**：
+- `src/components/pages/Pricing/PricingPage.js`：在比較表後、FAQ 前新增「Get a sample weekly digest」section（一個 email input + submit），打到後端
+- 後端：`server/src/routes/sample-digest.js` — `POST /api/sample-digest`，立即用 Resend 寄一封以 Yunfan seed 數據組的 email 範本
+- 模板：`server/src/templates/sample-digest.html`
+
+**Acceptance**：
+- 填郵箱 → 10 秒內收到一封真實 email，內容是「This is what every GIIS parent receives every Sunday」
+- 後端 log 寄出記錄到 `EmailLog` table
+- 雙語兩版本都能寄
+
+**依賴**：Phase 1 待辦的 `RESEND_API_KEY`（同一條依賴）
+
+---
+
+### ✅ TS-P0-5. 首頁 "Is GIIS for you?" 誠實對照 section（2026-05-10 完成）
+
+- ✅ 新建 `src/components/pages/Homepage/Homepage/IsGiisForYou.js`，雙欄對照：✓ Best fit 4 條（綠色邊框 `#1B6B3A`）vs ✗ Probably not 4 條（**冷靜灰色** `#7a8294`，不是紅色，因為這不是警告，是 self-selection 引導）
+- ✅ 嵌進 `HomepageMain.js`：放在 `Introduction`（白底色 `#f4f6fb` 包裹）與 `DemoEmbed`（白底）之間。白底 IsGiisForYou 與兩側形成節奏，不悶
+- ✅ 結尾預留優雅出口：「Still not sure? Email admissions@... and we'll tell you straight if GIIS is the right call — including saying no.」誠實到主動講「我們會說不」進一步強化信任
+- ✅ 雙語完整對齊；中英都明確寫出「Parents who cannot read English at all — advisor communication is English」這條最容易被遺漏但最誠實的條件
+
+---
+
+### TS-P0-6. WeChat QR 上 ContactForm + Header
+
+> **為什麼**：中國家長轉化的關鍵渠道。ContactForm 目前只寫「Contact us for WeChat ID」是死回答。
+
+**檔案**：
+- `src/components/pages/Homepage/Homepage/ContactForm.js` — 取代死字串，放上 QR PNG（`src/img/wechat-qr.png`，Alan 提供）
+- `src/components/Header/Header.js` 或 Nav 角落加小型 WeChat icon，hover 顯示 QR popover（可選）
+
+**Acceptance**：ContactForm 直接看到 QR，手機掃得到加得上
+
+**依賴**：Alan 用個人 WeChat 或學校 WeChat Official Account 產生固定 QR PNG
+
+---
+
+### TS-P1-7. 品牌色系統一（推薦酒紅 + 米白 + 金）
+
+> **為什麼**：教學影片用酒紅 `#6B1F2A` + 金 `#D4A634` + 米白 `#FAF6EC`（在 `CLAUDE.md`），網站行銷面用海軍藍 `#1a1a2e` + 金 `#d5a836`。兩套品牌並行 = 家長看 YouTube 回到網站像走進另一間學校。
+
+**檔案**：
+- 新建 `src/styles/tokens.css` — 把 maroon / gold / cream 定義成 CSS variables（`--giis-maroon`, `--giis-gold`, `--giis-cream`, `--giis-navy-deprecated`）
+- 全站 grep `#1a1a2e` / `#2b3d6d` / `#0f1020` 三色取代為 maroon 對應深淺
+- 高優先順序頁面：`HeroSection.js` / `Introduction.js` / `Slogan.js` / `SuccessStories.js` / `PricingPage.js` / `AdmissionMain.js` / `Footer.js`
+- Login portal / Learn Portal / Admin dashboard 暫保留（影響家長轉化最小）
+
+**Acceptance**：
+- 全站 grep `1a1a2e` 結果 = 0（或全部來自 `tokens.css` 的 deprecated alias）
+- Hero / Pricing / Introduction 三頁實際 render 是 maroon + cream，視覺與 YouTube 教學影片連續
+- 文憑 PDF 與成績單 PDF 確認還是 navy/gold 沒被誤改（這兩個是正式文件，已建立的視覺體系不動）
+
+**依賴**：先做 P0 各項（不要在 P0 動視覺，避免 risk 累積）
+
+---
+
+### TS-P1-8. `/faculty` 老師頁面
+
+> **為什麼**：家長付的是「誰在教我孩子」。Hero 寫「Real teacher feedback」但目前讀者不知道是誰。
+
+**檔案**：
+- 新建 `src/components/pages/Faculty/FacultyPage.js`，路由 `/faculty`
+- 至少 3 位老師卡片：照片、真名、學歷、教學科目、100 字自我介紹、教過的 module
+- Nav About dropdown 加入口
+
+**Acceptance**：`/faculty` 頁面 3 位老師完整 bio + 真實照片，雙語
+
+**依賴**：Alan 招到 3 位老師並取得照片 + bio 同意；如尚未招到，先放校長一人加「Faculty announcements coming」placeholder
+
+---
+
+### TS-P1-9. SuccessStories 換真人照片 + 加錄取信掃描件
+
+> **為什麼**：字母頭像 YY / BL 太抽象；錄取信掃描件殺傷力 10 倍。
+
+**檔案**：`src/components/pages/Homepage/Homepage/SuccessStories.js`
+
+**Acceptance**：
+- 兩位學生卡片頭像換成真人照片（Yunfan 與 Baoyi，個資打碼可選）
+- 卡片下方新增「View acceptance letter」按鈕，打開 modal 顯示 UCSB / Syracuse 錄取信掃描件（學生姓名與地址打碼）
+- 至少 Yunfan 那張一定要有
+
+**依賴**：Alan 與兩位學生家長取得照片與錄取信掃描件使用同意（書面）
+
+---
+
+### TS-P1-10. emoji 全站換成 SVG icon
+
+> **為什麼**：emoji 在私立高中網頁讀作「Notion 樣板玩具網站」，不是「正式學校」。
+
+**檔案**：grep `🏛️|✍️|🎓|📜|🌐|🤖|🛤️|💻|⚙️|📐|📊|📈|🧠|📡|🎨|📧|📄|💳|📅|📞|✉️|💡|🎯|📝|📖|★` 全站，逐個替換
+
+**選型**：Phosphor Icons（`phosphor-react`，免費商用，線條風格與 maroon 配色協調）或 Lucide（`lucide-react`，已是 React 18 友好）
+
+**Acceptance**：
+- 首頁 / Pricing / Admission / Hero / Introduction / SuccessStories / 8 Pathways grid 全部換完
+- 雙色（maroon 主線 + gold accent）icon 系統
+- 行動版渲染清晰
+
+**依賴**：選定 icon library 並 `npm install`
+
+---
+
+### TS-P1-11. Pricing 比較表價格 row 改成視覺化條形圖
+
+> **為什麼**：`$199 vs $20K vs $65K` 是 Pricing 頁殺傷力最強的一秒，目前躺在表格 row 裡被沖淡。
+
+**檔案**：`src/components/pages/Pricing/PricingPage.js` 的 "How We Compare" 區塊
+
+**Acceptance**：價格那一行做成水平條形圖（GIIS 短金色條 + 數字 96px、傳統國際校長灰條、寄宿校最長灰條），其他比較項仍用表格。視覺對比讓家長一秒看懂「我可以省 100 倍」
+
+---
+
+### TS-P1-12. Calendly「Book a 20-min call with the principal」
+
+> **為什麼**：學校轉化主要靠 1:1 對話。SaaS funnel 對 $199/年的留學項目不夠。
+
+**檔案**：
+- Pricing 頁 CTA 區、Admission 頁 Steps 第一步、Homepage 結尾 ContactForm 上方都加入口
+- 整合 Calendly inline embed 或 popup（`react-calendly`）
+- 校長行事曆每週開放 5 個 20-min slot
+
+**Acceptance**：訪客點 "Book a call" → Calendly 排程介面 → 預約成功後校長與訪客都收到 confirmation email
+
+**依賴**：Alan 開 Calendly 帳號，配置「20-min Parent Q&A」event type
+
+---
+
+### TS-P2-13. Pathway 詳情頁改成 4 年 timeline + 範例學生
+
+> **為什麼**：8 個 emoji 卡片像 app launcher，學校的 pathway 應該是「4 年路徑圖」。
+
+**檔案**：`src/components/pages/Pathways/*.js`（8 個 pathway 頁）
+
+**Acceptance**：每個 pathway 頁 hero 改成：
+- Year 9–12 timeline（含核心 + 選修課列表）
+- 對應 GIIS 範例學生卡片（如 Engineering Science = Yunfan，Communications = Baoyi）
+- 「This pathway prepares students for」清單：列 5–8 個美國大學常見 major 名稱
+- 「Students who chose this pathway got into」清單：3–5 所學校
+
+---
+
+### TS-P2-14. 5 分鐘加長版「A week in a GIIS student's life」
+
+> **為什麼**：80 秒導覽是行銷版本，謹慎的家長要看「一週實際發生什麼」。
+
+**檔案**：
+- 新建 `public/demo/walkthrough-week.html`（沿用 `walkthrough.html` 框架，9 scene → 約 30 scene 涵蓋週一到週日）
+- `scripts/make-demo.mjs` 加 `npm run make-demo:week` 模式
+- 嵌入 `/academics` 或單獨 `/preview/student-week` 頁
+
+**Acceptance**：5 分鐘版本 mp4 落地 `public/demo/giis-week.mp4`，自動播放且雙語字幕
+
+---
+
+### TS-P2-15. 公開 SAT / AP score data
+
+> **為什麼**：中國家長對標準化分數敏感。即使 N 小，誠實寫出來反而強化信任。
+
+**檔案**：`/school-profile` 加 "Class of 2026 testing data" section
+
+**Acceptance**：列出（取得同意後）：
+- Class of 2026 平均 SAT（如有取）
+- 各 AP 課程已參加考試人數與分數分佈
+- 對沒有的科目誠實寫「No AP exam data yet for this subject」
+
+---
+
+### TS-P2-16. AP Psych Module 1 完整公開試讀
+
+> **為什麼**：付費前先看完一節完整課=最強信任訊號。Khan Academy 模型。
+
+**檔案**：
+- 新建 `/sample/ap-psychology` 頁，公開 AP Psych Module 1 完整影片 + module 頁完整 reading material + quiz（但 quiz submit 引導到 `/admission`）
+- `LessonVideoEmbed.js` 加 `public` mode（不需登入）
+
+**Acceptance**：未登入訪客可看完整 Module 1，包含影片 + 閱讀 + quiz 題目，但 submit / 後續 module 引導申請
+
+---
+
+### TS-P2-17. 每週日 Parent Q&A Zoom
+
+> **為什麼**：家長社群 = retention。已付費家長有對話空間 = 不退訂。
+
+**檔案**：`/parent/community` 頁（雙語）
+
+**Acceptance**：
+- 公開時間：每週日 8pm CST / Mon 9am Beijing
+- Zoom 永久 link
+- 過去 4 週 recap 連結（YouTube unlisted）
+
+---
+
+### TS-Tech ── Trust Sprint 期間順手清的技術雜項
+
+- [ ] `FacultyGraduates.js` 兩份檔案查重（`Homepage/Homepage/` vs `Discovery/Discovery/`），移除孤兒
+- [ ] Hero `<a href="#demo">` 改 `useRef` + 程式 scroll，避免 React Router 整頁刷新
+- [ ] `@media (max-width: 880px)` 對齊現代標準斷點 768px / 1024px
+- [ ] Hero `paddingTop: 60px` hardcode → CSS variable 隨 Nav 高度
+- [ ] Hero 在 iPhone SE / iPad portrait 實機驗收（perspective rotate 切到陰影）
+- [ ] Open Graph image 換成最強的 Hero 截圖（WeChat 分享必看）
+- [ ] Footer 加 sitemap.xml 連結（SEO）
+- [ ] 把 `REVIEW-2026-05-10.md` 加進 `CLAUDE.md` 的設計參考清單區
+
+---
+
 ## 💰 Phase 2 — 讓家長能「付款並信任」
 
 ### 7. Stripe Checkout 整合
@@ -615,6 +992,13 @@ Acceptance ✅：列印成績單掃 QR 不需登入可驗真偽。
 ✅ Phase 1（讓家長看到）— 核心已完成
   剩：週報 email（等 RESEND_API_KEY）、Admin 建學生時填 parentEmail、npx prisma db push
 
+🎯 Trust Sprint（消除「太便宜不可能是真的」警報）— next batch
+  P0：校長 bio → 首頁嵌真課影片 → Footer 信任資訊 → 30 天退款 + sample digest
+       → "Is GIIS for you?" 誠實對照 → WeChat QR
+  P1：品牌色統一（maroon/gold/cream）→ /faculty 老師頁 → SuccessStories 真人照片
+       → emoji 換 SVG icon → Pricing 比較表視覺化 → Calendly 預約校長
+  P2：Pathway 4 年 timeline → 5 分鐘加長 demo → SAT/AP score → AP Psych 試讀 → Parent Q&A Zoom
+
 ✅ Phase 2 部分完成
   ✅ /apply + ApplicationsQueue
   ✅ 文憑/成績單 QR 驗證
@@ -647,5 +1031,6 @@ Phase 4（有規模再做）：
 | 26-002 | Tao Zhang | tao.zhang@genesisideas.school |
 | 26-003 | Baoyi Lu ★ | baoyi.lu@genesisideas.school |
 | 26-004 | Yunfan Yang ★ | yunfan.yang@genesisideas.school |
+| 26-005 | Hanxi Xiao | hanxi.xiao@genesisideas.school |
 
 ★ Yunfan Yang 有最多考試記錄，最適合測試（demo 也以他為主角）。
