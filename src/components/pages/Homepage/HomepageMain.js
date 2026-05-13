@@ -5,7 +5,9 @@ import Nav from '../../main/Nav.js';
 import HeroSection from './Homepage/HeroSection';
 import Slogan from './Homepage/Slogan';
 import Introduction from './Homepage/Introduction';
+import IsGiisForYou from './Homepage/IsGiisForYou';
 import DemoEmbed from '../../main/DemoEmbed';
+import LessonPreview from '../../main/LessonPreview';
 import FacultyGraduates from './Homepage/FacultyGraduates.js';
 import ContactForm from './Homepage/ContactForm';
 import SuccessStories from './Homepage/SuccessStories';
@@ -112,10 +114,16 @@ function HomepageMain({ language, toggleLanguage }) {
         <Introduction language={language} />
       </div>
 
+      {/* Honest fit check — disarm the "too cheap to be real" reaction */}
+      <IsGiisForYou language={language} />
+
       {/* 80-second product walkthrough — bridge from "why us" to "what we offer" */}
       <div id="demo" style={{ scrollMarginTop: '24px' }}>
         <DemoEmbed language={language} variant="full" />
       </div>
+
+      {/* A real full-length lesson — proves teaching quality before they pay */}
+      <LessonPreview language={language} />
 
       {/* 8 Pathways showcase */}
       <HomepagePathways language={language} />

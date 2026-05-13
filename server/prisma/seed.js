@@ -344,6 +344,87 @@ const yunfanYangSemesters = makeSemesters([
   },
 ]);
 
+// ── Hanxi Xiao (Class of 2026, #005) ──────────────────────────────────────────
+// Pathway: Psychology & Social Sciences. Source: TransScript_Hanxi Xiao.pdf
+// (transcript dated 2025-11-21; G9 Fall through G12 Fall populated from the
+// official transcript. G12 Spring courses listed as the in-progress semester
+// — grades release on SPRING_2026_RELEASE per existing pattern.)
+const hanxiXiaoSemesters = makeSemesters([
+  {
+    key: 'Grade 9 - Fall Semester', sortOrder: 0, courses: [
+      courseRow(0, 'English I',                           'Core',     '1',   'A-'),
+      courseRow(1, 'Algebra I',                           'Core',     '1',   'B+'),
+      courseRow(2, 'Biology',                             'Core',     '1',   'B+'),
+      courseRow(3, 'World History',                       'Core',     '0.5', 'A-'),
+      courseRow(4, 'Introduction to Psychology',          'Elective', '0.5', 'A'),
+      courseRow(5, 'Digital Literacy',                    'Elective', '0.5', 'A'),
+    ],
+  },
+  {
+    key: 'Grade 9 - Spring Semester', sortOrder: 1, courses: [
+      courseRow(0, 'English I - Writing Focus',           'Core',     '1',   'A-'),
+      courseRow(1, 'Geometry',                            'Core',     '1',   'B+'),
+      courseRow(2, 'Environmental Science',               'Core',     '1',   'A-'),
+      courseRow(3, 'Geography',                           'Core',     '0.5', 'A-'),
+      courseRow(4, 'Learning Strategies & Study Skills',  'Elective', '0.5', 'A'),
+      courseRow(5, 'Media Studies',                       'Elective', '0.5', 'A'),
+    ],
+  },
+  {
+    key: 'Grade 10 - Fall Semester', sortOrder: 2, courses: [
+      courseRow(0, 'English II',                          'Core',     '1',   'A-'),
+      courseRow(1, 'Algebra II',                          'Core',     '1',   'A'),
+      courseRow(2, 'Chemistry',                           'Core',     '1',   'B+'),
+      courseRow(3, 'U.S. History',                        'Core',     '0.5', 'A'),
+      courseRow(4, 'Introduction to Sociology',           'Elective', '0.5', 'A'),
+    ],
+  },
+  {
+    key: 'Grade 10 - Spring Semester', sortOrder: 3, courses: [
+      courseRow(0, 'English II - Literature',             'Core',     '1',   'A-'),
+      courseRow(1, 'Pre-Calculus',                        'Core',     '1',   'A'),
+      courseRow(2, 'Physics Fundamentals',                'Core',     '1',   'B+'),
+      courseRow(3, 'World Politics',                      'Core',     '0.5', 'A'),
+      courseRow(4, 'Research Skills & Information Literacy', 'Elective', '0.5', 'A'),
+    ],
+  },
+  {
+    key: 'Grade 11 - Fall Semester', sortOrder: 4, courses: [
+      courseRow(0, 'English III',                         'Core',     '1',   'A'),
+      courseRow(1, 'Statistics',                          'Core',     '1',   'A-'),
+      courseRow(2, 'Biology - Human Systems',             'Core',     '1',   'A-'),
+      courseRow(3, 'Psychology',                          'Elective', '0.5', 'A'),
+      courseRow(4, 'Academic Writing for Social Sciences', 'Elective', '0.5', 'A'),
+    ],
+  },
+  {
+    key: 'Grade 11 - Spring Semester', sortOrder: 5, courses: [
+      courseRow(0, 'English III - Literature',            'Core',     '1',   'A'),
+      courseRow(1, 'Government',                          'Core',     '1',   'A-'),
+      courseRow(2, 'Research Methods in Social Science',  'Core',     '1',   'A-'),
+      courseRow(3, 'Developmental Psychology',            'Elective', '0.5', 'A'),
+      courseRow(4, 'Ethics & Critical Thinking',          'Elective', '0.5', 'A'),
+    ],
+  },
+  {
+    key: 'Grade 12 - Fall Semester', sortOrder: 6, courses: [
+      courseRow(0, 'English IV - Writing & Communication', 'Core',    '1',   'A'),
+      courseRow(1, 'Psychology Seminar / Capstone',       'Core',     '1',   'A'),
+      courseRow(2, 'Economics',                           'Core',     '1',   'A-'),
+      courseRow(3, 'Social Psychology',                   'Elective', '0.5', 'A'),
+      courseRow(4, 'College Research & Psychological Writing', 'Elective', '0.5', 'A'),
+    ],
+  },
+  {
+    key: 'Grade 12 - Spring Semester', sortOrder: 7, releaseDate: SPRING_2026_RELEASE, courses: [
+      courseRowGated(0, 'English IV - Advanced Composition',     'Core',     '1',  'A',  SPRING_2026_RELEASE),
+      courseRowGated(1, 'Sociology',                             'Core',     '1',  'A-', SPRING_2026_RELEASE),
+      courseRowGated(2, 'Adolescent Psychology',                 'Elective', '1',  'A',  SPRING_2026_RELEASE),
+      courseRowGated(3, 'Positive Psychology & Wellbeing',       'Elective', '1',  'A',  SPRING_2026_RELEASE),
+    ],
+  },
+]);
+
 async function upsertStudentWithAccount({ email, password, studentCode, student, semestersCreate }) {
   const existing = await prisma.studentAccount.findUnique({
     where: { email: email.toLowerCase() },
@@ -1648,12 +1729,33 @@ async function main() {
     semestersCreate: yunfanYangSemesters,
   });
 
+  await upsertStudentWithAccount({
+    email: 'hanxi.xiao@genesisideas.school',
+    password: 'Student2024!!',
+    studentCode: '26-005',
+    student: {
+      name: 'Hanxi Xiao',
+      gender: 'Female',
+      birthDate: new Date('2007-03-21T00:00:00.000Z'),
+      parentGuardian: 'Shuying Zhao',
+      address: 'Building 10, Unit 702, Zhongbai Hubin No. 1, Zhujiajiao Town',
+      city: 'Shanghai',
+      province: 'Shanghai',
+      zipCode: '201713',
+      entryDate: new Date('2022-08-15T00:00:00.000Z'),
+      graduationDate: new Date('2026-06-30T00:00:00.000Z'),
+      transcriptDate: new Date('2026-05-12T00:00:00.000Z'),
+    },
+    semestersCreate: hanxiXiaoSemesters,
+  });
+
   console.log('');
   console.log('=== Student accounts (password: Student2024!!) ===');
   console.log('  26-001  ruwen.li@genesisideas.school');
   console.log('  26-002  tao.zhang@genesisideas.school');
   console.log('  26-003  baoyi.lu@genesisideas.school');
   console.log('  26-004  yunfan.yang@genesisideas.school');
+  console.log('  26-005  hanxi.xiao@genesisideas.school');
   console.log('');
 
   console.log('=== Seeding courses ===');

@@ -43,7 +43,7 @@ router.get('/', authenticate, async (req, res) => {
     const now = new Date();
     (account.student.semesters || []).forEach(sem => {
       if (sem.releaseDate && new Date(sem.releaseDate) > now) {
-        sem.courseRows.forEach(row => { row.letterGrade = ''; });
+        sem.courseRows.forEach(row => { row.letterGrade = ''; row.weightedGpa = null; row.unweightedGpa = null; });
       }
     });
     res.json({ email: account.email, ...account.student });

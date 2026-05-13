@@ -296,7 +296,7 @@ router.get('/:id', authenticate, requireStudentOrAdminForStudentParam, async (re
     const now = new Date();
     (student.semesters || []).forEach(sem => {
       if (sem.releaseDate && new Date(sem.releaseDate) > now) {
-        sem.courseRows.forEach(row => { row.letterGrade = ''; });
+        sem.courseRows.forEach(row => { row.letterGrade = ''; row.weightedGpa = null; row.unweightedGpa = null; });
       }
     });
   }

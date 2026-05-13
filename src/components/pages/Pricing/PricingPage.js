@@ -25,6 +25,13 @@ const ANNUAL_EXTRAS = [
 
 const FAQS = [
   {
+    q: { en: 'What if my child doesn\'t engage? Can we get a refund?', zh: '如果我的孩子不投入怎么办？可以退款吗？' },
+    a: {
+      en: 'Yes — 30-day full refund, no questions asked. If within the first 30 days you decide GIIS isn\'t the right fit, email admissions@genesisideas.school and we refund the entire payment. We\'d rather have you spend $0 and walk away than have an unhappy family on the platform.',
+      zh: '可以——30 天内无条件全额退款。如果在前 30 天内你判断 GIIS 不合适，发邮件到 admissions@genesisideas.school 即可获得全额退款。我们宁可让你花 0 美元离开，也不希望平台上有不满意的家庭。',
+    },
+  },
+  {
     q: { en: 'Can I switch from monthly to annual?', zh: '我可以从月付切换到年付吗？' },
     a: { en: 'Yes. You can upgrade to annual at any time. The remaining days of your current billing cycle are credited toward your annual plan.', zh: '可以。您随时可以升级为年付，当前周期剩余天数将折算至年付计划中。' },
   },
