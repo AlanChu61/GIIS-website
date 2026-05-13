@@ -419,8 +419,8 @@ const hanxiXiaoSemesters = makeSemesters([
     key: 'Grade 12 - Spring Semester', sortOrder: 7, releaseDate: SPRING_2026_RELEASE, courses: [
       courseRowGated(0, 'English IV - Advanced Composition',     'Core',     '1',  'A',  SPRING_2026_RELEASE),
       courseRowGated(1, 'Sociology',                             'Core',     '1',  'A-', SPRING_2026_RELEASE),
-      courseRowGated(2, 'Adolescent Psychology',                 'Elective', '1',  'A',  SPRING_2026_RELEASE),
-      courseRowGated(3, 'Positive Psychology & Wellbeing',       'Elective', '1',  'A',  SPRING_2026_RELEASE),
+      courseRowGated(2, 'Behavioral Science',                     'Elective', '1',  'A',  SPRING_2026_RELEASE),
+      courseRowGated(3, 'Social Psychology',                     'Elective', '1',  'A',  SPRING_2026_RELEASE),
     ],
   },
 ]);
@@ -1748,6 +1748,25 @@ async function main() {
     },
     semestersCreate: hanxiXiaoSemesters,
   });
+
+  // Enroll Hanxi in her G12 Spring Learn Portal courses (slugs are stable identifiers)
+  {
+    const hanxiAcct = await prisma.studentAccount.findUnique({
+      where: { email: 'hanxi.xiao@genesisideas.school' },
+      include: { student: true },
+    });
+    const g12SpringCourses = ['english-iv-advanced-composition', 'sociology', 'behavioral-science', 'social-psychology'];
+    for (const slug of g12SpringCourses) {
+      const course = await prisma.course.findUnique({ where: { slug } });
+      if (!course) { console.log(`  [warn] course not found: ${slug}`); continue; }
+      await prisma.enrollment.upsert({
+        where: { studentId_courseId: { studentId: hanxiAcct.student.id, courseId: course.id } },
+        update: {},
+        create: { studentId: hanxiAcct.student.id, courseId: course.id, semesterLabel: 'Grade 12 - Spring Semester' },
+      });
+    }
+    console.log('  Enrolled hanxi.xiao in 4 G12 Spring courses');
+  }
 
   console.log('');
   console.log('=== Student accounts (password: Student2024!!) ===');
