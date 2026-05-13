@@ -1789,61 +1789,62 @@ async function main() {
     console.log(`  Enrolled ${email.split('@')[0]} in ${slugs.length} G12 Spring courses`);
   }
 
-  // G12 Spring semester learning progress (May 2026 — near end of semester)
-  // completedModules reflect realistic progress given module count and letter grade target.
-  // quizScore: A=93, A-=89  |  midtermScore: A=92, A-=88
+  // G12 Spring semester — all students completed all modules + both exams.
+  // Grades are held by the gate (releaseDate May 22); course work is fully done.
+  // quizScore: A=94, A-=90  |  midtermScore/finalScore: A=93, A-=89
+  const range = (n) => Array.from({ length: n }, (_, i) => i + 1);
   const g12Progress = [
     {
       email: 'ruwen.li@genesisideas.school',
       courses: [
-        { slug: 'english-iv-advanced-composition', completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
-        { slug: 'sociology',                        completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
-        { slug: 'business-law',                     completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
-        { slug: 'corporate-finance',                completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+        { slug: 'english-iv-advanced-composition', modules: 13, quizScore: 90, examScore: 89 },
+        { slug: 'sociology',                        modules: 13, quizScore: 90, examScore: 89 },
+        { slug: 'business-law',                     modules: 11, quizScore: 94, examScore: 93 },
+        { slug: 'corporate-finance',                modules: 11, quizScore: 94, examScore: 93 },
       ],
     },
     {
       email: 'tao.zhang@genesisideas.school',
       courses: [
-        { slug: 'english-iv-advanced-composition', completedModules: [1,2,3,4,5,6,7,8,9,10,11],          quizScore: 93, midtermScore: 92 },
-        { slug: 'ap-human-geography',              completedModules: [1,2,3,4,5,6,7,8,9,10,11,12,13],    quizScore: 89, midtermScore: 88 },
-        { slug: 'abnormal-psychology',             completedModules: [1,2,3,4,5,6,7,8,9],                quizScore: 93, midtermScore: 92 },
-        { slug: 'counseling-mental-health',        completedModules: [1,2,3,4,5,6,7,8,9],                quizScore: 93, midtermScore: 92 },
+        { slug: 'english-iv-advanced-composition', modules: 13, quizScore: 94, examScore: 93 },
+        { slug: 'ap-human-geography',              modules: 16, quizScore: 90, examScore: 89 },
+        { slug: 'abnormal-psychology',             modules: 11, quizScore: 94, examScore: 93 },
+        { slug: 'counseling-mental-health',        modules: 11, quizScore: 94, examScore: 93 },
       ],
     },
     {
       email: 'baoyi.lu@genesisideas.school',
       courses: [
-        { slug: 'english-iv-media-writing',             completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 93, midtermScore: 92 },
-        { slug: 'sociology',                             completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
-        { slug: 'personal-finance-applied-economics',   completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
-        { slug: 'digital-media-society',                completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+        { slug: 'english-iv-media-writing',           modules: 13, quizScore: 94, examScore: 93 },
+        { slug: 'sociology',                           modules: 13, quizScore: 90, examScore: 89 },
+        { slug: 'personal-finance-applied-economics', modules: 11, quizScore: 94, examScore: 93 },
+        { slug: 'digital-media-society',              modules: 11, quizScore: 94, examScore: 93 },
       ],
     },
     {
       email: 'yunfan.yang@genesisideas.school',
       courses: [
-        { slug: 'english-iv-media-analytical-writing', completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 93, midtermScore: 92 },
-        { slug: 'media-psychology',                    completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
-        { slug: 'sports-management-leadership',        completedModules: [1,2,3,4,5,6,7,8,9],       quizScore: 93, midtermScore: 92 },
+        { slug: 'english-iv-media-analytical-writing', modules: 13, quizScore: 94, examScore: 93 },
+        { slug: 'media-psychology',                    modules: 11, quizScore: 94, examScore: 93 },
+        { slug: 'sports-management-leadership',        modules: 11, quizScore: 94, examScore: 93 },
       ],
     },
     {
       email: 'hanxi.xiao@genesisideas.school',
       courses: [
-        { slug: 'english-iv-advanced-composition', completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 93, midtermScore: 92 },
-        { slug: 'sociology',                        completedModules: [1,2,3,4,5,6,7,8,9,10,11], quizScore: 89, midtermScore: 88 },
-        { slug: 'behavioral-science',               completedModules: [1,2,3,4,5,6,7],           quizScore: 93, midtermScore: 92 },
-        { slug: 'social-psychology',                completedModules: [1,2,3,4,5,6,7],           quizScore: 93, midtermScore: 92 },
+        { slug: 'english-iv-advanced-composition', modules: 13, quizScore: 94, examScore: 93 },
+        { slug: 'sociology',                        modules: 13, quizScore: 90, examScore: 89 },
+        { slug: 'behavioral-science',               modules:  8, quizScore: 94, examScore: 93 },
+        { slug: 'social-psychology',                modules:  8, quizScore: 94, examScore: 93 },
       ],
     },
   ];
 
-  console.log('=== Setting G12 Spring learning progress ===');
+  console.log('=== Setting G12 Spring learning progress (all courses complete) ===');
   for (const { email, courses } of g12Progress) {
     const acct = await prisma.studentAccount.findUnique({ where: { email }, include: { student: true } });
     if (!acct) { console.log(`  [warn] account not found: ${email}`); continue; }
-    for (const { slug, completedModules, quizScore, midtermScore } of courses) {
+    for (const { slug, modules: moduleCount, quizScore, examScore } of courses) {
       const course = await prisma.course.findUnique({ where: { slug } });
       if (!course) { console.log(`  [warn] course not found: ${slug}`); continue; }
       const enrollment = await prisma.enrollment.findUnique({
@@ -1851,9 +1852,10 @@ async function main() {
       });
       if (!enrollment) { console.log(`  [warn] enrollment not found: ${email} / ${slug}`); continue; }
 
+      const completedModules = range(moduleCount);
       await prisma.enrollment.update({
         where: { id: enrollment.id },
-        data: { completedModules },
+        data: { completedModules, creditEarned: true, creditEarnedAt: new Date('2026-05-10') },
       });
 
       for (const moduleOrder of completedModules) {
@@ -1864,19 +1866,21 @@ async function main() {
         });
       }
 
-      const midtermExists = await prisma.examAttempt.findFirst({
-        where: { enrollmentId: enrollment.id, examType: 'midterm' },
-      });
-      if (!midtermExists) {
-        await prisma.examAttempt.create({
-          data: {
-            enrollmentId: enrollment.id,
-            examType: 'midterm',
-            score: midtermScore,
-            passed: true,
-            submittedAt: new Date('2026-03-20'),
-          },
+      for (const examType of ['midterm', 'final']) {
+        const exists = await prisma.examAttempt.findFirst({
+          where: { enrollmentId: enrollment.id, examType },
         });
+        if (!exists) {
+          await prisma.examAttempt.create({
+            data: {
+              enrollmentId: enrollment.id,
+              examType,
+              score: examScore,
+              passed: true,
+              submittedAt: examType === 'midterm' ? new Date('2026-03-20') : new Date('2026-05-08'),
+            },
+          });
+        }
       }
     }
     console.log(`  Progress set for ${email.split('@')[0]}`);
