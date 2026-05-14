@@ -291,7 +291,19 @@
   - 位置：`teaching-videos/ap-calculus-ab-module-2-derivatives/`
   - Audit：`_audit/ap-calculus-ab/2026-05-13T15-21-29Z-summary.json` + `first-run.json` marker（下次跑 normal mode）
   - 還缺：audio + MP4。Alan Mac 跑 `python3 tools/lesson-video/make_lesson.py teaching-videos/ap-calculus-ab-module-2-derivatives/` 即可
-- ⏭️ **AP Calc AB M3-M12（待續）** — smoke-test 過了，下次 scheduled run（11am 或手動觸發）會在 normal full-course mode 補完 M3 Composite/Implicit/Inverse → M12 Synthesis。Mapping 已在 `references/ap-calc-ab-ced.md` 結尾的 "Suggested GIIS Module Mapping" 表
+- ✅ **AP Calc AB Module 3 — Composite, Implicit & Inverse Derivatives** 教學影片 ready（**Cowork auto-pipeline run · 2026-05-14 17:22Z**）：19 sections，~9 min，AriaNeural、math 主題。Cover FUN 3.1-3.6。3 張視覺自製（balloon V→r→t chain cascade hook、unit-circle implicit tangent at (3,4)、6-row FORM→TOOL decision table）。Pause = chain-rule check；compare slides 鎖定 chain trap / implicit sign trap / arcsin vs (sin x)⁻¹ trap
+  - 位置：`teaching-videos/ap-calculus-ab-module-3-composite-implicit-inverse/`
+  - 還缺：audio + MP4。Alan Mac 跑 `python3 tools/lesson-video/make_lesson.py teaching-videos/ap-calculus-ab-module-3-composite-implicit-inverse/` 即可
+- ✅ **AP Calc AB Module 4 — Contextual Applications of Differentiation** 教學影片 ready（**Cowork auto-pipeline run · 2026-05-14 17:22Z**）：17 sections，~9 min，AriaNeural、math 主題。Cover CHA 4.1-4.6 + LIM 4.7。8 張視覺自製（ladder + 1ft/s hook、4-column units table、s→v→a motion chain、3-panel real-world rates、4-step related-rates method、ladder right-triangle worked diagram、√x linearization curve + tangent at (4,2)、L'Hospital banner + refinement boxes）。Pause-triplet 10/10-silence/11-solution；compare slide 鎖定 L'Hospital indeterminate-form trap
+  - 位置：`teaching-videos/ap-calculus-ab-module-4-contextual-applications/`
+  - 還缺：audio + MP4
+- ✅ **AP Calc AB Module 5 — MVT, EVT, and the Derivative Tests** 教學影片 ready（**Cowork auto-pipeline run · 2026-05-14 17:22Z**）：18 sections，~9 min，AriaNeural、math 主題。Cover FUN 5.1-5.7。4 張視覺自製（highway toll-booth average-speed hook、curve with secant + parallel tangent at c (MVT geometry)、+/−/+ 號表 with arrows (1st derivative test)、cup vs cap concavity with f'' signs）。Pause-triplet 10/10-silence/11-solution；compare trap 鎖定「every CP is an extremum?」誤解
+  - 位置：`teaching-videos/ap-calculus-ab-module-5-mvt-evt-derivative-tests/`
+  - 還缺：audio + MP4
+- ✅ **AP Calc AB Module 6 — Graph Sketching, Optimization & Implicit Behavior** 教學影片 ready（**Cowork auto-pipeline run · 2026-05-14 17:22Z**）：17 sections，~10 min，AriaNeural、math 主題。Cover FUN 5.8-5.12。Round-2 patch 全套入：feasibility 區間 x ∈ [0,2] + candidates test (A(0)=0, A(2)=0, A(√(4/3))≈6.16) 在 section 08-09 講完；section 06 加紅色 "looking at f', NOT f" 警告 banner；section 07 5-step framework 點名 "feasibility check"；10_pause1_silence 是 10_pause1 的 byte-identical duplicate
+  - 位置：`teaching-videos/ap-calculus-ab-module-6-graph-sketching-optimization/`
+  - 還缺：audio + MP4
+- ⏭️ **AP Calc AB M7-M12（待續）** — M3-M6 完成，下次 scheduled run 接續 M7 Riemann/FTC → M8 Antiderivatives/Substitution → M9 DiffEq → M10 Avg Value & Area → M11 Volumes → M12 Exam Synthesis。Audit：`_audit/ap-calculus-ab/2026-05-14T17-22-12Z-summary.json`
 - ✅ **AP Psychology Module 2 — Research Methods** script + slides ready：14 sections，~8.7 min（1311 詞 / 150wpm），BrianNeural 語音、psychology 主題（lavender + cream），3 張視覺自製（5-rung methods ladder、−1↔+1 r-coefficient ruler、ice cream / drowning / hot-weather spurious-correlation diagram）。Hook 用 TikTok "coffee makes you live longer" claim 切入 correlation-vs-causation
   - 位置：`teaching-videos/ap-psych-module-2-research-methods/`
   - 還缺：audio + MP4。Alan Mac 跑 `python3 tools/lesson-video/make_lesson.py teaching-videos/ap-psych-module-2-research-methods/` 即可
