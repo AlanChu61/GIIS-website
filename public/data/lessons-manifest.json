@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-05-07T02:14:00+00:00",
+  "generated_at": "2026-05-14T14:00:41+00:00",
   "source": "youtube-channel",
   "by_course": {
     "Algebra I": [
@@ -17,6 +17,28 @@
       {
         "course": "Algebra I",
         "course_slug": "algebra-i",
+        "module_number": 2,
+        "module_title": "Order of Operations",
+        "youtube_id": "JlrC4u2-MuI",
+        "url": "https://youtu.be/JlrC4u2-MuI",
+        "embed_url": "https://www.youtube.com/embed/JlrC4u2-MuI",
+        "published_at": "2026-05-14T14:00:15Z",
+        "lesson_dir": "algebra-i-module-2-pemdas"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 3,
+        "module_title": "Properties of Real Numbers",
+        "youtube_id": "uYmINrzVZqc",
+        "url": "https://youtu.be/uYmINrzVZqc",
+        "embed_url": "https://www.youtube.com/embed/uYmINrzVZqc",
+        "published_at": "2026-05-07T02:13:53Z",
+        "lesson_dir": "algebra-i-module-3-properties"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
         "module_number": 4,
         "module_title": "Solving One-Step and Two-Step Equations",
         "youtube_id": "AMF3Wj4cycs",
@@ -28,6 +50,28 @@
       {
         "course": "Algebra I",
         "course_slug": "algebra-i",
+        "module_number": 5,
+        "module_title": "Multi-Step and Literal Equations",
+        "youtube_id": "KfftRU1Le48",
+        "url": "https://youtu.be/KfftRU1Le48",
+        "embed_url": "https://www.youtube.com/embed/KfftRU1Le48",
+        "published_at": "2026-05-11T02:50:11Z",
+        "lesson_dir": "algebra-i-module-5-multistep"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 6,
+        "module_title": "Linear Inequalities",
+        "youtube_id": "DkTU3yfj2JY",
+        "url": "https://youtu.be/DkTU3yfj2JY",
+        "embed_url": "https://www.youtube.com/embed/DkTU3yfj2JY",
+        "published_at": "2026-05-14T14:00:27Z",
+        "lesson_dir": "algebra-i-module-6-inequalities"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
         "module_number": 9,
         "module_title": "Slope and Rate of Change",
         "youtube_id": "bmyK05H8fFU",
@@ -35,6 +79,120 @@
         "embed_url": "https://www.youtube.com/embed/bmyK05H8fFU",
         "published_at": "2026-05-06T20:21:55Z",
         "lesson_dir": "algebra-i-module-9-slope"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 10,
+        "module_title": "Writing Linear Equations",
+        "youtube_id": "sPHpjKfc2ek",
+        "url": "https://youtu.be/sPHpjKfc2ek",
+        "embed_url": "https://www.youtube.com/embed/sPHpjKfc2ek",
+        "published_at": "2026-05-11T16:10:02Z",
+        "lesson_dir": "algebra-i-module-10-writing-linear"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 11,
+        "module_title": "Systems of Linear Equations",
+        "youtube_id": "SjX1Usl8JZQ",
+        "url": "https://youtu.be/SjX1Usl8JZQ",
+        "embed_url": "https://www.youtube.com/embed/SjX1Usl8JZQ",
+        "published_at": "2026-05-11T16:10:09Z",
+        "lesson_dir": "algebra-i-module-11-systems"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 12,
+        "module_title": "Exponents and Polynomials",
+        "youtube_id": "pa7fNHt33PI",
+        "url": "https://youtu.be/pa7fNHt33PI",
+        "embed_url": "https://www.youtube.com/embed/pa7fNHt33PI",
+        "published_at": "2026-05-11T16:10:15Z",
+        "lesson_dir": "algebra-i-module-12-exponents-polynomials"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 13,
+        "module_title": "Factoring Polynomials",
+        "youtube_id": "X_no-na1l5I",
+        "url": "https://youtu.be/X_no-na1l5I",
+        "embed_url": "https://www.youtube.com/embed/X_no-na1l5I",
+        "published_at": "2026-05-11T16:10:22Z",
+        "lesson_dir": "algebra-i-module-13-factoring"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 14,
+        "module_title": "Quadratic Equations",
+        "youtube_id": "vPeVa0BhXis",
+        "url": "https://youtu.be/vPeVa0BhXis",
+        "embed_url": "https://www.youtube.com/embed/vPeVa0BhXis",
+        "published_at": "2026-05-14T14:00:06Z",
+        "lesson_dir": "algebra-i-module-14-quadratics"
+      }
+    ],
+    "AP Psychology": [
+      {
+        "course": "AP Psychology",
+        "course_slug": "ap-psychology",
+        "module_number": 1,
+        "module_title": "History & Approaches in Psychology",
+        "youtube_id": "4I2Rj373xVg",
+        "url": "https://youtu.be/4I2Rj373xVg",
+        "embed_url": "https://www.youtube.com/embed/4I2Rj373xVg",
+        "published_at": "2026-05-13T13:30:20Z",
+        "lesson_dir": "ap-psych-module-1-history"
+      },
+      {
+        "course": "AP Psychology",
+        "course_slug": "ap-psychology",
+        "module_number": 11,
+        "module_title": "Personality",
+        "youtube_id": "NxmJf1HFfPc",
+        "url": "https://youtu.be/NxmJf1HFfPc",
+        "embed_url": "https://www.youtube.com/embed/NxmJf1HFfPc",
+        "published_at": "2026-05-13T13:30:28Z",
+        "lesson_dir": "ap-psych-module-11-personality"
+      },
+      {
+        "course": "AP Psychology",
+        "course_slug": "ap-psychology",
+        "module_number": 12,
+        "module_title": "Testing & Intelligence",
+        "youtube_id": "-owkhz2_vSA",
+        "url": "https://youtu.be/-owkhz2_vSA",
+        "embed_url": "https://www.youtube.com/embed/-owkhz2_vSA",
+        "published_at": "2026-05-13T13:30:36Z",
+        "lesson_dir": "ap-psych-module-12-testing-intelligence"
+      },
+      {
+        "course": "AP Psychology",
+        "course_slug": "ap-psychology",
+        "module_number": 13,
+        "module_title": "Abnormal Psychology",
+        "youtube_id": "fpqebmrmBJg",
+        "url": "https://youtu.be/fpqebmrmBJg",
+        "embed_url": "https://www.youtube.com/embed/fpqebmrmBJg",
+        "published_at": "2026-05-13T13:30:44Z",
+        "lesson_dir": "ap-psych-module-13-abnormal"
+      }
+    ],
+    "AP Calculus AB": [
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 1,
+        "module_title": "Limits and Continuity",
+        "youtube_id": "Jm3U-zakmJI",
+        "url": "https://youtu.be/Jm3U-zakmJI",
+        "embed_url": "https://www.youtube.com/embed/Jm3U-zakmJI",
+        "published_at": "2026-05-11T02:50:19Z",
+        "lesson_dir": "ap-calculus-ab-module-1-limits"
       }
     ],
     "English I": [
@@ -66,6 +224,28 @@
     {
       "course": "Algebra I",
       "course_slug": "algebra-i",
+      "module_number": 2,
+      "module_title": "Order of Operations",
+      "youtube_id": "JlrC4u2-MuI",
+      "url": "https://youtu.be/JlrC4u2-MuI",
+      "embed_url": "https://www.youtube.com/embed/JlrC4u2-MuI",
+      "published_at": "2026-05-14T14:00:15Z",
+      "lesson_dir": "algebra-i-module-2-pemdas"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 3,
+      "module_title": "Properties of Real Numbers",
+      "youtube_id": "uYmINrzVZqc",
+      "url": "https://youtu.be/uYmINrzVZqc",
+      "embed_url": "https://www.youtube.com/embed/uYmINrzVZqc",
+      "published_at": "2026-05-07T02:13:53Z",
+      "lesson_dir": "algebra-i-module-3-properties"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
       "module_number": 4,
       "module_title": "Solving One-Step and Two-Step Equations",
       "youtube_id": "AMF3Wj4cycs",
@@ -77,6 +257,28 @@
     {
       "course": "Algebra I",
       "course_slug": "algebra-i",
+      "module_number": 5,
+      "module_title": "Multi-Step and Literal Equations",
+      "youtube_id": "KfftRU1Le48",
+      "url": "https://youtu.be/KfftRU1Le48",
+      "embed_url": "https://www.youtube.com/embed/KfftRU1Le48",
+      "published_at": "2026-05-11T02:50:11Z",
+      "lesson_dir": "algebra-i-module-5-multistep"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 6,
+      "module_title": "Linear Inequalities",
+      "youtube_id": "DkTU3yfj2JY",
+      "url": "https://youtu.be/DkTU3yfj2JY",
+      "embed_url": "https://www.youtube.com/embed/DkTU3yfj2JY",
+      "published_at": "2026-05-14T14:00:27Z",
+      "lesson_dir": "algebra-i-module-6-inequalities"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
       "module_number": 9,
       "module_title": "Slope and Rate of Change",
       "youtube_id": "bmyK05H8fFU",
@@ -84,6 +286,116 @@
       "embed_url": "https://www.youtube.com/embed/bmyK05H8fFU",
       "published_at": "2026-05-06T20:21:55Z",
       "lesson_dir": "algebra-i-module-9-slope"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 10,
+      "module_title": "Writing Linear Equations",
+      "youtube_id": "sPHpjKfc2ek",
+      "url": "https://youtu.be/sPHpjKfc2ek",
+      "embed_url": "https://www.youtube.com/embed/sPHpjKfc2ek",
+      "published_at": "2026-05-11T16:10:02Z",
+      "lesson_dir": "algebra-i-module-10-writing-linear"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 11,
+      "module_title": "Systems of Linear Equations",
+      "youtube_id": "SjX1Usl8JZQ",
+      "url": "https://youtu.be/SjX1Usl8JZQ",
+      "embed_url": "https://www.youtube.com/embed/SjX1Usl8JZQ",
+      "published_at": "2026-05-11T16:10:09Z",
+      "lesson_dir": "algebra-i-module-11-systems"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 12,
+      "module_title": "Exponents and Polynomials",
+      "youtube_id": "pa7fNHt33PI",
+      "url": "https://youtu.be/pa7fNHt33PI",
+      "embed_url": "https://www.youtube.com/embed/pa7fNHt33PI",
+      "published_at": "2026-05-11T16:10:15Z",
+      "lesson_dir": "algebra-i-module-12-exponents-polynomials"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 13,
+      "module_title": "Factoring Polynomials",
+      "youtube_id": "X_no-na1l5I",
+      "url": "https://youtu.be/X_no-na1l5I",
+      "embed_url": "https://www.youtube.com/embed/X_no-na1l5I",
+      "published_at": "2026-05-11T16:10:22Z",
+      "lesson_dir": "algebra-i-module-13-factoring"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 14,
+      "module_title": "Quadratic Equations",
+      "youtube_id": "vPeVa0BhXis",
+      "url": "https://youtu.be/vPeVa0BhXis",
+      "embed_url": "https://www.youtube.com/embed/vPeVa0BhXis",
+      "published_at": "2026-05-14T14:00:06Z",
+      "lesson_dir": "algebra-i-module-14-quadratics"
+    },
+    {
+      "course": "AP Psychology",
+      "course_slug": "ap-psychology",
+      "module_number": 1,
+      "module_title": "History & Approaches in Psychology",
+      "youtube_id": "4I2Rj373xVg",
+      "url": "https://youtu.be/4I2Rj373xVg",
+      "embed_url": "https://www.youtube.com/embed/4I2Rj373xVg",
+      "published_at": "2026-05-13T13:30:20Z",
+      "lesson_dir": "ap-psych-module-1-history"
+    },
+    {
+      "course": "AP Psychology",
+      "course_slug": "ap-psychology",
+      "module_number": 11,
+      "module_title": "Personality",
+      "youtube_id": "NxmJf1HFfPc",
+      "url": "https://youtu.be/NxmJf1HFfPc",
+      "embed_url": "https://www.youtube.com/embed/NxmJf1HFfPc",
+      "published_at": "2026-05-13T13:30:28Z",
+      "lesson_dir": "ap-psych-module-11-personality"
+    },
+    {
+      "course": "AP Psychology",
+      "course_slug": "ap-psychology",
+      "module_number": 12,
+      "module_title": "Testing & Intelligence",
+      "youtube_id": "-owkhz2_vSA",
+      "url": "https://youtu.be/-owkhz2_vSA",
+      "embed_url": "https://www.youtube.com/embed/-owkhz2_vSA",
+      "published_at": "2026-05-13T13:30:36Z",
+      "lesson_dir": "ap-psych-module-12-testing-intelligence"
+    },
+    {
+      "course": "AP Psychology",
+      "course_slug": "ap-psychology",
+      "module_number": 13,
+      "module_title": "Abnormal Psychology",
+      "youtube_id": "fpqebmrmBJg",
+      "url": "https://youtu.be/fpqebmrmBJg",
+      "embed_url": "https://www.youtube.com/embed/fpqebmrmBJg",
+      "published_at": "2026-05-13T13:30:44Z",
+      "lesson_dir": "ap-psych-module-13-abnormal"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 1,
+      "module_title": "Limits and Continuity",
+      "youtube_id": "Jm3U-zakmJI",
+      "url": "https://youtu.be/Jm3U-zakmJI",
+      "embed_url": "https://www.youtube.com/embed/Jm3U-zakmJI",
+      "published_at": "2026-05-11T02:50:19Z",
+      "lesson_dir": "ap-calculus-ab-module-1-limits"
     },
     {
       "course": "English I",
