@@ -1,7 +1,20 @@
 {
-  "generated_at": "2026-05-15T02:14:53+00:00",
+  "generated_at": "2026-05-15T14:00:36+00:00",
   "source": "youtube-channel",
   "by_course": {
+    "AP Computer Science A": [
+      {
+        "course": "AP Computer Science A",
+        "course_slug": "ap-computer-science-a",
+        "module_number": 1,
+        "module_title": "Primitive Types",
+        "youtube_id": "kTMroXpbPLQ",
+        "url": "https://youtu.be/kTMroXpbPLQ",
+        "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
+        "published_at": "2026-05-15T14:00:21Z",
+        "lesson_dir": "ap-cs-a-module-1-primitives"
+      }
+    ],
     "AP Calculus AB": [
       {
         "course": "AP Calculus AB",
@@ -35,6 +48,39 @@
         "embed_url": "https://www.youtube.com/embed/7PI1e-vTLrQ",
         "published_at": "2026-05-15T02:14:39Z",
         "lesson_dir": "ap-calculus-ab-module-3-composite-implicit-inverse"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 4,
+        "module_title": "Contextual Applications of Differentiation",
+        "youtube_id": "UhKPnybUhdU",
+        "url": "https://youtu.be/UhKPnybUhdU",
+        "embed_url": "https://www.youtube.com/embed/UhKPnybUhdU",
+        "published_at": "2026-05-15T02:14:46Z",
+        "lesson_dir": "ap-calculus-ab-module-4-contextual-applications"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 5,
+        "module_title": "MVT, EVT, and the Derivative Tests",
+        "youtube_id": "Muiy7BjQxes",
+        "url": "https://youtu.be/Muiy7BjQxes",
+        "embed_url": "https://www.youtube.com/embed/Muiy7BjQxes",
+        "published_at": "2026-05-15T14:00:07Z",
+        "lesson_dir": "ap-calculus-ab-module-5-mvt-evt-derivative-tests"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 6,
+        "module_title": "Graph Sketching, Optimization & Implicit Behavior",
+        "youtube_id": "XmfNF9Mw_t8",
+        "url": "https://youtu.be/XmfNF9Mw_t8",
+        "embed_url": "https://www.youtube.com/embed/XmfNF9Mw_t8",
+        "published_at": "2026-05-15T14:00:14Z",
+        "lesson_dir": "ap-calculus-ab-module-6-graph-sketching-optimization"
       }
     ],
     "Algebra I": [
@@ -255,6 +301,17 @@
   },
   "lessons": [
     {
+      "course": "AP Computer Science A",
+      "course_slug": "ap-computer-science-a",
+      "module_number": 1,
+      "module_title": "Primitive Types",
+      "youtube_id": "kTMroXpbPLQ",
+      "url": "https://youtu.be/kTMroXpbPLQ",
+      "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
+      "published_at": "2026-05-15T14:00:21Z",
+      "lesson_dir": "ap-cs-a-module-1-primitives"
+    },
+    {
       "course": "AP Calculus AB",
       "course_slug": "ap-calculus-ab",
       "module_number": 1,
@@ -286,6 +343,39 @@
       "embed_url": "https://www.youtube.com/embed/7PI1e-vTLrQ",
       "published_at": "2026-05-15T02:14:39Z",
       "lesson_dir": "ap-calculus-ab-module-3-composite-implicit-inverse"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 4,
+      "module_title": "Contextual Applications of Differentiation",
+      "youtube_id": "UhKPnybUhdU",
+      "url": "https://youtu.be/UhKPnybUhdU",
+      "embed_url": "https://www.youtube.com/embed/UhKPnybUhdU",
+      "published_at": "2026-05-15T02:14:46Z",
+      "lesson_dir": "ap-calculus-ab-module-4-contextual-applications"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 5,
+      "module_title": "MVT, EVT, and the Derivative Tests",
+      "youtube_id": "Muiy7BjQxes",
+      "url": "https://youtu.be/Muiy7BjQxes",
+      "embed_url": "https://www.youtube.com/embed/Muiy7BjQxes",
+      "published_at": "2026-05-15T14:00:07Z",
+      "lesson_dir": "ap-calculus-ab-module-5-mvt-evt-derivative-tests"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 6,
+      "module_title": "Graph Sketching, Optimization & Implicit Behavior",
+      "youtube_id": "XmfNF9Mw_t8",
+      "url": "https://youtu.be/XmfNF9Mw_t8",
+      "embed_url": "https://www.youtube.com/embed/XmfNF9Mw_t8",
+      "published_at": "2026-05-15T14:00:14Z",
+      "lesson_dir": "ap-calculus-ab-module-6-graph-sketching-optimization"
     },
     {
       "course": "Algebra I",

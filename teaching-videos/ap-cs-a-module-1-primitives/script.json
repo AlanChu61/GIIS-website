@@ -62,5 +62,15 @@
       "id": "14_path",
       "text": "Reminder — this video is the overview. To actually master primitive types, here's the rest. Read the Primitive Types chapter on CodeHS or Runestone — it has interactive code blocks. Practice on Codingbat or repl.it — write ten tiny programs, one for each new idea today. Submit the assignment in your dashboard. Book a check-in with your advisor if anything feels unclear. See you in Module Two — Using Objects."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "kTMroXpbPLQ",
+    "url": "https://youtu.be/kTMroXpbPLQ",
+    "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
+    "studio_url": "https://studio.youtube.com/video/kTMroXpbPLQ/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Computer Science A",
+    "playlist_id": "PLBdiOM21TW9Jm4j6gjxl-23c0DKjqFV1w",
+    "uploaded_at": "2026-05-15T14:00:27+00:00"
+  }
 }

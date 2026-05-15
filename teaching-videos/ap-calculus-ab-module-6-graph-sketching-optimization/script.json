@@ -74,5 +74,15 @@
       "id": "16_path",
       "text": "This video is the overview, not the full module. To master it — one, read OpenStax Calculus Volume One, chapters four-point-seven through four-point-eight. Two, work the Khan Academy Unit Five Part Two problems on optimization and analyzing derivative graphs. Three, complete the GIIS optimization problem set in your dashboard. Four, book a fifteen-minute advisor check-in to walk through an optimization free-response together. Next up — Module Seven: Riemann sums and the Fundamental Theorem of Calculus, where we move from differentiation to integration."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "XmfNF9Mw_t8",
+    "url": "https://youtu.be/XmfNF9Mw_t8",
+    "embed_url": "https://www.youtube.com/embed/XmfNF9Mw_t8",
+    "studio_url": "https://studio.youtube.com/video/XmfNF9Mw_t8/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Calculus AB",
+    "playlist_id": "PLBdiOM21TW9IAhkVIg3k-Jae6cPtrg3Sm",
+    "uploaded_at": "2026-05-15T14:00:19+00:00"
+  }
 }

@@ -78,5 +78,15 @@
       "id": "18_path",
       "text": "Reminder — this video is the overview. Recursion clicks only after you have written ten or fifteen tiny recursive methods yourself. Read the Recursion chapter on Runestone — its visualizer shows the call stack live. Then do Codingbat Recursion-one and Recursion-two — fifteen problems total. Submit your assignment in the dashboard. Book a check-in with your advisor. And one more thing — you have just finished AP Computer Science A. Massive accomplishment. Talk to your advisor about practice exams next."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "FEziRpv36Os",
+    "url": "https://youtu.be/FEziRpv36Os",
+    "embed_url": "https://www.youtube.com/embed/FEziRpv36Os",
+    "studio_url": "https://studio.youtube.com/video/FEziRpv36Os/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Computer Science A",
+    "playlist_id": "PLBdiOM21TW9Jm4j6gjxl-23c0DKjqFV1w",
+    "uploaded_at": "2026-05-15T14:00:35+00:00"
+  }
 }
