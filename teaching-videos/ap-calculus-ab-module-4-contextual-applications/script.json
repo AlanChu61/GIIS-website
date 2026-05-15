@@ -74,5 +74,15 @@
       "id": "16_path",
       "text": "This video is the overview, not the full module. To actually master it — one, read OpenStax Calculus Volume One chapters four-point-one through four-point-seven. Two, work the Khan Academy Unit Four practice set on AP Calculus AB. Three, do the Module Four problem set in your dashboard. Four, book an advisor check-in if related rates still feel fuzzy. Next up — Module Five: the Mean Value Theorem, Extreme Value Theorem, and the derivative tests."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "UhKPnybUhdU",
+    "url": "https://youtu.be/UhKPnybUhdU",
+    "embed_url": "https://www.youtube.com/embed/UhKPnybUhdU",
+    "studio_url": "https://studio.youtube.com/video/UhKPnybUhdU/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Calculus AB",
+    "playlist_id": "PLBdiOM21TW9IAhkVIg3k-Jae6cPtrg3Sm",
+    "uploaded_at": "2026-05-15T02:14:52+00:00"
+  }
 }

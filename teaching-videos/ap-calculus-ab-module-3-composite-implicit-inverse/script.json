@@ -82,5 +82,15 @@
       "id": "19_path",
       "text": "Four steps to actually master this module. One — read OpenStax Calculus Volume One, sections three-point-six through three-point-eight. Two — work through Khan Academy AP Calculus AB, Unit Three. Three — submit the GIIS Assignment M3 in your dashboard. Four — book a fifteen-minute advisor check-in if any implicit problem is fighting you. Next up — Module Four: contextual applications of differentiation. That's related rates, linear approximation, and L'Hôpital's rule."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "7PI1e-vTLrQ",
+    "url": "https://youtu.be/7PI1e-vTLrQ",
+    "embed_url": "https://www.youtube.com/embed/7PI1e-vTLrQ",
+    "studio_url": "https://studio.youtube.com/video/7PI1e-vTLrQ/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Calculus AB",
+    "playlist_id": "PLBdiOM21TW9IAhkVIg3k-Jae6cPtrg3Sm",
+    "uploaded_at": "2026-05-15T02:14:44+00:00"
+  }
 }

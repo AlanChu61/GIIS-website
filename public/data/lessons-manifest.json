@@ -1,7 +1,42 @@
 {
-  "generated_at": "2026-05-14T14:00:41+00:00",
+  "generated_at": "2026-05-15T02:14:53+00:00",
   "source": "youtube-channel",
   "by_course": {
+    "AP Calculus AB": [
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 1,
+        "module_title": "Limits and Continuity",
+        "youtube_id": "Jm3U-zakmJI",
+        "url": "https://youtu.be/Jm3U-zakmJI",
+        "embed_url": "https://www.youtube.com/embed/Jm3U-zakmJI",
+        "published_at": "2026-05-11T02:50:19Z",
+        "lesson_dir": "ap-calculus-ab-module-1-limits"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 2,
+        "module_title": "Differentiation — Definition and Fundamental Properties",
+        "youtube_id": "p4WCriOrje0",
+        "url": "https://youtu.be/p4WCriOrje0",
+        "embed_url": "https://www.youtube.com/embed/p4WCriOrje0",
+        "published_at": "2026-05-15T02:14:31Z",
+        "lesson_dir": "ap-calculus-ab-module-2-derivatives"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 3,
+        "module_title": "Composite, Implicit & Inverse Derivatives",
+        "youtube_id": "7PI1e-vTLrQ",
+        "url": "https://youtu.be/7PI1e-vTLrQ",
+        "embed_url": "https://www.youtube.com/embed/7PI1e-vTLrQ",
+        "published_at": "2026-05-15T02:14:39Z",
+        "lesson_dir": "ap-calculus-ab-module-3-composite-implicit-inverse"
+      }
+    ],
     "Algebra I": [
       {
         "course": "Algebra I",
@@ -68,6 +103,28 @@
         "embed_url": "https://www.youtube.com/embed/DkTU3yfj2JY",
         "published_at": "2026-05-14T14:00:27Z",
         "lesson_dir": "algebra-i-module-6-inequalities"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 7,
+        "module_title": "Introduction to Functions",
+        "youtube_id": "rLDpY7Ww3SM",
+        "url": "https://youtu.be/rLDpY7Ww3SM",
+        "embed_url": "https://www.youtube.com/embed/rLDpY7Ww3SM",
+        "published_at": "2026-05-15T02:14:23Z",
+        "lesson_dir": "algebra-i-module-7-functions"
+      },
+      {
+        "course": "Algebra I",
+        "course_slug": "algebra-i",
+        "module_number": 8,
+        "module_title": "Graphing Linear Equations",
+        "youtube_id": "uVnqgy69pRY",
+        "url": "https://youtu.be/uVnqgy69pRY",
+        "embed_url": "https://www.youtube.com/embed/uVnqgy69pRY",
+        "published_at": "2026-05-14T14:00:35Z",
+        "lesson_dir": "algebra-i-module-8-graphing"
       },
       {
         "course": "Algebra I",
@@ -182,19 +239,6 @@
         "lesson_dir": "ap-psych-module-13-abnormal"
       }
     ],
-    "AP Calculus AB": [
-      {
-        "course": "AP Calculus AB",
-        "course_slug": "ap-calculus-ab",
-        "module_number": 1,
-        "module_title": "Limits and Continuity",
-        "youtube_id": "Jm3U-zakmJI",
-        "url": "https://youtu.be/Jm3U-zakmJI",
-        "embed_url": "https://www.youtube.com/embed/Jm3U-zakmJI",
-        "published_at": "2026-05-11T02:50:19Z",
-        "lesson_dir": "ap-calculus-ab-module-1-limits"
-      }
-    ],
     "English I": [
       {
         "course": "English I",
@@ -210,6 +254,39 @@
     ]
   },
   "lessons": [
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 1,
+      "module_title": "Limits and Continuity",
+      "youtube_id": "Jm3U-zakmJI",
+      "url": "https://youtu.be/Jm3U-zakmJI",
+      "embed_url": "https://www.youtube.com/embed/Jm3U-zakmJI",
+      "published_at": "2026-05-11T02:50:19Z",
+      "lesson_dir": "ap-calculus-ab-module-1-limits"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 2,
+      "module_title": "Differentiation — Definition and Fundamental Properties",
+      "youtube_id": "p4WCriOrje0",
+      "url": "https://youtu.be/p4WCriOrje0",
+      "embed_url": "https://www.youtube.com/embed/p4WCriOrje0",
+      "published_at": "2026-05-15T02:14:31Z",
+      "lesson_dir": "ap-calculus-ab-module-2-derivatives"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 3,
+      "module_title": "Composite, Implicit & Inverse Derivatives",
+      "youtube_id": "7PI1e-vTLrQ",
+      "url": "https://youtu.be/7PI1e-vTLrQ",
+      "embed_url": "https://www.youtube.com/embed/7PI1e-vTLrQ",
+      "published_at": "2026-05-15T02:14:39Z",
+      "lesson_dir": "ap-calculus-ab-module-3-composite-implicit-inverse"
+    },
     {
       "course": "Algebra I",
       "course_slug": "algebra-i",
@@ -275,6 +352,28 @@
       "embed_url": "https://www.youtube.com/embed/DkTU3yfj2JY",
       "published_at": "2026-05-14T14:00:27Z",
       "lesson_dir": "algebra-i-module-6-inequalities"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 7,
+      "module_title": "Introduction to Functions",
+      "youtube_id": "rLDpY7Ww3SM",
+      "url": "https://youtu.be/rLDpY7Ww3SM",
+      "embed_url": "https://www.youtube.com/embed/rLDpY7Ww3SM",
+      "published_at": "2026-05-15T02:14:23Z",
+      "lesson_dir": "algebra-i-module-7-functions"
+    },
+    {
+      "course": "Algebra I",
+      "course_slug": "algebra-i",
+      "module_number": 8,
+      "module_title": "Graphing Linear Equations",
+      "youtube_id": "uVnqgy69pRY",
+      "url": "https://youtu.be/uVnqgy69pRY",
+      "embed_url": "https://www.youtube.com/embed/uVnqgy69pRY",
+      "published_at": "2026-05-14T14:00:35Z",
+      "lesson_dir": "algebra-i-module-8-graphing"
     },
     {
       "course": "Algebra I",
@@ -385,17 +484,6 @@
       "embed_url": "https://www.youtube.com/embed/fpqebmrmBJg",
       "published_at": "2026-05-13T13:30:44Z",
       "lesson_dir": "ap-psych-module-13-abnormal"
-    },
-    {
-      "course": "AP Calculus AB",
-      "course_slug": "ap-calculus-ab",
-      "module_number": 1,
-      "module_title": "Limits and Continuity",
-      "youtube_id": "Jm3U-zakmJI",
-      "url": "https://youtu.be/Jm3U-zakmJI",
-      "embed_url": "https://www.youtube.com/embed/Jm3U-zakmJI",
-      "published_at": "2026-05-11T02:50:19Z",
-      "lesson_dir": "ap-calculus-ab-module-1-limits"
     },
     {
       "course": "English I",

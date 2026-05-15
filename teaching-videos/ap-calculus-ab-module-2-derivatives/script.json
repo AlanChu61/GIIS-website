@@ -78,5 +78,15 @@
       "id": "18_path",
       "text": "This video is the overview, not the full module. To actually master derivatives, here's the path. One — read OpenStax Calculus Volume One, chapters three-point-one through three-point-six. Two — work through Khan Academy AP Calculus AB practice on derivatives. Three — do the twenty mixed product and quotient problems in your dashboard. Four — book an advisor check-in if the differentiability rules still feel fuzzy. Next up — Module Three: composite, implicit, and inverse functions. That's the chain rule, and it's the most useful single tool in the whole course."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "p4WCriOrje0",
+    "url": "https://youtu.be/p4WCriOrje0",
+    "embed_url": "https://www.youtube.com/embed/p4WCriOrje0",
+    "studio_url": "https://studio.youtube.com/video/p4WCriOrje0/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Calculus AB",
+    "playlist_id": "PLBdiOM21TW9IAhkVIg3k-Jae6cPtrg3Sm",
+    "uploaded_at": "2026-05-15T02:14:37+00:00"
+  }
 }
