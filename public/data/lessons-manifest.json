@@ -1,20 +1,7 @@
 {
-  "generated_at": "2026-05-15T14:00:36+00:00",
+  "generated_at": "2026-05-16T14:00:45+00:00",
   "source": "youtube-channel",
   "by_course": {
-    "AP Computer Science A": [
-      {
-        "course": "AP Computer Science A",
-        "course_slug": "ap-computer-science-a",
-        "module_number": 1,
-        "module_title": "Primitive Types",
-        "youtube_id": "kTMroXpbPLQ",
-        "url": "https://youtu.be/kTMroXpbPLQ",
-        "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
-        "published_at": "2026-05-15T14:00:21Z",
-        "lesson_dir": "ap-cs-a-module-1-primitives"
-      }
-    ],
     "AP Calculus AB": [
       {
         "course": "AP Calculus AB",
@@ -81,6 +68,63 @@
         "embed_url": "https://www.youtube.com/embed/XmfNF9Mw_t8",
         "published_at": "2026-05-15T14:00:14Z",
         "lesson_dir": "ap-calculus-ab-module-6-graph-sketching-optimization"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 7,
+        "module_title": "Riemann Sums and the Fundamental Theorem of Calculus",
+        "youtube_id": "tILIe138--k",
+        "url": "https://youtu.be/tILIe138--k",
+        "embed_url": "https://www.youtube.com/embed/tILIe138--k",
+        "published_at": "2026-05-16T14:00:23Z",
+        "lesson_dir": "ap-calculus-ab-module-7-riemann-sums-ftc"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 8,
+        "module_title": "Antiderivatives and Integration by Substitution",
+        "youtube_id": "gIgsKyaGhKI",
+        "url": "https://youtu.be/gIgsKyaGhKI",
+        "embed_url": "https://www.youtube.com/embed/gIgsKyaGhKI",
+        "published_at": "2026-05-16T14:00:30Z",
+        "lesson_dir": "ap-calculus-ab-module-8-antiderivatives-substitution"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 10,
+        "module_title": "Average Value and Area Between Curves",
+        "youtube_id": "7cYj6-dghoI",
+        "url": "https://youtu.be/7cYj6-dghoI",
+        "embed_url": "https://www.youtube.com/embed/7cYj6-dghoI",
+        "published_at": "2026-05-16T14:00:16Z",
+        "lesson_dir": "ap-calculus-ab-module-10-average-value-area-between-curves"
+      }
+    ],
+    "AP Computer Science A": [
+      {
+        "course": "AP Computer Science A",
+        "course_slug": "ap-computer-science-a",
+        "module_number": 1,
+        "module_title": "Primitive Types",
+        "youtube_id": "kTMroXpbPLQ",
+        "url": "https://youtu.be/kTMroXpbPLQ",
+        "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
+        "published_at": "2026-05-15T14:00:21Z",
+        "lesson_dir": "ap-cs-a-module-1-primitives"
+      },
+      {
+        "course": "AP Computer Science A",
+        "course_slug": "ap-computer-science-a",
+        "module_number": 10,
+        "module_title": "Recursion",
+        "youtube_id": "FEziRpv36Os",
+        "url": "https://youtu.be/FEziRpv36Os",
+        "embed_url": "https://www.youtube.com/embed/FEziRpv36Os",
+        "published_at": "2026-05-15T14:00:29Z",
+        "lesson_dir": "ap-cs-a-module-10-recursion"
       }
     ],
     "Algebra I": [
@@ -301,17 +345,6 @@
   },
   "lessons": [
     {
-      "course": "AP Computer Science A",
-      "course_slug": "ap-computer-science-a",
-      "module_number": 1,
-      "module_title": "Primitive Types",
-      "youtube_id": "kTMroXpbPLQ",
-      "url": "https://youtu.be/kTMroXpbPLQ",
-      "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
-      "published_at": "2026-05-15T14:00:21Z",
-      "lesson_dir": "ap-cs-a-module-1-primitives"
-    },
-    {
       "course": "AP Calculus AB",
       "course_slug": "ap-calculus-ab",
       "module_number": 1,
@@ -376,6 +409,61 @@
       "embed_url": "https://www.youtube.com/embed/XmfNF9Mw_t8",
       "published_at": "2026-05-15T14:00:14Z",
       "lesson_dir": "ap-calculus-ab-module-6-graph-sketching-optimization"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 7,
+      "module_title": "Riemann Sums and the Fundamental Theorem of Calculus",
+      "youtube_id": "tILIe138--k",
+      "url": "https://youtu.be/tILIe138--k",
+      "embed_url": "https://www.youtube.com/embed/tILIe138--k",
+      "published_at": "2026-05-16T14:00:23Z",
+      "lesson_dir": "ap-calculus-ab-module-7-riemann-sums-ftc"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 8,
+      "module_title": "Antiderivatives and Integration by Substitution",
+      "youtube_id": "gIgsKyaGhKI",
+      "url": "https://youtu.be/gIgsKyaGhKI",
+      "embed_url": "https://www.youtube.com/embed/gIgsKyaGhKI",
+      "published_at": "2026-05-16T14:00:30Z",
+      "lesson_dir": "ap-calculus-ab-module-8-antiderivatives-substitution"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 10,
+      "module_title": "Average Value and Area Between Curves",
+      "youtube_id": "7cYj6-dghoI",
+      "url": "https://youtu.be/7cYj6-dghoI",
+      "embed_url": "https://www.youtube.com/embed/7cYj6-dghoI",
+      "published_at": "2026-05-16T14:00:16Z",
+      "lesson_dir": "ap-calculus-ab-module-10-average-value-area-between-curves"
+    },
+    {
+      "course": "AP Computer Science A",
+      "course_slug": "ap-computer-science-a",
+      "module_number": 1,
+      "module_title": "Primitive Types",
+      "youtube_id": "kTMroXpbPLQ",
+      "url": "https://youtu.be/kTMroXpbPLQ",
+      "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
+      "published_at": "2026-05-15T14:00:21Z",
+      "lesson_dir": "ap-cs-a-module-1-primitives"
+    },
+    {
+      "course": "AP Computer Science A",
+      "course_slug": "ap-computer-science-a",
+      "module_number": 10,
+      "module_title": "Recursion",
+      "youtube_id": "FEziRpv36Os",
+      "url": "https://youtu.be/FEziRpv36Os",
+      "embed_url": "https://www.youtube.com/embed/FEziRpv36Os",
+      "published_at": "2026-05-15T14:00:29Z",
+      "lesson_dir": "ap-cs-a-module-10-recursion"
     },
     {
       "course": "Algebra I",
