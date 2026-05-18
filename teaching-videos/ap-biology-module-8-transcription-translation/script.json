@@ -1,0 +1,74 @@
+{
+  "course": "AP Biology",
+  "module": "Module 8: Gene Expression — Transcription and Translation",
+  "voice": "en-US-EmmaNeural",
+  "voice_rate": "-3%",
+  "intro_music_seconds": 3,
+  "outro_music_seconds": 3,
+  "sections": [
+    {
+      "id": "01_title",
+      "text": "Welcome back to AP Biology — Module Eight, Gene Expression. This sits inside College Board Unit Six, which lands on roughly twelve to sixteen percent of the AP exam. Today we follow the information in your DNA all the way out to a working protein — transcription, mRNA processing, translation, and the regulation that decides which genes are actually used."
+    },
+    {
+      "id": "02_hook",
+      "text": "Here is a strange number. You have about twenty thousand genes, but your cells make over a hundred thousand different proteins. That is not a typo. One gene, many proteins — thanks to alternative splicing. And a single base swap in just one of those genes — adenine to thymine in beta-globin — turns glutamate into valine and causes sickle-cell disease. Today's lesson is how one letter in DNA reaches all the way out to a folded protein that decides whether you're healthy or sick."
+    },
+    {
+      "id": "03_overview",
+      "text": "Four big moves today. First — the central dogma, DNA to RNA to protein. Second — transcription and mRNA processing in eukaryotes. Third — translation at the ribosome, including the codon table. Fourth — gene regulation in prokaryotes versus eukaryotes, and how mutations break the whole pipeline."
+    },
+    {
+      "id": "04_central_dogma",
+      "text": "The central dogma, written down by Francis Crick — DNA to RNA to protein. DNA stores the information. Transcription copies one strand into messenger RNA. Translation reads that mRNA, three letters at a time, and builds a protein. There is one famous exception — retroviruses like HIV carry reverse transcriptase, which goes backwards from RNA to DNA. The arrow can run the other way, but only under that special enzyme."
+    },
+    {
+      "id": "05_transcription",
+      "text": "Transcription, eukaryotic version. Initiation — general transcription factors find the promoter, marked by the TATA box about twenty-five base pairs upstream of the gene, and RNA polymerase Two locks on. Elongation — RNA polymerase reads the template strand three-prime to five-prime, and synthesizes the new mRNA five-prime to three-prime. Uracil replaces thymine — that is the one base swap to remember. Termination — at the terminator sequence, the transcript releases, and you have a pre-mRNA."
+    },
+    {
+      "id": "06_mrna_processing",
+      "text": "Pre-mRNA is not ready to leave the nucleus. Three modifications happen in eukaryotes only. A five-prime cap — a modified guanine — gets stuck on the front, which protects from degradation and helps the ribosome recognize the mRNA. A three-prime poly-A tail — about two hundred adenines — gets added to the back for the same protection job. And splicing — the spliceosome, a complex of small nuclear RNAs called snRNPs, cuts out the introns and stitches the exons together. Alternative splicing lets one gene mix and match its exons into different proteins. Prokaryotes skip all of this — no nucleus, no introns, and transcription and translation actually happen at the same time."
+    },
+    {
+      "id": "07_translation_machinery",
+      "text": "Translation hardware. The ribosome — a large sixty-S subunit and a small forty-S subunit click together to make the eighty-S ribosome in eukaryotes. It has three slots — the A site for the incoming aminoacyl-tRNA, the P site holding the growing peptide, and the E site where empty tRNAs exit. tRNAs carry amino acids, and their anticodon base-pairs with the mRNA codon. The codon table has sixty-four codons — sixty-one code for amino acids, three are stop codons — U-A-A, U-A-G, U-G-A. A-U-G is the start codon and codes for methionine. The genetic code is redundant — multiple codons can spell the same amino acid — and it is nearly universal across every form of life on Earth."
+    },
+    {
+      "id": "08_translation_steps",
+      "text": "Translation in three acts. Initiation — the small ribosomal subunit binds the five-prime cap and scans down the mRNA until it finds the first A-U-G; the large subunit then joins. Elongation — the next codon pulls in a matching aminoacyl-tRNA into the A site; a peptide bond forms between the new amino acid and the chain in the P site. Here is the beautiful detail — that peptide bond is catalyzed by ribosomal RNA, not protein. The rRNA is a ribozyme — RNA acting as an enzyme. The ribosome translocates one codon, the tRNA shifts A to P to E. Termination — when a stop codon enters the A site, a release factor binds and the finished polypeptide pops off."
+    },
+    {
+      "id": "09_prokaryote_operons",
+      "text": "Prokaryote gene regulation runs on operons — clusters of genes under one shared promoter and operator. Two flavors. The lac operon is inducible — normally OFF. When lactose is around, it converts to allolactose, which knocks the repressor off the operator and the operon turns ON to digest lactose. If glucose is also low, cyclic A-M-P binds CAP and boosts transcription even more. The trp operon is repressible — normally ON. When tryptophan is abundant, trp itself activates the repressor, which sits down on the operator and shuts the operon OFF. So lactose turns lac ON, and tryptophan turns trp OFF. Opposite logic, same machinery."
+    },
+    {
+      "id": "10_pause1",
+      "text": "Try this. Given an mRNA sequence — five-prime A-U-G C-C-A U-A-G three-prime — how many amino acids end up in the finished protein? Pause now. Solve it. Press play when you're ready."
+    },
+    {
+      "id": "11_pause1_silence",
+      "text": "Answer — one amino acid. A-U-G is the start codon and codes for methionine, so that is amino acid number one. C-C-A codes for proline — but wait, look at the next codon. U-A-G is a stop codon. Translation stops the moment a release factor sees U-A-G in the A site. The proline never gets added. So this whole mRNA produces a one-amino-acid protein — just methionine. Trap detail — the start codon counts as an amino acid; the stop codon does not."
+    },
+    {
+      "id": "12_eukaryote_regulation",
+      "text": "Eukaryote regulation is multi-layered. Chromatin remodeling and epigenetics — DNA methylation, usually at CpG islands, locks chromatin tight and represses transcription. Histone acetylation does the opposite — loosens chromatin and activates transcription. Transcription factors bind enhancers and silencers far from the gene, and a mediator complex bridges them to RNA polymerase. Alternative splicing reshuffles exons for different protein versions. Micro-RNAs and RNA interference can degrade an mRNA or block its translation. And the ubiquitin-proteasome system tags finished proteins for destruction. Every one of those layers is a place where regulation — and disease — can happen."
+    },
+    {
+      "id": "13_mutations",
+      "text": "Mutations — what goes wrong. Point mutations swap a single base. Silent — the new codon still codes for the same amino acid, thanks to redundancy in the code. Missense — codes for a different amino acid. The classic example is sickle-cell — the codon G-A-G mutates to G-T-G, glutamate becomes valine at position six of beta-globin, and the hemoglobin proteins clump under low oxygen. Nonsense — the new codon is a stop codon, so the protein truncates early. Frameshift mutations — insertions or deletions that are not multiples of three — shift the reading frame downstream and usually destroy the rest of the protein. And remember — mutations are the ultimate source of new genetic variation that evolution acts on."
+    },
+    {
+      "id": "14_compare_traps",
+      "text": "Four traps that catch students every year. One — template strand versus coding strand. RNA polymerase reads the template strand, but the mRNA sequence matches the coding strand, with U for T. Two — A-U-G is the start codon, and it always codes for methionine — every protein starts with Met, at least initially. Three — lac versus trp. Lactose turns lac ON. Tryptophan turns trp OFF. Opposite directions. Four — alternative splicing is not a mutation. It is a regulated, normal process — same gene, different protein products. Mutations change the DNA itself."
+    },
+    {
+      "id": "15_recap",
+      "text": "Recap. Central dogma — DNA, then mRNA via transcription, then protein via translation. In eukaryotes, mRNA gets a five-prime cap, a poly-A tail, and gets spliced before leaving the nucleus. The ribosome reads codons in groups of three; A-U-G starts, U-A-A, U-A-G, and U-G-A stop; the peptide bond is catalyzed by rRNA — a ribozyme. Prokaryotes regulate with operons — lac is inducible, trp is repressible. Eukaryotes regulate with chromatin, transcription factors, alternative splicing, and micro-RNAs. Mutations come in silent, missense, nonsense, and frameshift flavors — and they are the source of all new genetic variation."
+    },
+    {
+      "id": "16_path",
+      "text": "Your path forward. Read OpenStax Biology, Chapters Fifteen and Sixteen, for the deeper version of transcription, translation, and gene regulation. Drill the Khan Academy AP Biology Unit Six problem sets — codon table questions and lac-operon questions are exam staples. Do the assignment in your dashboard. And book an advisor check-in if the codon table or the lac-versus-trp logic still feels fuzzy. Next time, we move into Module Nine — Biotechnology, where we put all of this into practice with PCR, gel electrophoresis, and CRISPR."
+    }
+  ]
+}
