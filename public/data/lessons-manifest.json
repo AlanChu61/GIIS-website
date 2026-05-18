@@ -1,7 +1,88 @@
 {
-  "generated_at": "2026-05-16T14:00:45+00:00",
+  "generated_at": "2026-05-18T14:00:41+00:00",
   "source": "youtube-channel",
   "by_course": {
+    "AP Biology": [
+      {
+        "course": "AP Biology",
+        "course_slug": "ap-biology",
+        "module_number": 1,
+        "module_title": "Chemistry of Life",
+        "youtube_id": "0gVg4Udh-ic",
+        "url": "https://youtu.be/0gVg4Udh-ic",
+        "embed_url": "https://www.youtube.com/embed/0gVg4Udh-ic",
+        "published_at": "2026-05-18T14:00:04Z",
+        "lesson_dir": "ap-biology-module-1-chemistry-of-life"
+      },
+      {
+        "course": "AP Biology",
+        "course_slug": "ap-biology",
+        "module_number": 2,
+        "module_title": "Cell Structure and Function",
+        "youtube_id": "xuGSMHGt564",
+        "url": "https://youtu.be/xuGSMHGt564",
+        "embed_url": "https://www.youtube.com/embed/xuGSMHGt564",
+        "published_at": "2026-05-18T14:00:16Z",
+        "lesson_dir": "ap-biology-module-2-cell-structure"
+      },
+      {
+        "course": "AP Biology",
+        "course_slug": "ap-biology",
+        "module_number": 5,
+        "module_title": "Cell Cycle and Division",
+        "youtube_id": "IKdM8BmWn9Y",
+        "url": "https://youtu.be/IKdM8BmWn9Y",
+        "embed_url": "https://www.youtube.com/embed/IKdM8BmWn9Y",
+        "published_at": "2026-05-18T14:00:24Z",
+        "lesson_dir": "ap-biology-module-5-cell-cycle"
+      }
+    ],
+    "AP Computer Science A": [
+      {
+        "course": "AP Computer Science A",
+        "course_slug": "ap-computer-science-a",
+        "module_number": 1,
+        "module_title": "Primitive Types",
+        "youtube_id": "kTMroXpbPLQ",
+        "url": "https://youtu.be/kTMroXpbPLQ",
+        "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
+        "published_at": "2026-05-15T14:00:21Z",
+        "lesson_dir": "ap-cs-a-module-1-primitives"
+      },
+      {
+        "course": "AP Computer Science A",
+        "course_slug": "ap-computer-science-a",
+        "module_number": 2,
+        "module_title": "Using Objects",
+        "youtube_id": "-ltLaZz2JAI",
+        "url": "https://youtu.be/-ltLaZz2JAI",
+        "embed_url": "https://www.youtube.com/embed/-ltLaZz2JAI",
+        "published_at": "2026-05-17T14:00:22Z",
+        "lesson_dir": "ap-cs-a-module-2-using-objects"
+      },
+      {
+        "course": "AP Computer Science A",
+        "course_slug": "ap-computer-science-a",
+        "module_number": 3,
+        "module_title": "Boolean Expressions and if Statements",
+        "youtube_id": "tGAOZaDi0zw",
+        "url": "https://youtu.be/tGAOZaDi0zw",
+        "embed_url": "https://www.youtube.com/embed/tGAOZaDi0zw",
+        "published_at": "2026-05-17T14:00:30Z",
+        "lesson_dir": "ap-cs-a-module-3-booleans-if"
+      },
+      {
+        "course": "AP Computer Science A",
+        "course_slug": "ap-computer-science-a",
+        "module_number": 10,
+        "module_title": "Recursion",
+        "youtube_id": "FEziRpv36Os",
+        "url": "https://youtu.be/FEziRpv36Os",
+        "embed_url": "https://www.youtube.com/embed/FEziRpv36Os",
+        "published_at": "2026-05-15T14:00:29Z",
+        "lesson_dir": "ap-cs-a-module-10-recursion"
+      }
+    ],
     "AP Calculus AB": [
       {
         "course": "AP Calculus AB",
@@ -94,6 +175,17 @@
       {
         "course": "AP Calculus AB",
         "course_slug": "ap-calculus-ab",
+        "module_number": 9,
+        "module_title": "Differential Equations — Slope Fields and Separation of Variables",
+        "youtube_id": "oltqaE2oKgk",
+        "url": "https://youtu.be/oltqaE2oKgk",
+        "embed_url": "https://www.youtube.com/embed/oltqaE2oKgk",
+        "published_at": "2026-05-16T14:00:38Z",
+        "lesson_dir": "ap-calculus-ab-module-9-differential-equations"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
         "module_number": 10,
         "module_title": "Average Value and Area Between Curves",
         "youtube_id": "7cYj6-dghoI",
@@ -101,30 +193,28 @@
         "embed_url": "https://www.youtube.com/embed/7cYj6-dghoI",
         "published_at": "2026-05-16T14:00:16Z",
         "lesson_dir": "ap-calculus-ab-module-10-average-value-area-between-curves"
-      }
-    ],
-    "AP Computer Science A": [
-      {
-        "course": "AP Computer Science A",
-        "course_slug": "ap-computer-science-a",
-        "module_number": 1,
-        "module_title": "Primitive Types",
-        "youtube_id": "kTMroXpbPLQ",
-        "url": "https://youtu.be/kTMroXpbPLQ",
-        "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
-        "published_at": "2026-05-15T14:00:21Z",
-        "lesson_dir": "ap-cs-a-module-1-primitives"
       },
       {
-        "course": "AP Computer Science A",
-        "course_slug": "ap-computer-science-a",
-        "module_number": 10,
-        "module_title": "Recursion",
-        "youtube_id": "FEziRpv36Os",
-        "url": "https://youtu.be/FEziRpv36Os",
-        "embed_url": "https://www.youtube.com/embed/FEziRpv36Os",
-        "published_at": "2026-05-15T14:00:29Z",
-        "lesson_dir": "ap-cs-a-module-10-recursion"
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 11,
+        "module_title": "Volumes — Cross-Sections, Discs, and Washers",
+        "youtube_id": "ePDLZeagoqc",
+        "url": "https://youtu.be/ePDLZeagoqc",
+        "embed_url": "https://www.youtube.com/embed/ePDLZeagoqc",
+        "published_at": "2026-05-17T14:00:07Z",
+        "lesson_dir": "ap-calculus-ab-module-11-volumes-cross-sections-discs-washers"
+      },
+      {
+        "course": "AP Calculus AB",
+        "course_slug": "ap-calculus-ab",
+        "module_number": 12,
+        "module_title": "AP Exam Synthesis and Free-Response Strategy",
+        "youtube_id": "uTPv-VyklTw",
+        "url": "https://youtu.be/uTPv-VyklTw",
+        "embed_url": "https://www.youtube.com/embed/uTPv-VyklTw",
+        "published_at": "2026-05-17T14:00:15Z",
+        "lesson_dir": "ap-calculus-ab-module-12-ap-exam-synthesis-frq-strategy"
       }
     ],
     "Algebra I": [
@@ -345,6 +435,83 @@
   },
   "lessons": [
     {
+      "course": "AP Biology",
+      "course_slug": "ap-biology",
+      "module_number": 1,
+      "module_title": "Chemistry of Life",
+      "youtube_id": "0gVg4Udh-ic",
+      "url": "https://youtu.be/0gVg4Udh-ic",
+      "embed_url": "https://www.youtube.com/embed/0gVg4Udh-ic",
+      "published_at": "2026-05-18T14:00:04Z",
+      "lesson_dir": "ap-biology-module-1-chemistry-of-life"
+    },
+    {
+      "course": "AP Biology",
+      "course_slug": "ap-biology",
+      "module_number": 2,
+      "module_title": "Cell Structure and Function",
+      "youtube_id": "xuGSMHGt564",
+      "url": "https://youtu.be/xuGSMHGt564",
+      "embed_url": "https://www.youtube.com/embed/xuGSMHGt564",
+      "published_at": "2026-05-18T14:00:16Z",
+      "lesson_dir": "ap-biology-module-2-cell-structure"
+    },
+    {
+      "course": "AP Biology",
+      "course_slug": "ap-biology",
+      "module_number": 5,
+      "module_title": "Cell Cycle and Division",
+      "youtube_id": "IKdM8BmWn9Y",
+      "url": "https://youtu.be/IKdM8BmWn9Y",
+      "embed_url": "https://www.youtube.com/embed/IKdM8BmWn9Y",
+      "published_at": "2026-05-18T14:00:24Z",
+      "lesson_dir": "ap-biology-module-5-cell-cycle"
+    },
+    {
+      "course": "AP Computer Science A",
+      "course_slug": "ap-computer-science-a",
+      "module_number": 1,
+      "module_title": "Primitive Types",
+      "youtube_id": "kTMroXpbPLQ",
+      "url": "https://youtu.be/kTMroXpbPLQ",
+      "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
+      "published_at": "2026-05-15T14:00:21Z",
+      "lesson_dir": "ap-cs-a-module-1-primitives"
+    },
+    {
+      "course": "AP Computer Science A",
+      "course_slug": "ap-computer-science-a",
+      "module_number": 2,
+      "module_title": "Using Objects",
+      "youtube_id": "-ltLaZz2JAI",
+      "url": "https://youtu.be/-ltLaZz2JAI",
+      "embed_url": "https://www.youtube.com/embed/-ltLaZz2JAI",
+      "published_at": "2026-05-17T14:00:22Z",
+      "lesson_dir": "ap-cs-a-module-2-using-objects"
+    },
+    {
+      "course": "AP Computer Science A",
+      "course_slug": "ap-computer-science-a",
+      "module_number": 3,
+      "module_title": "Boolean Expressions and if Statements",
+      "youtube_id": "tGAOZaDi0zw",
+      "url": "https://youtu.be/tGAOZaDi0zw",
+      "embed_url": "https://www.youtube.com/embed/tGAOZaDi0zw",
+      "published_at": "2026-05-17T14:00:30Z",
+      "lesson_dir": "ap-cs-a-module-3-booleans-if"
+    },
+    {
+      "course": "AP Computer Science A",
+      "course_slug": "ap-computer-science-a",
+      "module_number": 10,
+      "module_title": "Recursion",
+      "youtube_id": "FEziRpv36Os",
+      "url": "https://youtu.be/FEziRpv36Os",
+      "embed_url": "https://www.youtube.com/embed/FEziRpv36Os",
+      "published_at": "2026-05-15T14:00:29Z",
+      "lesson_dir": "ap-cs-a-module-10-recursion"
+    },
+    {
       "course": "AP Calculus AB",
       "course_slug": "ap-calculus-ab",
       "module_number": 1,
@@ -435,6 +602,17 @@
     {
       "course": "AP Calculus AB",
       "course_slug": "ap-calculus-ab",
+      "module_number": 9,
+      "module_title": "Differential Equations — Slope Fields and Separation of Variables",
+      "youtube_id": "oltqaE2oKgk",
+      "url": "https://youtu.be/oltqaE2oKgk",
+      "embed_url": "https://www.youtube.com/embed/oltqaE2oKgk",
+      "published_at": "2026-05-16T14:00:38Z",
+      "lesson_dir": "ap-calculus-ab-module-9-differential-equations"
+    },
+    {
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
       "module_number": 10,
       "module_title": "Average Value and Area Between Curves",
       "youtube_id": "7cYj6-dghoI",
@@ -444,26 +622,26 @@
       "lesson_dir": "ap-calculus-ab-module-10-average-value-area-between-curves"
     },
     {
-      "course": "AP Computer Science A",
-      "course_slug": "ap-computer-science-a",
-      "module_number": 1,
-      "module_title": "Primitive Types",
-      "youtube_id": "kTMroXpbPLQ",
-      "url": "https://youtu.be/kTMroXpbPLQ",
-      "embed_url": "https://www.youtube.com/embed/kTMroXpbPLQ",
-      "published_at": "2026-05-15T14:00:21Z",
-      "lesson_dir": "ap-cs-a-module-1-primitives"
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 11,
+      "module_title": "Volumes — Cross-Sections, Discs, and Washers",
+      "youtube_id": "ePDLZeagoqc",
+      "url": "https://youtu.be/ePDLZeagoqc",
+      "embed_url": "https://www.youtube.com/embed/ePDLZeagoqc",
+      "published_at": "2026-05-17T14:00:07Z",
+      "lesson_dir": "ap-calculus-ab-module-11-volumes-cross-sections-discs-washers"
     },
     {
-      "course": "AP Computer Science A",
-      "course_slug": "ap-computer-science-a",
-      "module_number": 10,
-      "module_title": "Recursion",
-      "youtube_id": "FEziRpv36Os",
-      "url": "https://youtu.be/FEziRpv36Os",
-      "embed_url": "https://www.youtube.com/embed/FEziRpv36Os",
-      "published_at": "2026-05-15T14:00:29Z",
-      "lesson_dir": "ap-cs-a-module-10-recursion"
+      "course": "AP Calculus AB",
+      "course_slug": "ap-calculus-ab",
+      "module_number": 12,
+      "module_title": "AP Exam Synthesis and Free-Response Strategy",
+      "youtube_id": "uTPv-VyklTw",
+      "url": "https://youtu.be/uTPv-VyklTw",
+      "embed_url": "https://www.youtube.com/embed/uTPv-VyklTw",
+      "published_at": "2026-05-17T14:00:15Z",
+      "lesson_dir": "ap-calculus-ab-module-12-ap-exam-synthesis-frq-strategy"
     },
     {
       "course": "Algebra I",

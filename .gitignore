@@ -18,6 +18,11 @@
 .env.test.local
 .env.production.local
 
+# Server secrets — never commit
+server/.env
+server/.env.local
+server/.env.production
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -28,8 +33,36 @@ yarn-error.log*
 # auto-deployed by `npm run make-demo`
 demo-output/
 
-# Teaching video assets — large binaries, keep locally only
-teaching-videos/
+# Teaching videos: keep source-of-truth files in git (script.json,
+# build_slides.py, .cleaned breadcrumb). Ignore regenerable artifacts
+# (slides PNGs, audio MP3s, MP4 renders, WAV, SRT) — those can be rebuilt
+# from script.json + build_slides.py. Cleanup after YouTube upload keeps
+# folders slim. See tools/youtube-upload/cleanup_lesson.py.
+teaching-videos/*/slides/
+teaching-videos/*/audio/
+teaching-videos/*/audio/*.words.json
+teaching-videos/*/__pycache__/
+teaching-videos/*/*.mp4
+teaching-videos/*/*.wav
+teaching-videos/*/*.mp3
+teaching-videos/*/*.ass
+teaching-videos/*/*.srt
+teaching-videos/*/slides_concat.txt
+teaching-videos/*/subtitles.ass
+teaching-videos/*/_yt_description.txt
+teaching-videos/*/_outline.json
+teaching-videos/*/_outline.json.tmp
+teaching-videos/*/_outline.failed
+
+# Cowork API key + other secrets (auto-pipeline reads from here)
+.secrets/
+
+# Auto-pipeline scratch — keep summaries (_audit/*-summary.json) tracked, ignore tmp/plans
+teaching-videos/*/_audit/*-plan.json
+teaching-videos/*/_audit/*.tmp
+
+# FUSE filesystem orphan markers (from sandbox mount activity)
+.fuse_hidden*
 
 # Python bytecode (tools/youtube-upload/, tools/lesson-video/)
 __pycache__/

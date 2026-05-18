@@ -135,6 +135,27 @@ export default function AdminDashboard({ language }) {
           <Link to="/school-profile" target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary btn-sm me-2">
             {isEn ? 'School Profile' : '学校简介'}
           </Link>
+          <button
+            type="button"
+            className="btn btn-outline-warning btn-sm me-2"
+            title={isEn ? 'End-to-end Stripe payment smoke test ($1 charged to your card, refundable)' : '端到端 Stripe 支付测试（刷你卡 $1，可退款）'}
+            onClick={async () => {
+              try {
+                const r = await fetch(`${API_BASE}/api/checkout/create-session`, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ planType: 'live_test' }),
+                });
+                const d = await r.json();
+                if (!r.ok) throw new Error(d.error || 'Failed to start test');
+                window.open(d.url, '_blank', 'noopener,noreferrer');
+              } catch (e) {
+                alert(`Stripe test error: ${e.message}`);
+              }
+            }}
+          >
+            {isEn ? 'Stripe $1 test' : 'Stripe $1 测试'}
+          </button>
           <button type="button" className="btn btn-outline-secondary btn-sm me-2" onClick={logout}>
             {isEn ? 'Log out' : '登出'}
           </button>

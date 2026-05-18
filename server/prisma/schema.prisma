@@ -240,6 +240,45 @@ model Application {
   reviewedById String?
 }
 
+/// Stripe purchase record. One row per Checkout completion.
+///
+/// Lifecycle (set by webhook):
+///   checkout.session.completed       → row created (or updated), status='active' for subscriptions / status='paid' for one-time
+///   customer.subscription.updated    → status / currentPeriodEnd / cancelAtPeriodEnd refreshed
+///   customer.subscription.deleted    → status='cancelled'
+///   invoice.payment_failed           → status='past_due'
+///
+/// planType options:
+///   founders_monthly   $19.90 / month recurring (1 student)
+///   group_monthly      $50    / month recurring (3-5 students; reseller / cohort)
+///   live_test          $1     one-time (Alan's own end-to-end smoke test)
+model Subscription {
+  id                       String    @id @default(cuid())
+  /// Email entered at Stripe Checkout — may not yet have a ParentAccount.
+  purchaserEmail           String
+  /// Stripe identifiers
+  stripeCustomerId         String?
+  stripeSubscriptionId     String?   @unique
+  stripePriceId            String?
+  stripeCheckoutSessionId  String?   @unique
+  /// Tier name (see header docs for valid values)
+  planType                 String
+  /// Number of student seats this subscription unlocks
+  maxStudents              Int       @default(1)
+  /// active | past_due | cancelled | incomplete | trialing | paid
+  status                   String    @default("incomplete")
+  currentPeriodEnd         DateTime?
+  cancelAtPeriodEnd        Boolean   @default(false)
+  /// USD cents at purchase time (audit; doesn't follow price changes)
+  amountTotal              Int?
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+
+  @@index([purchaserEmail])
+  @@index([status])
+  @@index([planType])
+}
+
 /// Immutable record of admin/student actions on student data.
 model AuditLog {
   id         String   @id @default(cuid())

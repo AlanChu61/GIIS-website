@@ -51,6 +51,7 @@ const AssignmentQueue = lazy(() => import('./components/pages/Admin/AssignmentQu
 const ApplicationsQueue = lazy(() => import('./components/pages/Admin/ApplicationsQueue'));
 const ApplyForm = lazy(() => import('./components/pages/Apply/ApplyForm'));
 const VerifyPage = lazy(() => import('./components/pages/Verify/VerifyPage'));
+const WelcomePage = lazy(() => import('./components/pages/Welcome/WelcomePage'));
 
 const LANGUAGE_STORAGE_KEY = 'giis-language';
 
@@ -152,6 +153,7 @@ function App() {
          <Route path="/admin/assignments" element={<AssignmentQueue />} />
          <Route path="/admin/applications" element={<ApplicationsQueue />} />
          <Route path="/apply" element={<ApplyForm language={language} />} />
+         <Route path="/welcome" element={<WelcomePage language={language} />} />
          <Route path="/verify/:code" element={<VerifyPage />} />
          <Route path="/privacy" element={<PrivacyPolicy language={language} />} />
          <Route path="/terms" element={<TermsOfUse language={language} />} />

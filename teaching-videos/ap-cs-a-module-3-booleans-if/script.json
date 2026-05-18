@@ -70,5 +70,15 @@
       "id": "16_path",
       "text": "Reminder — this video is the overview. To actually master booleans and if statements, here's the rest. Read the Boolean Expressions chapter on Runestone — interactive code blocks. Practice Logic-One on Codingbat — ten problems. Submit the assignment in your dashboard. Book a check-in with your advisor if any of this feels fuzzy. See you in Module Four — Iteration."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "tGAOZaDi0zw",
+    "url": "https://youtu.be/tGAOZaDi0zw",
+    "embed_url": "https://www.youtube.com/embed/tGAOZaDi0zw",
+    "studio_url": "https://studio.youtube.com/video/tGAOZaDi0zw/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Computer Science A",
+    "playlist_id": "PLBdiOM21TW9Jm4j6gjxl-23c0DKjqFV1w",
+    "uploaded_at": "2026-05-17T14:00:35+00:00"
+  }
 }

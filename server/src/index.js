@@ -25,6 +25,8 @@ const parentDataRoutes = require('./routes/parent-data');
 const adminAssignmentsRoutes = require('./routes/admin-assignments');
 const applicationsRoutes = require('./routes/applications');
 const verifyRoutes = require('./routes/verify');
+const checkoutRoutes = require('./routes/checkout');
+const stripeWebhookRoutes = require('./routes/webhooks-stripe');
 
 if (!process.env.JWT_SECRET || process.env.JWT_SECRET.length < 16) {
   console.warn('[warn] Set a strong JWT_SECRET in .env (16+ chars) before production.');
@@ -50,6 +52,8 @@ app.use(
   })
 );
 app.use(cookieParser());
+// Stripe webhook needs raw body — must be mounted BEFORE express.json()
+app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }), stripeWebhookRoutes);
 app.use(express.json({ limit: '2mb' }));
 
 app.get('/', (_req, res) => {
@@ -102,6 +106,7 @@ app.use('/api/me', meRoutes);
 app.use('/api/admin/assignments', adminAssignmentsRoutes);
 app.use('/api/applications', applicationsRoutes);
 app.use('/api/verify', verifyRoutes);
+app.use('/api/checkout', checkoutRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Not found', path: req.path });

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import Nav from '../../main/Nav.js';
 import DemoEmbed from '../../main/DemoEmbed.js';
+import { getApiBase } from '../../../config/apiBase';
 
+const API = getApiBase();
 const SCHOOL_EMAIL = 'admissions@genesisideas.school';
 
 const MONTHLY_FEATURES = [
@@ -12,15 +14,8 @@ const MONTHLY_FEATURES = [
   { en: 'Module quizzes, midterm & final exams', zh: '章节测验、期中与期末考试' },
   { en: 'Personalized course planning support', zh: '个性化课程规划支持' },
   { en: 'Official US high school transcript', zh: '美国官方成绩单' },
-  { en: 'Cancel anytime', zh: '随时取消' },
-];
-
-const ANNUAL_EXTRAS = [
-  { en: 'Everything in Monthly', zh: '包含所有月付权益' },
-  { en: 'Priority support response (24 h)', zh: '优先 24 小时回复支持' },
   { en: 'US high school diploma upon graduation', zh: '毕业后颁发美国高中文凭' },
-  { en: 'Annual academic progress report', zh: '年度学业进展报告' },
-  { en: '~$150/month effective rate', zh: '月均约 $150' },
+  { en: 'Cancel anytime · 30-day full refund', zh: '随时取消 · 30 天无条件退款' },
 ];
 
 const FAQS = [
@@ -32,12 +27,15 @@ const FAQS = [
     },
   },
   {
-    q: { en: 'Can I switch from monthly to annual?', zh: '我可以从月付切换到年付吗？' },
-    a: { en: 'Yes. You can upgrade to annual at any time. The remaining days of your current billing cycle are credited toward your annual plan.', zh: '可以。您随时可以升级为年付，当前周期剩余天数将折算至年付计划中。' },
+    q: { en: 'Do you have a group or family plan?', zh: '有团体方案或家庭方案吗？' },
+    a: {
+      en: 'Yes — $50/month for 3 to 5 students under one account. Intended for tutoring centers, school partners, or families with multiple high-schoolers. Email admissions@genesisideas.school to set one up.',
+      zh: '有——$50/月可涵盖 3 至 5 位学生，共用一个账户。适合补习机构、合作学校或家中有多位高中生的家庭。发邮件至 admissions@genesisideas.school 即可申请。',
+    },
   },
   {
     q: { en: 'What happens if I need to pause?', zh: '如果我需要暂停怎么办？' },
-    a: { en: 'Monthly subscribers can cancel and re-enroll at any time. Annual subscribers may request a pause of up to 60 days per year — contact us at admissions@genesisideas.school.', zh: '月付用户可随时取消并重新注册。年付用户每年可申请最多 60 天暂停，请发邮件至 admissions@genesisideas.school 联系我们。' },
+    a: { en: 'Monthly subscribers can cancel and re-enroll at any time. To pause for a longer period (e.g., a semester abroad), email admissions@genesisideas.school.', zh: '月付用户可随时取消并重新注册。如需较长期暂停（例如出国一个学期），请发邮件至 admissions@genesisideas.school。' },
   },
   {
     q: { en: 'Are there any additional fees?', zh: '还有其他费用吗？' },
@@ -53,8 +51,28 @@ const FAQS = [
   },
 ];
 
+async function startCheckout(planType, setLoading, setError) {
+  setLoading(planType);
+  setError('');
+  try {
+    const res = await fetch(`${API}/api/checkout/create-session`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ planType }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Checkout failed');
+    window.location.href = data.url;
+  } catch (err) {
+    setError(err.message);
+    setLoading(null);
+  }
+}
+
 export default function PricingPage({ language, toggleLanguage }) {
   const isEn = language !== 'zh';
+  const [loading, setLoading] = useState(null);
+  const [checkoutError, setCheckoutError] = useState('');
 
   return (
     <>
@@ -111,56 +129,15 @@ export default function PricingPage({ language, toggleLanguage }) {
       {/* Pricing Cards */}
       <div style={{ background: '#f4f6fa', padding: '60px 0', fontFamily: 'Inter, sans-serif' }}>
         <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 5%' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px' }}>
 
-            {/* Monthly */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', alignItems: 'start' }}>
+
+            {/* ── Founders Monthly ── */}
             <div style={{
               background: '#fff', borderRadius: '16px',
-              border: '1px solid #e0e6f0',
-              padding: '40px 36px',
-              boxShadow: '0 4px 20px rgba(43,61,109,0.08)',
-            }}>
-              <p style={{ margin: '0 0 6px', fontSize: '12px', fontWeight: 700, color: '#2b3d6d', letterSpacing: '2px', textTransform: 'uppercase' }}>
-                {isEn ? 'Founders Monthly' : '创校月付'}
-              </p>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 4px' }}>
-                <span style={{ fontSize: '60px', fontWeight: 800, color: '#1a1a2e', lineHeight: 1 }}>$19.90</span>
-                <span style={{ fontSize: '16px', color: '#888' }}>{isEn ? '/ month' : '/ 月'}</span>
-              </div>
-              <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#999' }}>
-                <span style={{ textDecoration: 'line-through', color: '#bbb' }}>$199</span>
-                <span style={{ color: '#1B6B3A', fontWeight: 700, marginLeft: '8px' }}>
-                  {isEn ? '90% off' : '省 90%'}
-                </span>
-              </p>
-              <p style={{ margin: '0 0 28px', fontSize: '12px', color: '#aaa' }}>
-                {isEn ? 'Locked for 12 months · Cancel anytime' : '锁定 12 个月 · 随时取消'}
-              </p>
-              <ul style={{ margin: '0 0 32px', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {MONTHLY_FEATURES.map((f) => (
-                  <li key={f.en} style={{ display: 'flex', gap: '10px', fontSize: '14px', color: '#333' }}>
-                    <span style={{ color: '#2b3d6d', fontWeight: 700, flexShrink: 0 }}>✓</span>
-                    {isEn ? f.en : f.zh}
-                  </li>
-                ))}
-              </ul>
-              <Link to="/admission"
-                style={{
-                  display: 'block', textAlign: 'center', padding: '14px',
-                  border: '2px solid #2b3d6d', borderRadius: '10px',
-                  color: '#2b3d6d', fontWeight: 700, fontSize: '15px', textDecoration: 'none',
-                }}>
-                {isEn ? 'Apply Now' : '立即申请'}
-              </Link>
-            </div>
-
-            {/* Annual */}
-            <div style={{
-              background: '#1a1a2e', borderRadius: '16px',
               border: '2px solid rgba(213,168,54,1)',
-              padding: '40px 36px',
-              position: 'relative',
-              boxShadow: '0 8px 32px rgba(43,61,109,0.22)',
+              padding: '40px 36px', position: 'relative',
+              boxShadow: '0 12px 36px rgba(43,61,109,0.14)',
             }}>
               <div style={{
                 position: 'absolute', top: '-14px', left: '28px',
@@ -168,45 +145,120 @@ export default function PricingPage({ language, toggleLanguage }) {
                 fontSize: '11px', fontWeight: 800, padding: '4px 14px',
                 borderRadius: '20px', letterSpacing: '0.5px',
               }}>
-                {isEn ? 'BEST VALUE' : '最划算'}
+                {isEn ? 'FOUNDERS · 100 SEATS' : '创校价 · 限 100 名'}
               </div>
-              <p style={{ margin: '0 0 6px', fontSize: '12px', fontWeight: 700, color: 'rgba(213,168,54,1)', letterSpacing: '2px', textTransform: 'uppercase' }}>
-                {isEn ? 'Founders Annual' : '创校年付'}
+              <p style={{ margin: '0 0 6px', fontSize: '12px', fontWeight: 700, color: '#2b3d6d', letterSpacing: '2px', textTransform: 'uppercase' }}>
+                {isEn ? 'Individual · 1 student' : '个人方案 · 1 位学生'}
               </p>
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 4px' }}>
-                <span style={{ fontSize: '60px', fontWeight: 800, color: '#fff', lineHeight: 1 }}>$199</span>
-                <span style={{ fontSize: '16px', color: 'rgba(255,255,255,0.5)' }}>{isEn ? '/ year' : '/ 年'}</span>
+                <span style={{ fontSize: '56px', fontWeight: 800, color: '#1a1a2e', lineHeight: 1 }}>$19.90</span>
+                <span style={{ fontSize: '16px', color: '#888' }}>{isEn ? '/ month' : '/ 月'}</span>
               </div>
-              <p style={{ margin: '0 0 8px', fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>
-                <span style={{ textDecoration: 'line-through', color: 'rgba(255,255,255,0.35)' }}>$1,799</span>
-                <span style={{ color: 'rgba(213,168,54,0.95)', fontWeight: 700, marginLeft: '8px' }}>
-                  {isEn ? '~$16.6/month effective' : '月均约 $16.60'}
+              <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#999' }}>
+                <span style={{ textDecoration: 'line-through', color: '#bbb' }}>$199</span>
+                <span style={{ color: '#1B6B3A', fontWeight: 700, marginLeft: '8px' }}>
+                  {isEn ? '90% off · locked 12 months' : '省 90% · 锁定 12 个月'}
                 </span>
               </p>
-              <p style={{ margin: '0 0 28px', fontSize: '12px', color: 'rgba(213,168,54,0.85)', fontWeight: 600 }}>
-                {isEn ? 'Save $40 vs monthly · Lock in for 12 months' : '比月付节省 $40 · 锁定 12 个月'}
+              <p style={{ margin: '0 0 24px', fontSize: '12px', color: '#aaa' }}>
+                {isEn ? 'Cancel anytime · 30-day full refund' : '随时取消 · 30 天无条件退款'}
               </p>
-              <ul style={{ margin: '0 0 32px', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                {ANNUAL_EXTRAS.map((f) => (
-                  <li key={f.en} style={{ display: 'flex', gap: '10px', fontSize: '14px', color: 'rgba(255,255,255,0.82)' }}>
-                    <span style={{ color: 'rgba(213,168,54,1)', fontWeight: 700, flexShrink: 0 }}>✓</span>
+              <ul style={{ margin: '0 0 28px', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {MONTHLY_FEATURES.map((f) => (
+                  <li key={f.en} style={{ display: 'flex', gap: '10px', fontSize: '14px', color: '#333' }}>
+                    <span style={{ color: '#2b3d6d', fontWeight: 700, flexShrink: 0 }}>✓</span>
                     {isEn ? f.en : f.zh}
                   </li>
                 ))}
               </ul>
-              <Link to="/admission"
+              <button
+                onClick={() => startCheckout('founders_monthly', setLoading, setCheckoutError)}
+                disabled={!!loading}
                 style={{
-                  display: 'block', textAlign: 'center', padding: '14px',
+                  display: 'block', width: '100%', textAlign: 'center', padding: '14px',
                   background: 'rgba(213,168,54,1)', borderRadius: '10px',
-                  color: '#1a1a2e', fontWeight: 800, fontSize: '15px', textDecoration: 'none',
+                  cursor: loading ? 'wait' : 'pointer',
+                  color: '#1a1a2e', fontWeight: 800, fontSize: '15px', border: 'none',
+                  boxShadow: '0 6px 18px rgba(213,168,54,0.3)',
                 }}>
-                {isEn ? 'Apply Now — Best Value' : '立即申请 · 最划算'}
-              </Link>
+                {loading === 'founders_monthly'
+                  ? (isEn ? 'Redirecting…' : '跳转中…')
+                  : (isEn ? 'Start Now — $19.90/mo' : '立即开始 — $19.90/月')}
+              </button>
             </div>
+
+            {/* ── Group Plan ── */}
+            <div style={{
+              background: '#fff', borderRadius: '16px',
+              border: '1px solid #e0e6f0',
+              padding: '40px 36px', position: 'relative',
+              boxShadow: '0 4px 20px rgba(43,61,109,0.08)',
+            }}>
+              <div style={{
+                position: 'absolute', top: '-14px', left: '28px',
+                background: '#2b3d6d', color: '#fff',
+                fontSize: '11px', fontWeight: 800, padding: '4px 14px',
+                borderRadius: '20px', letterSpacing: '0.5px',
+              }}>
+                {isEn ? 'FOR SCHOOLS & CENTERS' : '学校与机构'}
+              </div>
+              <p style={{ margin: '0 0 6px', fontSize: '12px', fontWeight: 700, color: '#2b3d6d', letterSpacing: '2px', textTransform: 'uppercase' }}>
+                {isEn ? 'Group · 3–5 students' : '团体方案 · 3–5 位学生'}
+              </p>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', margin: '0 0 4px' }}>
+                <span style={{ fontSize: '56px', fontWeight: 800, color: '#1a1a2e', lineHeight: 1 }}>$50</span>
+                <span style={{ fontSize: '16px', color: '#888' }}>{isEn ? '/ month' : '/ 月'}</span>
+              </div>
+              <p style={{ margin: '0 0 8px', fontSize: '13px', color: '#999' }}>
+                <span style={{ color: '#1B6B3A', fontWeight: 700 }}>
+                  {isEn ? '~$10–$16/student' : '折合每生约 $10–$16/月'}
+                </span>
+              </p>
+              <p style={{ margin: '0 0 24px', fontSize: '12px', color: '#aaa' }}>
+                {isEn ? 'One account · up to 5 seats · Cancel anytime' : '一个账户 · 最多 5 个学生 · 随时取消'}
+              </p>
+              <ul style={{ margin: '0 0 28px', padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {[
+                  { en: 'All features from Individual plan', zh: '包含个人方案所有权益' },
+                  { en: 'Up to 5 student seats under one account', zh: '最多 5 个学生账号共用一个账户' },
+                  { en: 'Suitable for tutoring centers, school cohorts, or families with multiple students', zh: '适合补习机构、学校团体或多子女家庭' },
+                  { en: 'Shared billing — one invoice per month', zh: '统一计费，每月一张发票' },
+                ].map((f) => (
+                  <li key={f.en} style={{ display: 'flex', gap: '10px', fontSize: '14px', color: '#333' }}>
+                    <span style={{ color: '#2b3d6d', fontWeight: 700, flexShrink: 0 }}>✓</span>
+                    {isEn ? f.en : f.zh}
+                  </li>
+                ))}
+              </ul>
+              <button
+                onClick={() => startCheckout('group_monthly', setLoading, setCheckoutError)}
+                disabled={!!loading}
+                style={{
+                  display: 'block', width: '100%', textAlign: 'center', padding: '14px',
+                  background: '#2b3d6d', borderRadius: '10px',
+                  cursor: loading ? 'wait' : 'pointer',
+                  color: '#fff', fontWeight: 800, fontSize: '15px', border: 'none',
+                }}>
+                {loading === 'group_monthly'
+                  ? (isEn ? 'Redirecting…' : '跳转中…')
+                  : (isEn ? 'Start Group Plan — $50/mo' : '申请团体方案 — $50/月')}
+              </button>
+            </div>
+
           </div>
 
-          {/* Value note */}
-          <div style={{ marginTop: '28px', background: '#fff', border: '1px solid #e0e6f0', borderRadius: '12px', padding: '20px 24px', display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
+          {checkoutError && (
+            <div style={{ margin: '20px 0 0', padding: '12px 16px', background: '#fff3f3', border: '1px solid #f5c6cb', borderRadius: '8px', color: '#721c24', fontSize: '14px' }}>
+              {checkoutError}
+            </div>
+          )}
+
+          <p style={{ marginTop: '14px', textAlign: 'center', fontSize: '11px', color: '#aaa' }}>
+            {isEn ? 'Secure payment via Stripe · Cards, Apple Pay, Cash App' : 'Stripe 安全支付 · 信用卡、Apple Pay、Cash App'}
+          </p>
+
+          {/* Value note — how credits work */}
+          <div style={{ marginTop: '32px', background: '#fff', border: '1px solid #e0e6f0', borderRadius: '12px', padding: '20px 24px', display: 'flex', alignItems: 'flex-start', gap: '14px' }}>
             <span style={{ fontSize: '22px', flexShrink: 0 }}>💡</span>
             <div>
               <p style={{ margin: '0 0 4px', fontWeight: 700, fontSize: '14px', color: '#1a1a2e' }}>
@@ -219,6 +271,24 @@ export default function PricingPage({ language, toggleLanguage }) {
               </p>
             </div>
           </div>
+
+          {/* Live test — internal use only */}
+          <div style={{ marginTop: '40px', paddingTop: '24px', borderTop: '1px dashed #d4d8e0', textAlign: 'center' }}>
+            <p style={{ fontSize: '11px', color: '#bbb', margin: '0 0 8px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+              Internal · End-to-end test
+            </p>
+            <button
+              onClick={() => startCheckout('live_test', setLoading, setCheckoutError)}
+              disabled={!!loading}
+              style={{
+                padding: '7px 18px', fontSize: '12px', fontWeight: 600,
+                background: 'transparent', border: '1px solid #d4d8e0',
+                borderRadius: '8px', color: '#888', cursor: loading ? 'wait' : 'pointer',
+              }}>
+              {loading === 'live_test' ? 'Redirecting…' : '🧪 Live test — $1 charge'}
+            </button>
+          </div>
+
         </div>
       </div>
 
@@ -250,7 +320,7 @@ export default function PricingPage({ language, toggleLanguage }) {
               </thead>
               <tbody>
                 {[
-                  { label: isEn ? 'Annual cost' : '年费用', vals: [isEn ? '~$199 founders' : '~$199 创校价', '$15,000–30,000', '$50,000–80,000'] },
+                  { label: isEn ? 'Cost / year' : '年费用', vals: [isEn ? '~$240 founders' : '~$240 创校价', '$15,000–30,000', '$50,000–80,000'] },
                   { label: isEn ? 'US diploma' : '美国文凭', vals: ['✓', '✓', '✓'] },
                   { label: isEn ? 'Learn from China' : '在中国就读', vals: ['✓', '✓', '✗'] },
                   { label: isEn ? 'Flexible schedule' : '时间自由', vals: ['✓', '✗', '✗'] },

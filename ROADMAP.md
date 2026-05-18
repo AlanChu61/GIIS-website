@@ -1,6 +1,8 @@
 # GIIS Platform — Product Roadmap
 
-> 最後更新：2026-05-12（Nav 登入/登出 UX · 語言切換按鈕視覺 · 5 位學生 G12 Spring 全課程完成進度 · seedCourses 修 FK 衝突）
+> 最後更新：2026-05-18（**Stripe Checkout shipped: founders_monthly + group_monthly + live_test, Subscription model, /welcome page, AdminDashboard $1 test button**）
+>
+> 前次：2026-05-12（Nav 登入/登出 UX · 語言切換按鈕視覺 · 5 位學生 G12 Spring 全課程完成進度 · seedCourses 修 FK 衝突）
 > **核心目標：讓家長願意付錢，並且持續付錢。**
 >
 > 這份 roadmap 是給 **Claude Code CLI（code mode）** 的工作清單。
@@ -882,20 +884,45 @@ Acceptance ✅：video 路徑只在 DemoEmbed.js 寫死。
 
 ## 💰 Phase 2 — 讓家長能「付款並信任」
 
-### 7. Stripe Checkout 整合
+### ✅ 7. Stripe Checkout 整合（2026-05-18 完成 test mode；live mode 待 Alan 切換）
 
-**檔案**：
-- `server/src/routes/checkout.js` — `POST /api/checkout/create-session`（建 Stripe Checkout Session，return url 帶 session_id）
-- `server/src/routes/webhooks-stripe.js` — `POST /api/webhooks/stripe`（驗 signature、處理 `checkout.session.completed` → 建學生帳號 / 啟用 subscription / 寄歡迎信）
-- 新 schema：`Subscription { id, studentId, stripeCustomerId, stripeSubscriptionId, status, currentPeriodEnd }`
-- 前端 `PricingPage.js` Apply Now → POST `/api/checkout/create-session` → `window.location = checkoutUrl`
+- ✅ **Stripe 帳號 + sandbox 建好**：Genesis of Ideas International School LLC，FL 註冊，FL DOE Elementary/Secondary Schools (MCC 8211)，bank Chase ...0602。`/sandbox/` URL 可用，test API key 已存 `server/.env`
+- ✅ **3 個 Stripe Products 建好**（年付 founders_annual 因策略調整移除）：
+  - **Founders Monthly** $19.90/月 recurring · lookup `founders_monthly`
+  - **Group Monthly** $50/月 recurring (3-5 students) · lookup `group_monthly`
+  - **Live Test** $1 one-time · lookup `live_test`
+- ✅ **後端**：
+  - `server/src/routes/checkout.js` — `POST /create-session` 用 PRICE_TIERS 查 priceId + mode（subscription vs payment）；支援 metadata.planType + maxStudents；`GET /session/:id` 給 /welcome 頁查狀態；`GET /tiers` 公開列出可購方案 + maxStudents（不洩 priceId）
+  - `server/src/routes/webhooks-stripe.js` — 4 個 event handler（checkout.session.completed、subscription.updated、subscription.deleted、invoice.payment_failed）全部寫真實 DB upsert；dev 模式無 webhook secret 時 fallback 直接解析（生產必設）
+  - `server/prisma/schema.prisma` — `Subscription` model（purchaserEmail、stripeCustomerId、stripeSubscriptionId @unique、stripeCheckoutSessionId @unique、planType、maxStudents、status、currentPeriodEnd、cancelAtPeriodEnd、amountTotal、@@index([purchaserEmail][status][planType])）
+  - `server/.env.example` — STRIPE_* 變數完整文件化
+- ✅ **前端**：
+  - `src/components/pages/Pricing/PricingPage.js` — Annual 卡片移除；Monthly 卡片置中、放大、加金色邊框 + 「FOUNDERS · 100 SEATS」徽章；Apply Now 改為 `<button>` 呼叫 `/api/checkout/create-session` 跳轉 Stripe Checkout URL；下方加「Group plan inquiry」mailto 入口；FAQ 第一條 30 天無條件退款（TS-P0-4a 已 ship）+ 新增 group plan 條目；比較表「Annual cost」改為「Cost / year」、值 `~$240 founders`
+  - `src/components/pages/Welcome/WelcomePage.js` — 付款成功 landing 頁，雙語，fetch `/api/checkout/session/:id`，顯示「Payment confirmed · You purchased: [planLabel] · Receipt to [email]」+ 4 步「What happens next」+ 30 天退款重申 + 「webhook 尚未同步」橘色 banner
+  - `src/components/pages/Admin/AdminDashboard.js` — header bar 加「Stripe $1 test」黃色按鈕，點擊 POST `planType: 'live_test'` 開新分頁進 Checkout（Alan 上 live 後可用真實卡刷 $1 驗整條鏈）
+  - `src/App.js` — `/welcome` route 註冊
+- ✅ **Backward compat**：前端送 `planType: 'monthly'`（legacy）會被 LEGACY_ALIASES 自動 map 到 `founders_monthly`
 
-**Acceptance**：
-- Stripe test mode 跑通：填 `4242 4242 4242 4242` 之後自動建學生帳號 + 寄出歡迎信
-- Webhook 在 Stripe Dashboard 測試 `checkout.session.completed` 能收到並回 200
-- Subscription 過期前 7 天自動寄續費提醒（Phase 3 再做）
+### 🔧 Phase 2 #7 收尾 — 等 Alan 動作
 
-**依賴**：#4 的 Resend wrapper
+- [ ] **本機驗收**：
+  1. `cd server && npx prisma db push`（套 Subscription model）
+  2. `cd server && npm run dev`（API at :4000）
+  3. `npm start`（root，React at :3000）
+  4. `localhost:3000/pricing` → 點 Apply → 填 `4242 4242 4242 4242` + 任未來日期 + 任 CVC + 任 ZIP
+  5. 應被跳到 `localhost:3000/welcome?session_id=...`，10 秒內顯示「Payment confirmed」
+  6. （選）`stripe listen --forward-to localhost:4000/api/webhooks/stripe` 拿 whsec_ 存進 .env，重啟 server，看到 webhook log + DB Subscription row
+  7. `psql -h localhost -U giis -d giis_transcript -c 'SELECT * FROM "Subscription";'` 確認 row 存在 status='active'
+
+- [ ] **切到 Stripe Live mode 上線**：
+  1. Stripe dashboard 右上 toggle 切 Live
+  2. **重建 3 個 Products** 在 Live mode（sandbox 跟 live 是隔離的，products 不會同步）
+  3. 拿 Live API keys（sk_live_... + pk_live_...）替換 server/.env
+  4. **設定 Webhook endpoint**：Developers → Webhooks → Add endpoint → URL `https://api.genesisideas.school/api/webhooks/stripe`（或對應生產 API URL）→ 訂閱 4 個事件（checkout.session.completed, customer.subscription.updated, customer.subscription.deleted, invoice.payment_failed）→ 拿到 whsec_ 存 .env
+  5. AdminDashboard 點「Stripe $1 test」用真實卡刷 $1，2 個工作天後看 Chase ...0602 進帳，整鏈打通
+  6. Stripe dashboard 退款 $1（避免帳簿留小尾巴）
+
+- [ ] **Resend wrapper（依賴解開後做）**：webhook `checkout.session.completed` 裡的 TODO（自動建 Student + ParentAccount + 寄歡迎信）— 等 Phase 1 待辦的 `RESEND_API_KEY` 解開後一起做
 
 ---
 

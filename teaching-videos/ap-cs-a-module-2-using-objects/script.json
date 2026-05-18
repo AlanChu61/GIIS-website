@@ -62,5 +62,15 @@
       "id": "14_path",
       "text": "Reminder — this video is the overview. To master objects, here's the rest. Read the Using Objects chapter on Runestone. Knock out the String-One problem set on Codingbat — that's ten short problems and they really cement the String methods. Do the assignment in your dashboard. And book an advisor check-in if equals-equals versus dot equals still feels fuzzy. Next up, Module Three — boolean expressions and if statements."
     }
-  ]
+  ],
+  "youtube": {
+    "video_id": "-ltLaZz2JAI",
+    "url": "https://youtu.be/-ltLaZz2JAI",
+    "embed_url": "https://www.youtube.com/embed/-ltLaZz2JAI",
+    "studio_url": "https://studio.youtube.com/video/-ltLaZz2JAI/edit",
+    "privacy": "unlisted",
+    "playlist": "AP Computer Science A",
+    "playlist_id": "PLBdiOM21TW9Jm4j6gjxl-23c0DKjqFV1w",
+    "uploaded_at": "2026-05-17T14:00:28+00:00"
+  }
 }
